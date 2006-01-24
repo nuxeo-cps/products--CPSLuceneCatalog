@@ -16,31 +16,17 @@
 # 02111-1307, USA.
 #
 # $Id$
-"""CPS Lucene Catalog
+"""CPS Lucene Catalog export import
 """
 
-from Products.GenericSetup import profile_registry
-from Products.GenericSetup import EXTENSION
+from Products.GenericSetup.utils import importObjects
 
-from Products.CMFCore.utils import ToolInit
+from Products.CMFCore.utils import getToolByName
 
-from Products.CPSCore.interfaces import ICPSSite
+def exportCPSLuceneCatalog(context):
+    raise NotImplementedError
 
-import catalog
-
-def initialize(registrar):
-
-    ToolInit(
-        meta_type="CPS Lucene Catalog",
-        tools=(catalog.CPSLuceneCatalog,),
-        icon="tool.png",
-        ).initialize(registrar)
-
-    profile_registry.registerProfile(
-        'default',
-        'CPS Lucene Catalog',
-        "Lucene based catalog for CPS",
-        'profiles/default',
-        'CPSLuceneCatalog',
-        EXTENSION,
-        for_=ICPSSite)
+def importCPSLuceneCatalog(context):
+    site = context.getSite()
+    tool = getToolByName(site, 'portal_catalog')
+    importObjects(tool, '', context)

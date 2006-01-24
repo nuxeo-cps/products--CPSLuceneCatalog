@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool-setup>
+  <required 
+      tool_id="portal_catalog"
+      class="Products.CPSLuceneCatalog.catalog.CPSLuceneCatalog"/>
+</tool-setup>
