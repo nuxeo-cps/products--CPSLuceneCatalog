@@ -19,8 +19,35 @@
 """CPS Lucene Catalog interface
 """
 
+import zope.interface
+import zope.schema
+
+from zope.app.i18n import ZopeMessageFactory as _
+
 from Products.CMFCore.interfaces import ICatalogTool
 
-class ICPSLuceneCatalog(ICatalogTool):
-    """CPS Lucene catalog
+class ICPSLuceneCatalogTool(ICatalogTool):
+    """CPS Lucene catalog Tool
     """
+
+    server_url = zope.schema.TextLine(
+        title=_(u"Server URL"),
+        description=_(u"XML-RPC server URL"),
+        required=True,
+        default=u'http://localhost',
+        )
+
+    server_port = zope.schema.Int(
+        title=_(u"Server port"),
+        description=_(u"XML-RPC server port"),
+        required=True,
+        default=9180,
+        )
+
+class ZCatalogQuery(zope.interface.Interface):
+    """ZCatalog Query
+    """
+
+    def getLuceneQuery():
+        """Returns a native lucene query
+        """

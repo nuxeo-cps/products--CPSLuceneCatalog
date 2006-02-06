@@ -20,13 +20,58 @@
 """
 
 from Products.GenericSetup.utils import importObjects
+from Products.GenericSetup.utils import exportObjects
 
 from Products.CMFCore.utils import getToolByName
 
+from Products.CPSInstaller.CPSInstaller import CPSInstaller
+
+from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalog
+from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
+
+from Products.Five.site.interfaces import IFiveUtilityRegistry
+
+from zope.app import zapi
+from zope.app.site.interfaces import ISite, IPossibleSite
+
+from nuxeo.lucene.interfaces import ILuceneCatalog
+
+TOOL = 'portal_catalog'
+NAME = 'CPS Lucene Catalog'
+
 def exportCPSLuceneCatalog(context):
-    raise NotImplementedError
+    site = context.getSite()
+    tool = getToolByName(site, TOOL, None)
+    if tool is None:
+        logger = context.getLogger(NAME)
+        logger.info("Nothing to export.")
+        return
+    exportObjects(tool, '', context)
 
 def importCPSLuceneCatalog(context):
+
     site = context.getSite()
-    tool = getToolByName(site, 'portal_catalog')
+    tool = getToolByName(site, TOOL, None)
+    if tool is None or tool.meta_type != 'CPS Lucene Catalog Tool':
+        # XXX Probably a migration is needed here
+        if tool is not None:
+            site.manage_delObjects(['portal_catalog'])
+        site._setObject(TOOL, CPSLuceneCatalogTool())
+
+    tool = getToolByName(site, TOOL)
+
+##    if not ISite.providedBy(site):
+##        if not IPossibleSite.providedBy(site):
+##            return "Can not install CPSLuceneCatalog on a portal that " \
+##                   "doesn't support local utilities."
+##
+##    installer = CPSInstaller(site, 'CPSLuceneCatalog')
+##    # CPSSharedCalendar requires CMFonFive
+##    installer.runExternalUpdater('cmfonfive_installer', 'CMFonFive Installer',
+##                                 'CMFonFive', 'install', 'install')
+##
+##    if not zapi.queryUtility(ILuceneCatalog, context=site):
+##        utility = CPSLuceneCatalog('http://localhost', 9180)
+##        IFiveUtilityRegistry(site).registerUtility(ILuceneCatalog, utility)
+
     importObjects(tool, '', context)

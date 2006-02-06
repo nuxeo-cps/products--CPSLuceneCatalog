@@ -1,0 +1,14 @@
+<configure
+    xmlns='http://namespaces.zope.org/zope'
+    xmlns:lucene='http://namespaces.nuxeo.org/lucene'
+    >
+
+  <lucene:fields
+      for="Products.CPSDocument.interfaces.ICPSDocument">
+    <lucene:field
+	attribut='name'
+	type="text"
+	fulltext="True"
+	/>
+  </lucene:fields>      
+</configure>

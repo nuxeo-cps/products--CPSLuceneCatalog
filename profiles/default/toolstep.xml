@@ -2,5 +2,5 @@
 <tool-setup>
   <required 
       tool_id="portal_catalog"
-      class="Products.CPSLuceneCatalog.catalog.CPSLuceneCatalog"/>
+      class="Products.CPSLuceneCatalog.catalog.CPSLuceneCatalogTool"/>
 </tool-setup>

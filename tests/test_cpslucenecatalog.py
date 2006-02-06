@@ -20,15 +20,32 @@
 """
 
 import unittest
+import CPSLuceneCatalogTestCase
 
-class LuceneCatalogTestCase(unittest.TestCase):
+from Products.CMFCore.utils import getToolByName
 
-    def test_fixtures(self):
-        pass
+from nuxeo.lucene.interfaces import ILuceneCatalog
+from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
+
+class LuceneCatalogTestCase(CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase):
+
+    def afterSetup(self):
+        from Products.CPSCore.tests.setup import fullFiveSetup
+        fullFiveSetup()
+        CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase.afterSetup(self)
+
+    def test_implementation(self):
+        from zope.interface.verify import verifyClass
+        from Products.CMFCore.interfaces import ICatalogTool
+        self.assert_(verifyClass(ICatalogTool, CPSLuceneCatalogTool))
+
+    def test_fixture(self):
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+        self.assert_(cpscatalog)
+        self.assertEqual(cpscatalog.meta_type, 'CPS Lucene Catalog Tool')
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(LuceneCatalogTestCase))
     return suite
-
 

@@ -20,6 +20,7 @@
 """
 
 from Testing import ZopeTestCase
+ZopeTestCase.installProduct('nuxLucene', quiet=False)
 ZopeTestCase.installProduct('CPSLuceneCatalog', quiet=False)
 
 from Products.CPSDefault.tests.CPSTestCase import CPSTestCase

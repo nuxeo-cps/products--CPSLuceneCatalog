@@ -15,32 +15,23 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA.
 #
-# $Id$
-"""CPS Lucene Catalog
+# $Id: interfaces.py 29338 2006-01-24 14:13:39Z janguenot $
+"""ZCatalog query
 """
 
-from Products.GenericSetup import profile_registry
-from Products.GenericSetup import EXTENSION
+import zope.inteface
+from interfaces impor IZCatalogQuery
 
-from Products.CMFCore.utils import ToolInit
+class ZCatalogQuery(object):
 
-from Products.CPSCore.interfaces import ICPSSite
+    zope.interface.implements(IZCatalogQuery)
 
-def initialize(registrar):
+    def __init__(self, REQUEST, **kw):
+        self.REQUEST = REQUEST
+        self.kw = kw
 
-    import catalog
-
-    ToolInit(
-        meta_type="CPS Lucene Catalog Tool",
-        tools=(catalog.CPSLuceneCatalogTool,),
-        icon="tool.png",
-        ).initialize(registrar)
-
-    profile_registry.registerProfile(
-        'default',
-        'CPS Lucene Catalog',
-        "Lucene based catalog for CPS",
-        'profiles/default',
-        'CPSLuceneCatalog',
-        EXTENSION,
-        for_=ICPSSite)
+    def getLuceneQuery(self):
+        """Returns a native lucene query
+        """
+        # TODO
+        return ''

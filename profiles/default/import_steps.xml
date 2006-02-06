@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <import-steps>
   <import-step 
-      id="lucenecatalog" version="20060124-01"
+      id="cpslucenecatalog" version="20060124-01"
       handler="Products.CPSLuceneCatalog.exportimport.importCPSLuceneCatalog"
       title="CPS Lucene Catalog">
     <dependency step="toolset"/>
