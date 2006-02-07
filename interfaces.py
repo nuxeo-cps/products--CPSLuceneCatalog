@@ -44,7 +44,7 @@ class ICPSLuceneCatalogTool(ICatalogTool):
         default=9180,
         )
 
-class ZCatalogQuery(zope.interface.Interface):
+class IZCatalogQuery(zope.interface.Interface):
     """ZCatalog Query
     """
 

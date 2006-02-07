@@ -27,7 +27,8 @@ from Products.CMFCore.utils import getToolByName
 from nuxeo.lucene.interfaces import ILuceneCatalog
 from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
 
-class LuceneCatalogTestCase(CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase):
+class CPSLuceneCatalogTestCase(
+    CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase):
 
     def afterSetup(self):
         from Products.CPSCore.tests.setup import fullFiveSetup
@@ -40,12 +41,91 @@ class LuceneCatalogTestCase(CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase):
         self.assert_(verifyClass(ICatalogTool, CPSLuceneCatalogTool))
 
     def test_fixture(self):
+
+        # Test the CPS catalog tool fixtures
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
         self.assert_(cpscatalog)
         self.assertEqual(cpscatalog.meta_type, 'CPS Lucene Catalog Tool')
 
+        # Test the zope3 catalog fixtures
+        # This will be a registred local utility in the future.
+        catalog = cpscatalog.getCatalog()
+        from zope.interface.verify import verifyObject
+        self.assert_(verifyObject(ILuceneCatalog, catalog))
+
+    def test_indexObject(self):
+
+        self.login('manager')
+
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+
+        # Create a new object within the workspaces area
+        id_ = self._makeOne(self.portal.workspaces, 'File')
+
+        object_ = getattr(self.portal.workspaces, id_)
+        cpscatalog.indexObject(object_)
+
+        # Search it back
+        kw = {
+            }
+        cpscatalog.searchResults(**kw)
+
+        self.logout()
+
+    def xtest_unindexObject(self):
+
+        self.login('manager')
+
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+
+        # Create a new object within the workspaces area
+        id_ = self._makeOne(self.portal.workspaces, 'File')
+
+        object_ = getattr(self.portal.workspaces, id_)
+        cpscatalog.indexObject(object_)
+        cpscatalog.unindexObject(object_)
+
+        # Search it back
+        kw = {
+            }
+        cpscatalog.searchResults(**kw)
+
+        self.logout()
+
+    def xtest_reindexObject(self):
+
+        self.login('manager')
+
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+
+        # Create a new object within the workspaces area
+        id_ = self._makeOne(self.portal.workspaces, 'File')
+
+        object_ = getattr(self.portal.workspaces, id_)
+        cpscatalog.indexObject(object_)
+        cpscatalog.reindexObject(object_)
+
+        # Search it back
+        kw = {
+            }
+        cpscatalog.searchResults(**kw)
+
+        self.logout()
+
+    
+
+    #
+    # PRIVATE
+    #
+
+    def _makeOne(self, context, type_name, **kw):
+        wftool = getToolByName(self.portal, 'portal_workflow')
+        id_ = context.computeId()
+        id_ = wftool.invokeFactoryFor(context, type_name, id_, **kw)
+        return id_
+
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(LuceneCatalogTestCase))
+    suite.addTest(unittest.makeSuite(CPSLuceneCatalogTestCase))
     return suite
 
