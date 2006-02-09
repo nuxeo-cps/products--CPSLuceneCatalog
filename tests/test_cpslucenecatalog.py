@@ -72,7 +72,7 @@ class CPSLuceneCatalogTestCase(
 
         self.logout()
 
-    def xtest_unindexObject(self):
+    def test_unindexObject(self):
 
         self.login('manager')
 
@@ -92,7 +92,7 @@ class CPSLuceneCatalogTestCase(
 
         self.logout()
 
-    def xtest_reindexObject(self):
+    def test_reindexObject(self):
 
         self.login('manager')
 
@@ -111,8 +111,6 @@ class CPSLuceneCatalogTestCase(
         cpscatalog.searchResults(**kw)
 
         self.logout()
-
-    
 
     #
     # PRIVATE
