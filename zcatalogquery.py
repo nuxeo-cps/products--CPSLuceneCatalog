@@ -28,10 +28,11 @@ class ZCatalogQuery(object):
 
     def __init__(self, REQUEST, **kw):
         self.REQUEST = REQUEST
+        if 'cps_filter_sets' in kw.keys():
+            self.cps_filter_sets = kw['cps_filter_sets']
+            del kw['cps_filter_sets']
         self.kw = kw
 
     def get(self):
-        # TODO
-        kwargs = {}
-        return (), kwargs
+        return (), self.kw
         
