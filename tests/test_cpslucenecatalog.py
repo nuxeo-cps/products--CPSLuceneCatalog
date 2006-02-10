@@ -67,8 +67,13 @@ class CPSLuceneCatalogTestCase(
 
         # Search it back
         kw = {
+            # This is how the CatalogTool compute it.
+            'uid' : '/'.join(object_.getPhysicalPath())
             }
-        cpscatalog.searchResults(**kw)
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['uid'], kw['uid'])
 
         self.logout()
 
@@ -83,12 +88,32 @@ class CPSLuceneCatalogTestCase(
 
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
+
+        # Search it back
+        kw = {
+            # This is how the CatalogTool compute it.
+            'uid' : '/'.join(object_.getPhysicalPath())
+            }
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['uid'], kw['uid'])
+
+        cpscatalog.unindexObject(object_)
+        # XXX Indexed several times...Fix WebLucene bug.
+        cpscatalog.unindexObject(object_)
+        cpscatalog.unindexObject(object_)
         cpscatalog.unindexObject(object_)
 
         # Search it back
         kw = {
+            # This is how the CatalogTool compute it.
+            'uid' : '/'.join(object_.getPhysicalPath())
             }
-        cpscatalog.searchResults(**kw)
+
+        results = cpscatalog.searchResults(**kw)
+#        print "Results=%s query=%s" %(results, kw)
+        self.assertEqual(len(results), 0)
 
         self.logout()
 
@@ -103,12 +128,33 @@ class CPSLuceneCatalogTestCase(
 
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
+
+        # Search it back
+        kw = {
+            # This is how the CatalogTool compute it.
+            'uid' : '/'.join(object_.getPhysicalPath())
+            }
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['uid'], kw['uid'])
+
         cpscatalog.reindexObject(object_)
 
         # Search it back
         kw = {
             }
         cpscatalog.searchResults(**kw)
+
+        # Search it back
+        kw = {
+            # This is how the CatalogTool compute it.
+            'uid' : '/'.join(object_.getPhysicalPath())
+            }
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['uid'], kw['uid'])
 
         self.logout()
 
