@@ -36,11 +36,16 @@ def initialize(registrar):
         icon="tool.png",
         ).initialize(registrar)
 
-    profile_registry.registerProfile(
-        'default',
-        'CPS Lucene Catalog',
-        "Lucene based catalog for CPS",
-        'profiles/default',
-        'CPSLuceneCatalog',
-        EXTENSION,
-        for_=ICPSSite)
+    try:
+        profile_registry.registerProfile(
+            'default',
+            'CPS Lucene Catalog',
+            "Lucene based catalog for CPS",
+            'profiles/default',
+            'CPSLuceneCatalog',
+            EXTENSION,
+            for_=ICPSSite)
+    except KeyError:
+        # Allow the use of refresh
+        # Already registred
+        pass
