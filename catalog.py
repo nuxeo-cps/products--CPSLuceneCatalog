@@ -148,7 +148,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
         LOG.debug("unindexObject %s" % str(object))
-        return 
+
         default_uid = self._CatalogTool__url(object)
         proxy = None
         if isinstance(object, ProxyBase):
