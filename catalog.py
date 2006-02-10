@@ -40,6 +40,8 @@ from Products.CPSCore.PatchCatalogTool import IndexableObjectWrapper
 from Products.CPSCore import utils as cpsutils
 
 from zcatalogquery import ZCatalogQuery
+from brain import CPSBrain
+
 from interfaces import ICPSLuceneCatalogTool
 
 LOG = logging.getLogger("CPSLuceneCatalog")
@@ -88,15 +90,22 @@ class CPSLuceneCatalogTool(CatalogTool):
         return 1
 
     def searchResults(self, REQUEST=None, **kw):
-        """ Decorate ZCatalog.searchResults() with extra arguments
 
-        o The extra arguments that the results to what the user would be
-        allowed to see.
-        """
         LOG.debug("SeachResults %s" % str(kw))
+
         query = ZCatalogQuery(REQUEST, **kw)
-        return_fields, kw = query.get() 
-        return self.getCatalog().searchResults(return_fields, **kw)
+
+        # XXX this sucks
+        return_fields, kw = query.get()
+
+        # XXX return fields
+        results = self.getCatalog().searchResults(('uid',), kw)
+
+        # Construct lite brains for BBB
+        brains = []
+        for mapping in results:
+            brains.append(CPSBrain(mapping))
+        return brains
 
     # Override CMFCore.CatalogTool alias
     __call__ = searchResults

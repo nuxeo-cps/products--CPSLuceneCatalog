@@ -112,6 +112,30 @@ class CPSLuceneCatalogTestCase(
 
         self.logout()
 
+
+    def test_basic_searchResults(self):
+
+        self.login('manager')
+
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+        utool = getToolByName(self.portal, 'portal_url')
+
+        # Create a new object within the workspaces area
+        id_ = self._makeOne(self.portal.workspaces, 'File')
+
+        object_ = getattr(self.portal.workspaces, id_)
+        cpscatalog.indexObject(object_)
+
+        kw = {
+            # This is how the CatalogTool compute it.
+            'uid' : '/'.join(object_.getPhysicalPath())
+            }
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['uid'], kw['uid'])
+                     
+        
     #
     # PRIVATE
     #

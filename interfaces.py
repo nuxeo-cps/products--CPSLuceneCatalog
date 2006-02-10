@@ -51,9 +51,41 @@ class IZCatalogQuery(zope.interface.Interface):
     def get():
         """Returns a prepared query for the Zope3 utility
 
-        (return_fields <tuple>, **kwargs) 
+        (return_fields <tuple>, **kwargs)
         """
 
     def getLuceneQuery():
         """Returns a native lucene query
+        """
+
+class ICPSBrain(zope.interface.Interface):
+    """Lite Catalog brain class for CPS
+    """
+
+    def has_key():
+        """
+        """
+
+    def getPath():
+        """Get the physical path for this record
+        """
+
+    def getURL(relative=0):
+        """Generate a URL for this record
+        """
+
+    def getObject(REQUEST=None):
+        """Return the object for this record
+
+        Will return None if the object cannot be found via its cataloged path
+        (i.e., it was deleted or moved without recataloging), or if the user is
+        not authorized to access the object.
+
+        This method mimicks a subset of what publisher's traversal does,
+        so it allows access if the final object can be accessed even
+        if intermediate objects cannot.
+        """
+
+    def getRID(self):
+        """Return the record ID for this object.
         """
