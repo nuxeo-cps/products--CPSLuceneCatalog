@@ -100,10 +100,6 @@ class CPSLuceneCatalogTestCase(
         self.assertEqual(results[0]['uid'], kw['uid'])
 
         cpscatalog.unindexObject(object_)
-        # XXX Indexed several times...Fix WebLucene bug.
-        cpscatalog.unindexObject(object_)
-        cpscatalog.unindexObject(object_)
-        cpscatalog.unindexObject(object_)
 
         # Search it back
         kw = {
