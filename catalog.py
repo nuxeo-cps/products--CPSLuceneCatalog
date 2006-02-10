@@ -22,11 +22,9 @@
 import logging
 
 from AccessControl import ClassSecurityInfo
-from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
-from Acquisition import aq_parent
-from Acquisition import aq_inner
 
+from Products.CMFCore.utils import SimpleItemWithProperties
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CatalogTool import CatalogTool
 
@@ -50,6 +48,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     """CPS Lucene Catalog
     """
 
+    zope.interface.implements(ICPSLuceneCatalogTool)
 
     _properties = CatalogTool._properties + \
                   ({'id':'server_url',
@@ -64,7 +63,7 @@ class CPSLuceneCatalogTool(CatalogTool):
                     },
                    )
 
-    zope.interface.implements(ICPSLuceneCatalogTool)
+    manage_options = SimpleItemWithProperties.manage_options
 
     id = "portal_catalog"
     meta_type = "CPS Lucene Catalog Tool"
@@ -98,6 +97,9 @@ class CPSLuceneCatalogTool(CatalogTool):
         query = ZCatalogQuery(REQUEST, **kw)
         return_fields, kw = query.get() 
         return self.getCatalog().searchResults(return_fields, **kw)
+
+    # Override CMFCore.CatalogTool alias
+    __call__ = searchResults
 
     def unrestrictedSearchResults(self, REQUEST=None, **kw):
         """Calls ZCatalog.searchResults() without any CMF-specific processing.
