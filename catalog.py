@@ -41,6 +41,7 @@ from Products.CPSCore.ProxyBase import ProxyBase
 from Products.CPSCore.PatchCatalogTool import IndexableObjectWrapper
 from Products.CPSCore import utils as cpsutils
 
+from zcatalogquery import ZCatalogQuery
 from interfaces import ICPSLuceneCatalogTool
 
 LOG = logging.getLogger("CPSLuceneCatalog")
@@ -49,18 +50,31 @@ class CPSLuceneCatalogTool(CatalogTool):
     """CPS Lucene Catalog
     """
 
+
+    _properties = CatalogTool._properties + \
+                  ({'id':'server_url',
+                    'type':'string',
+                    'mode':'w',
+                    'label':'xml-rpc server URL',
+                    },
+                   {'id':'server_port',
+                    'type':'string',
+                    'mode': 'w',
+                    'label':'xml-rpc server port',
+                    },
+                   )
+
     zope.interface.implements(ICPSLuceneCatalogTool)
 
     id = "portal_catalog"
     meta_type = "CPS Lucene Catalog Tool"
 
-    def __init__(self):
+    server_url = 'http://localhost'
+    server_port = 9180
 
-        # XXX Make this properties of the CPS Tool
-        self.server_url = 'http://localhost'
-        self.port = 9180
-        self._setOb(
-            '_catalog', LuceneCatalog(self.server_url, self.port))
+    def __init__(self):
+        utility = LuceneCatalog(self.server_url, self.server_port)
+        self._setOb('_catalog', utility)
 
     def __url(self, ob):
         # XXX It would be better to have uid instead of rpath here.
@@ -81,7 +95,9 @@ class CPSLuceneCatalogTool(CatalogTool):
         allowed to see.
         """
         LOG.debug("SeachResults %s" % str(kw))
-        return []
+        query = ZCatalogQuery(REQUEST, **kw)
+        return_fields, kw = query.get() 
+        return self.getCatalog().searchResults(return_fields, **kw)
 
     def unrestrictedSearchResults(self, REQUEST=None, **kw):
         """Calls ZCatalog.searchResults() without any CMF-specific processing.

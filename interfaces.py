@@ -48,6 +48,12 @@ class IZCatalogQuery(zope.interface.Interface):
     """ZCatalog Query
     """
 
+    def get():
+        """Returns a prepared query for the Zope3 utility
+
+        (return_fields <tuple>, **kwargs) 
+        """
+
     def getLuceneQuery():
         """Returns a native lucene query
         """

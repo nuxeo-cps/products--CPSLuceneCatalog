@@ -19,8 +19,8 @@
 """ZCatalog query
 """
 
-import zope.inteface
-from interfaces impor IZCatalogQuery
+import zope.interface
+from interfaces import IZCatalogQuery
 
 class ZCatalogQuery(object):
 
@@ -30,8 +30,8 @@ class ZCatalogQuery(object):
         self.REQUEST = REQUEST
         self.kw = kw
 
-    def getLuceneQuery(self):
-        """Returns a native lucene query
-        """
+    def get(self):
         # TODO
-        return ''
+        kwargs = {}
+        return (), kwargs
+        
