@@ -26,6 +26,8 @@ from Products.CMFCore.utils import ToolInit
 
 from Products.CPSCore.interfaces import ICPSSite
 
+import brain
+
 def initialize(registrar):
 
     import catalog

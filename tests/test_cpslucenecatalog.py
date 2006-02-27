@@ -53,7 +53,7 @@ class CPSLuceneCatalogTestCase(
         from zope.interface.verify import verifyObject
         self.assert_(verifyObject(ILuceneCatalog, catalog))
 
-    def test_indexObject(self):
+    def xtest_indexObject(self):
 
         self.login('manager')
 
@@ -87,6 +87,8 @@ class CPSLuceneCatalogTestCase(
         id_ = self._makeOne(self.portal.workspaces, 'File')
 
         object_ = getattr(self.portal.workspaces, id_)
+
+        # Indexation
         cpscatalog.indexObject(object_)
 
         # Search it back
@@ -95,25 +97,20 @@ class CPSLuceneCatalogTestCase(
             'uid' : '/'.join(object_.getPhysicalPath())
             }
 
+        # Search after indexation. Should match.
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]['uid'], kw['uid'])
 
         cpscatalog.unindexObject(object_)
 
-        # Search it back
-        kw = {
-            # This is how the CatalogTool compute it.
-            'uid' : '/'.join(object_.getPhysicalPath())
-            }
-
+        # Find object back. Should be gone.
         results = cpscatalog.searchResults(**kw)
-#        print "Results=%s query=%s" %(results, kw)
         self.assertEqual(len(results), 0)
 
         self.logout()
 
-    def test_reindexObject(self):
+    def xtest_reindexObject(self):
 
         self.login('manager')
 
@@ -137,10 +134,7 @@ class CPSLuceneCatalogTestCase(
 
         cpscatalog.reindexObject(object_)
 
-        # Search it back
-        kw = {
-            }
-        cpscatalog.searchResults(**kw)
+        results = cpscatalog.searchResults(**kw)
 
         # Search it back
         kw = {
@@ -155,7 +149,7 @@ class CPSLuceneCatalogTestCase(
         self.logout()
 
 
-    def test_basic_searchResults(self):
+    def xtest_basic_searchResults(self):
 
         self.login('manager')
 

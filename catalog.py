@@ -23,9 +23,11 @@ import logging
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Products.CMFCore.utils import SimpleItemWithProperties
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.CatalogTool import CatalogTool
 
 import zope.interface
@@ -52,26 +54,13 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     zope.interface.implements(ICPSLuceneCatalogTool)
 
-    _properties = CatalogTool._properties + \
-                  ({'id':'server_url',
-                    'type':'string',
-                    'mode':'w',
-                    'label':'xml-rpc server URL',
-                    },
-                   {'id':'server_port',
-                    'type':'string',
-                    'mode': 'w',
-                    'label':'xml-rpc server port',
-                    },
-                   )
-
-    manage_options = SimpleItemWithProperties.manage_options
-
     id = "portal_catalog"
     meta_type = "CPS Lucene Catalog Tool"
 
     server_url = 'http://localhost'
     server_port = 9180
+
+    security = ClassSecurityInfo()
 
     def __init__(self):
         utility = LuceneCatalog(self.server_url, self.server_port)
@@ -90,6 +79,8 @@ class CPSLuceneCatalogTool(CatalogTool):
         return 1
 
     def searchResults(self, REQUEST=None, **kw):
+        """Searching...
+        """
 
         LOG.debug("SeachResults %s" % str(kw))
 
@@ -190,6 +181,9 @@ class CPSLuceneCatalogTool(CatalogTool):
 ##        if idxs != []:
 ##            idxs = [i for i in idxs if self._catalog.indexes.has_key(i)]
 
+        # XXX : only full text right now.
+        idxs = ['SearchableText',]
+
         ### Not a proxy.
         if not isinstance(object, ProxyBase):
             w = IndexableObjectWrapper(vars, object)
@@ -246,5 +240,58 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     def uncatalog_object(self, uid):
         self.getCatalog().unindex(uid)
+
+    #
+    # ZMI
+    #
+
+    _properties = CatalogTool._properties + \
+                  ({'id':'server_url',
+                    'type':'string',
+                    'mode':'w',
+                    'label':'xml-rpc server URL',
+                    },
+                   {'id':'server_port',
+                    'type':'string',
+                    'mode': 'w',
+                    'label':'xml-rpc server port',
+                    },
+                   )
+
+    manage_options = SimpleItemWithProperties.manage_options + \
+                    ({ 'label' : 'Advanced',
+                       'action' : 'manage_reindexForm',
+                       },
+                     )
+
+    security.declareProtected(ManagePortal, 'manage_reindexForm')
+    manage_reindexForm = PageTemplateFile(
+        'zmi/manage_reindexForm.pt', globals())
+
+    security.declareProtected(ManagePortal, 'manage_reindex')
+    def manage_reindex(self, REQUEST=None):
+        """Reindex an existing instance.
+        """
+
+        # XXX rough implementation for tests.
+
+        def reindexContainer(container):
+            """Reindex the container and its direct children
+            """
+            container.reindexObject()
+            if hasattr(container, 'objectIds'):
+                for id_ in container.objectIds():
+                    reindexContainer(getattr(container, id_))
+
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        areas = ('workspaces', 'sections', 'members',)
+        for each in areas:
+            each = getattr(portal, each)
+            reindexContainer(each)
+
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_reindexForm')
+                
 
 InitializeClass(CPSLuceneCatalogTool)

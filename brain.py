@@ -19,17 +19,27 @@
 """CPS Brain
 """
 
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
+
 import zope.interface
 from interfaces import ICPSBrain
 
 class CPSBrain(dict):
-    """Simple light brain
+    """Simple light brain for BBB
     """
 
     zope.interface.implements(ICPSBrain)
 
-    def __init__(self, dict):
-        for k, v in dict.items():
+    security = ClassSecurityInfo()
+
+    def __init__(self, mapping):
+        for k, v in mapping.items():
             self[k] = v
 
-    # XXX implements the whole ZCatalog brains interface for BBB
+    security.declarePublic('getIndexValue')
+    def getIndexValue(self, k, default=''):
+#        raise str(self.keys())
+        return self.get(unicode(k), default)
+
+InitializeClass(CPSBrain)
