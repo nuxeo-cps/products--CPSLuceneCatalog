@@ -1,0 +1,17 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs   tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+
+<h3>Reindex the whole site</h3>
+
+<p>
+Reindexing the whole site might be useful while upgrading to a CPS
+Lucene Catalog from a former zcatalog based instance. Be aware that
+this operation might be a bit long depending of the size of your
+existing instance.
+</p>
+
+<form action="manage_reindex" method="POST">
+  <input type="submit" name="reindex" value="Reindex all"/>
+</form>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
