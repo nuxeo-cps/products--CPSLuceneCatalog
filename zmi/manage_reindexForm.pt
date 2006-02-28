@@ -14,4 +14,15 @@ existing instance.
   <input type="submit" name="reindex" value="Reindex all"/>
 </form>
 
+<h3>Optimize the indexes store</h3>
+
+<p>
+You can optimize the indexes store here. This is the standard Lucene
+optimize feature.
+</p>
+
+<form action="manage_optimize" method="POST">
+  <input type="submit" name="optimize" value="Optimize indexes"/>
+</form>
+
 <tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

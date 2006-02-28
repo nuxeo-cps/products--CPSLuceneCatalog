@@ -275,16 +275,35 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         # XXX rough implementation for tests.
 
+        from zLOG import LOG, INFO
+        from Products.CPSUtil.timer import Timer
+
         def reindexContainer(container):
             """Reindex the container and its direct children
             """
-            container.reindexObject()
+            timer = Timer('indexObject', level=INFO)
+
+            LOG("Index object", INFO, container.absolute_url())
+            try:
+                container._reindexObject()
+            except AttributeError:
+                # Not a CPS Proxy
+                container.reindexObject()
+
+            timer.mark('Indexation')
+
+            timer.log()
+
             if hasattr(container, 'objectIds'):
                 for id_ in container.objectIds():
                     reindexContainer(getattr(container, id_))
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
-        areas = ('workspaces', 'sections', 'members',)
+        areas = (
+                'workspaces',
+                'sections',
+                'members',
+                )
         for each in areas:
             each = getattr(portal, each)
             reindexContainer(each)
@@ -292,6 +311,11 @@ class CPSLuceneCatalogTool(CatalogTool):
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_reindexForm')
-                
+
+    security.declareProtected(ManagePortal, 'manage_optimize')
+    def manage_optimize(self):
+        """Optimier the indexes store
+        """
+        self.getCatalog().optimize()                
 
 InitializeClass(CPSLuceneCatalogTool)
