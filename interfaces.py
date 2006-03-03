@@ -44,6 +44,12 @@ class ICPSLuceneCatalogTool(ICatalogTool):
         default=9180,
         )
 
+    def clean():
+        """Clean the whole indexes store.
+
+        This will remove *all* the indexes from the store.
+        """
+
 class IZCatalogQuery(zope.interface.Interface):
     """ZCatalog Query
     """
