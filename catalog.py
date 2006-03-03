@@ -263,13 +263,13 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     manage_options = SimpleItemWithProperties.manage_options + \
                     ({ 'label' : 'Advanced',
-                       'action' : 'manage_reindexForm',
+                       'action' : 'manage_advancedForm',
                        },
                      )
 
-    security.declareProtected(ManagePortal, 'manage_reindexForm')
-    manage_reindexForm = PageTemplateFile(
-        'zmi/manage_reindexForm.pt', globals())
+    security.declareProtected(ManagePortal, 'manage_advancedForm')
+    manage_advancedForm = PageTemplateFile(
+        'zmi/manage_advancedForm.pt', globals())
 
     security.declareProtected(ManagePortal, 'manage_reindex')
     def manage_reindex(self, REQUEST=None):
@@ -313,7 +313,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
-                self.absolute_url() + '/manage_reindexForm')
+                self.absolute_url() + '/manage_advancedForm')
 
     security.declareProtected(ManagePortal, 'manage_optimize')
     def manage_optimize(self):
