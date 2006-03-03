@@ -44,7 +44,6 @@ class CPSLuceneCatalogTestCase(
 
         # Test the CPS catalog tool fixtures
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
-        self.assert_(cpscatalog)
         self.assertEqual(cpscatalog.meta_type, 'CPS Lucene Catalog Tool')
 
         # Test the zope3 catalog fixtures
@@ -53,7 +52,7 @@ class CPSLuceneCatalogTestCase(
         from zope.interface.verify import verifyObject
         self.assert_(verifyObject(ILuceneCatalog, catalog))
 
-    def xtest_indexObject(self):
+    def test_indexObject(self):
 
         self.login('manager')
 
@@ -67,7 +66,7 @@ class CPSLuceneCatalogTestCase(
 
         # Search it back
         kw = {
-            # This is how the CatalogTool compute it.
+            # This is hindexObjectow the CatalogTool compute it.
             'uid' : '/'.join(object_.getPhysicalPath())
             }
 
@@ -87,9 +86,7 @@ class CPSLuceneCatalogTestCase(
         id_ = self._makeOne(self.portal.workspaces, 'File')
 
         object_ = getattr(self.portal.workspaces, id_)
-
-        # Indexation
-        cpscatalog.indexObject(object_)
+        object_.reindexObject()
 
         # Search it back
         kw = {
@@ -110,7 +107,7 @@ class CPSLuceneCatalogTestCase(
 
         self.logout()
 
-    def xtest_reindexObject(self):
+    def test_reindexObject(self):
 
         self.login('manager')
 
@@ -149,7 +146,7 @@ class CPSLuceneCatalogTestCase(
         self.logout()
 
 
-    def xtest_basic_searchResults(self):
+    def test_basic_searchResults(self):
 
         self.login('manager')
 
