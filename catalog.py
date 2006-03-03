@@ -70,13 +70,16 @@ class CPSLuceneCatalogTool(CatalogTool):
         # XXX It would be better to have uid instead of rpath here.
         return '/'.join( ob.getPhysicalPath() )
 
+    def __len__(self):
+        return len(self.getCatalog())
+
     def getCatalog(self):
 #        portal = aq_parent(aq_inner(self))
 #        return zapi.getUtility(ILuceneCatalog, context=portal)
-         return self._catalog
+       return self._catalog
 
-    def __len__(self):
-        return 1
+    def clean(self):
+        return self.getCatalog().clean()
 
     def searchResults(self, REQUEST=None, **kw):
         """Searching...
@@ -163,19 +166,19 @@ class CPSLuceneCatalogTool(CatalogTool):
         repotool = getToolByName(self, 'portal_repository', None)
         if repotool is not None and repotool.isObjectUnderRepository(object):
             return
-        
+
         # BBB: for Zope 2.7, which doesn't take a pghandler
         if pghandler is None:
             pgharg = ()
         else:
             pgharg = (pghandler,)
-        
+
         wf = getattr(self, 'portal_workflow', None)
         if wf is not None:
             vars = wf.getCatalogVariablesFor(object)
         else:
             vars = {}
-        
+
         # Filter out invalid indexes.
         # TODO : implement the API on nuxeo.lucene side
 ##        if idxs != []:
@@ -203,7 +206,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             w = IndexableObjectWrapper(vars, object, lang, uid)
             self.getCatalog().index(uid, w, idxs)
             return
-        
+
         # We reindex a normal proxy.
         # Find what languages are in the catalog for this proxy
         uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
@@ -211,7 +214,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         for brain in self.unrestrictedSearchResults(path=uid_view):
             path = brain.getPath()
             had_languages.append(path[path.rindex('/')+1:])
-        
+
         # Do we now have only one language?
         languages = object.getProxyLanguages()
         if len(languages) == 1:
@@ -222,7 +225,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             w = IndexableObjectWrapper(vars, object)
             self.getCatalog().index(uid, w, idxs)
             return
-        
+
         # We now have several languages (or none).
         # Remove old base proxy path
         if self.getCatalog().hasUID(uid):
@@ -316,6 +319,12 @@ class CPSLuceneCatalogTool(CatalogTool):
     def manage_optimize(self):
         """Optimier the indexes store
         """
-        self.getCatalog().optimize()                
+        self.getCatalog().optimize()
+
+    security.declareProtected(ManagePortal, 'manage_clean')
+    def manage_clean(self):
+        """CLean the indexes store.
+        """
+        self.clean()
 
 InitializeClass(CPSLuceneCatalogTool)
