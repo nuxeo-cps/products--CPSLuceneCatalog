@@ -25,9 +25,14 @@ optimize feature.
   <input type="submit" name="optimize" value="Optimize indexes"/>
 </form>
 
+<h3>Clean the whole indexes store</h3>
 <p>
 You can clear all the indexes from the server store from here.
 </p>
+
+<strong>Clicking here will remove all the indexes from store !</strong>
+
+<br/>
 
 <form action="manage_clean" method="POST">
   <input type="submit" name="clean" value="Clean the store"/>
