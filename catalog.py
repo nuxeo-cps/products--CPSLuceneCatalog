@@ -98,7 +98,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         # Construct lite brains for BBB
         brains = []
         for mapping in results:
-            brains.append(CPSBrain(mapping))
+            brains.append(CPSBrain(mapping).__of__(self))
         return brains
 
     # Override CMFCore.CatalogTool alias
