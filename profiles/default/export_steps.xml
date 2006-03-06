@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <export-steps>
  <export-step 
-     id="cpslucenecatalog"
+     id="lucenecatalog"
      handler="Products.CPSLuceneCatalog.exportimport.exportCPSLuceneCatalog"
      title="CPS Lucene Catalog">
    Export the CPS Lucene Catalog

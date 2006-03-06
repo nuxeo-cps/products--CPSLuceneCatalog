@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="CPS Lucene Catalog Tool">
+ 
+  <property name="title"></property>
+  <property name="server_url">http://localhost</property>
+  <property name="server_port">9180</property>
+
+
+<!-- Brain's  Metadata --> 
+
+  <column value="Contributors"/>
+  <column value="CreationDate"/>
+  <column value="Creator"/>
+  <column value="Date"/>
+  <column value="Description"/>
+  <column value="EffectiveDate"/>
+  <column value="ExpirationDate"/>
+  <column value="Language"/>
+  <column value="ModificationDate"/>
+  <column value="Subject"/>
+  <column value="Title"/>
+  <column value="Type"/>
+  <column value="created"/>
+  <column value="effective"/>
+  <column value="end"/>
+  <column value="expires"/>
+  <column value="getIcon"/>
+  <column value="getId"/>
+  <column value="getRevision"/>
+  <column value="id"/>
+  <column value="listCreators"/>
+  <column value="modified"/>
+  <column value="portal_type"/>
+  <column value="position_in_container"/>
+  <column value="relative_path"/>
+  <column value="review_state"/>
+  <column value="start"/>
+  <column value="time"/>
+
+</object>

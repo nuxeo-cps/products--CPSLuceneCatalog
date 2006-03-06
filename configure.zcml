@@ -1,28 +1,26 @@
 <configure
     xmlns='http://namespaces.zope.org/zope'
-    xmlns:lucene='http://namespaces.nuxeo.org/lucene'
+    xmlns:cps="http://namespaces.nuxeo.org/cps"
     >
 
-<!--
-  <localUtility class=".catalog.CPSLuceneCatalog">
-    <factory
-        id="nuxeo.lucene"
-        />
-    <require
-        interface="nuxeo.lucene.catalog.ILuceneCatalog"
-        permission="zope.Public"
-        />
-  </localUtility>
--->
+  <!-- IO -->
+  
+  <adapter
+      factory=".exportimport.LuceneCatalogToolXMLAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for=".interfaces.ICPSLuceneCatalogTool
+	   Products.GenericSetup.interfaces.ISetupEnviron"
+      />
 
-  <lucene:fields
-      for="Products.CPSDocument.interfaces.ICPSDocument">
-    <lucene:field
-	attribut='name'
-	type="text"
-	fulltext="True"
-	/>
-  </lucene:fields>      
+  <!-- Upgrade Step -->
+
+  <cps:upgradeStep
+      title="Migrate CMF Catalog"
+      source="3.4.0" destination="3.5.0"
+      handler=".upgrade.upgrade_340_350_cmf_catalog"
+      checker=".upgrade.check_upgrade_340_350_cmf_catalog"
+      />
+
 </configure>
 
 

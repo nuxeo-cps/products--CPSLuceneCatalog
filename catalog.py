@@ -78,6 +78,16 @@ class CPSLuceneCatalogTool(CatalogTool):
 #        return zapi.getUtility(ILuceneCatalog, context=portal)
        return self._catalog
 
+    #
+    # API : Column
+    #
+
+    security.declareProtected(ManagePortal, 'addColumn')
+    def addColumn(self, name, default_value=None):
+        return self.getCatalog().addColumn(name, default_value)
+
+    
+
     def clean(self):
         return self.getCatalog().clean()
 
@@ -261,11 +271,14 @@ class CPSLuceneCatalogTool(CatalogTool):
                     },
                    )
 
-    manage_options = SimpleItemWithProperties.manage_options + \
-                    ({ 'label' : 'Advanced',
-                       'action' : 'manage_advancedForm',
-                       },
-                     )
+    manage_options = (SimpleItemWithProperties.manage_options[0]
+                      ,) + \
+                      ({ 'label' : 'Advanced',
+                         'action' : 'manage_advancedForm',
+                         },
+                       CatalogTool.manage_options[3],
+                       CatalogTool.manage_options[4],
+                       )
 
     security.declareProtected(ManagePortal, 'manage_advancedForm')
     manage_advancedForm = PageTemplateFile(
