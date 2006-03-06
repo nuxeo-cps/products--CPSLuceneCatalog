@@ -17,29 +17,55 @@
 #
 # $Id: catalog.py 30034 2006-02-10 15:19:53Z janguenot $
 """CPS Brain
+
+Provides a Zope BBB brain tyxpe.
 """
 
+import logging
+
 from AccessControl import ClassSecurityInfo
+from AccessControl.Role import RoleManager
+import Acquisition
 from Globals import InitializeClass
+from OFS.SimpleItem import Item
 
 import zope.interface
 from interfaces import ICPSBrain
 
-class CPSBrain(dict):
-    """Simple light brain for BBB
+logger = logging.getLogger("CPSBrain")
+
+class CPSBrain(Item, Acquisition.Explicit):
+    """Simple light brain.
+
+    Provides a Zope BBB brain type.
     """
 
     zope.interface.implements(ICPSBrain)
 
     security = ClassSecurityInfo()
+    security.declareObjectPublic()
 
     def __init__(self, mapping):
         for k, v in mapping.items():
-            self[k] = v
+            self.__dict__[k] = v
 
-    security.declarePublic('getIndexValue')
-    def getIndexValue(self, k, default=''):
-#        raise str(self.keys())
-        return self.get(unicode(k), default)
+    def getPath(self):
+        logger.debug('path=%s' % str(self.uid))
+        return str(self.uid)
 
+    def getRID(self):
+        return self.getPath()
+
+    def getPhysicalPath(self):
+        return self.getPath()
+
+    def getObject(self, REQUEST=None):
+        path = self.getPath().split('/')
+        if not path:
+            return None
+        parent = self.aq_parent
+        if len(path) > 1:
+            target = parent.restrictedTraverse(path)
+        return target
+    
 InitializeClass(CPSBrain)

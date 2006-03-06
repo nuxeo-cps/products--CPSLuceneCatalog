@@ -72,7 +72,7 @@ class CPSLuceneCatalogTestCase(
 
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['uid'], kw['uid'])
+        self.assertEqual(results[0].uid, kw['uid'])
 
         self.logout()
 
@@ -97,7 +97,7 @@ class CPSLuceneCatalogTestCase(
         # Search after indexation. Should match.
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['uid'], kw['uid'])
+        self.assertEqual(results[0].uid, kw['uid'])
 
         cpscatalog.unindexObject(object_)
 
@@ -127,7 +127,7 @@ class CPSLuceneCatalogTestCase(
 
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['uid'], kw['uid'])
+        self.assertEqual(results[0].uid, kw['uid'])
 
         cpscatalog.reindexObject(object_)
 
@@ -141,7 +141,7 @@ class CPSLuceneCatalogTestCase(
 
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['uid'], kw['uid'])
+        self.assertEqual(results[0].uid, kw['uid'])
 
         self.logout()
 
@@ -166,7 +166,7 @@ class CPSLuceneCatalogTestCase(
 
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['uid'], kw['uid'])
+        self.assertEqual(results[0].uid, kw['uid'])
                      
         
     #
