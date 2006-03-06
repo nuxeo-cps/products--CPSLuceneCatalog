@@ -50,14 +50,13 @@ class CPSBrain(Item, Acquisition.Explicit):
             self.__dict__[k] = v
 
     def getPath(self):
-        logger.debug('path=%s' % str(self.uid))
         return str(self.uid)
 
     def getRID(self):
         return self.getPath()
 
     def getPhysicalPath(self):
-        return self.getPath()
+        return self.getPath().split('/')
 
     def getObject(self, REQUEST=None):
         path = self.getPath().split('/')
