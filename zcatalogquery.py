@@ -34,5 +34,5 @@ class ZCatalogQuery(object):
         self.kw = kw
 
     def get(self):
-        return (), self.kw
+        return self.kw
         

@@ -101,11 +101,14 @@ class CPSLuceneCatalogTool(CatalogTool):
         query = ZCatalogQuery(REQUEST, **kw)
 
         # XXX this sucks
-        return_fields, kw = query.get()
+        kw = query.get()
         t.mark('Convert Query')
 
-        # XXX return fields
-        results = self.getCatalog().searchResults(('uid',), kw)
+        # Get the name of the fields that need to be returned.
+        return_fields = tuple(self.getCatalog().schema.keys())
+        return_fields += ('uid',)
+
+        results = self.getCatalog().searchResults(return_fields, kw)
         t.mark('NXLucene query')
 
         # Construct lite brains for BBB
