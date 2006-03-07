@@ -32,6 +32,8 @@ from OFS.SimpleItem import Item
 import zope.interface
 from interfaces import ICPSBrain
 
+from Products.CPSUtil.timer import Timer
+
 logger = logging.getLogger("CPSBrain")
 
 class CPSBrain(Item, Acquisition.Explicit):
@@ -59,12 +61,15 @@ class CPSBrain(Item, Acquisition.Explicit):
         return self.getPath().split('/')
 
     def getObject(self, REQUEST=None):
+        t = Timer('CPSBrain.getObject', level=logging.DEBUG)
         path = self.getPath().split('/')
         if not path:
             return None
         parent = self.aq_parent
         if len(path) > 1:
             target = parent.restrictedTraverse(path)
+        t.mark('found !')
+        t.log()
         return target
     
 InitializeClass(CPSBrain)
