@@ -86,8 +86,6 @@ class CPSLuceneCatalogTool(CatalogTool):
     def addColumn(self, name, default_value=None):
         return self.getCatalog().addColumn(name, default_value)
 
-    
-
     def clean(self):
         return self.getCatalog().clean()
 
@@ -95,20 +93,27 @@ class CPSLuceneCatalogTool(CatalogTool):
         """Searching...
         """
 
+        from Products.CPSUtil.timer import Timer
+        t = Timer('CPSLuceneCatalog.searchResults()', level=logging.DEBUG)
+
         LOG.debug("SeachResults %s" % str(kw))
 
         query = ZCatalogQuery(REQUEST, **kw)
 
         # XXX this sucks
         return_fields, kw = query.get()
+        t.mark('Convert Query')
 
         # XXX return fields
         results = self.getCatalog().searchResults(('uid',), kw)
+        t.mark('NXLucene query')
 
         # Construct lite brains for BBB
         brains = []
         for mapping in results:
             brains.append(CPSBrain(mapping).__of__(self))
+        t.mark('Construct brains')
+        t.log()
         return brains
 
     # Override CMFCore.CatalogTool alias
