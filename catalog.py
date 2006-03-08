@@ -90,8 +90,25 @@ class CPSLuceneCatalogTool(CatalogTool):
     # API : Fields
 
     security.declareProtected(ManagePortal, 'addField')
-    def addField(self, name, attr, type, analyzer, index, store, vector):
-        pass
+    def addField(self, **kw):
+        self.getCatalog().addFieldFor(iface=None, **kw)
+
+    security.declareProtected(ManagePortal, 'getFieldTypes')
+    def getFieldTypes(self):
+        # XXX : hardcoded for now and not complete
+        fields =  (
+            'Field',
+            'Keyword',
+            'Text',
+            'Date',
+            )
+        return fields
+
+    security.declareProtected(ManagePortal, 'getFieldConfs')
+    def getFieldConfs(self):
+        # It applies globally for now. nuxeo.lucene can discriminate
+        # by iface though.
+        return self.getCatalog().getFieldConfigurationsFor()
 
     def clean(self):
         return self.getCatalog().clean()

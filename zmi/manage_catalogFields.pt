@@ -16,4 +16,31 @@ may want to update the whole CPS Lucene Catalog.
 </b>
 </p>
 
+
+<div align="right">
+  <tal:block define="field_types here/getFieldTypes">
+    <form action="." tal:attributes="action string:${here/absolute_url}/manage_addField" method="post">
+      <select name="field_types">
+	<option tal:repeat="field_type field_types"
+		tal:attributes="value field_type"
+		tal:content="field_type"/>
+      </select>
+      <input type="submit" value="Add a field"/>
+    </form>
+  </tal:block>
+</div>
+
+<tal:block define="field_confs here/getFieldConfs">
+  <tal:block condition="not:field_confs">
+    <b>
+      Currently, you don't have any configured fields for this catalog.
+    </b>
+  </tal:block>
+  <tal:block condition="field_confs">
+    <tal:block repeat="field_conf field_confs">
+      <span tal:replace="field_conf"/><br/>
+    </tal:block>
+  </tal:block>
+</tal:block>
+
 <tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

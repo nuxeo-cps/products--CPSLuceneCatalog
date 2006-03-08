@@ -121,13 +121,14 @@ class LuceneCatalogToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers,
         for child in node.childNodes:
             if child.nodeName == 'field':
                 # XXX Deal with deftault values.
-                name = str(child.getAttribute('name'))
-                attr = str(child.getAttribute('attr'))
-                type = str(child.getAttribute('type'))
-                analyzer = str(child.getAttribute('analyzer'))
-                index = str(child.getAttribute('index'))
-                store = str(child.getAttribute('store'))
-                vector = str(child.getAttribute('vector'))
-                self.context.addField(
-                    name, attr, type, analyzer, index, store, vector)
-                self._logger.info("Add field %s" % name)
+                kw = {
+                    'attribute' : str(child.getAttribute('attr')),
+                    'type' : str(child.getAttribute('type')),
+                    'analyzer' : str(child.getAttribute('analyzer')),
+                    'index' : str(child.getAttribute('index')),
+                    'store' : str(child.getAttribute('store')),
+                    'vector' : str(child.getAttribute('vector')),
+                    }
+                self.context.addField(**kw)
+                    
+                self._logger.info("Add field %s" % str(kw))
