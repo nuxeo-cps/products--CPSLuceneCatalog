@@ -86,6 +86,13 @@ class CPSLuceneCatalogTool(CatalogTool):
     def addColumn(self, name, default_value=None):
         return self.getCatalog().addColumn(name, default_value)
 
+    #
+    # API : Fields
+
+    security.declareProtected(ManagePortal, 'addField')
+    def addField(self, name, attr, type, analyzer, index, store, vector):
+        pass
+
     def clean(self):
         return self.getCatalog().clean()
 
@@ -284,13 +291,25 @@ class CPSLuceneCatalogTool(CatalogTool):
                       ({ 'label' : 'Advanced',
                          'action' : 'manage_advancedForm',
                          },
-                       CatalogTool.manage_options[3],
-                       CatalogTool.manage_options[4],
+                       { 'label' : 'Schema',
+                         'action' : 'manage_catalogSchema',
+                         },
+                       { 'label' : 'Fields',
+                         'action' : 'manage_catalogFields',
+                         },
                        )
 
     security.declareProtected(ManagePortal, 'manage_advancedForm')
     manage_advancedForm = PageTemplateFile(
         'zmi/manage_advancedForm.pt', globals())
+
+    security.declareProtected(ManagePortal, 'manage_catalogFields')
+    manage_catalogFields = PageTemplateFile(
+        'zmi/manage_catalogFields.pt', globals())
+
+    security.declareProtected(ManagePortal, 'manage_catalogSchema')
+    manage_catalogSchema = PageTemplateFile(
+        'zmi/manage_catalogSchema.pt', globals())
 
     security.declareProtected(ManagePortal, 'manage_reindex')
     def manage_reindex(self, REQUEST=None):

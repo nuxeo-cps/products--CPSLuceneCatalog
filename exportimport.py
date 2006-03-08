@@ -102,6 +102,7 @@ class LuceneCatalogToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers,
         self._initProperties(node)
         self._initObjects(node)
         self._importColumns(node)
+        self._importFields(node)
 
         self._logger.info("CPS Lucene Catalog tool has been imported.")
 
@@ -113,4 +114,20 @@ class LuceneCatalogToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers,
                 cvalue = str(child.getAttribute('value'))
                 self.context.addColumn(cvalue)
                 self._logger.info("Add a column with value %s" % cvalue)
-
+    
+    def _importFields(self, node):
+        """Import the Fields.
+        """
+        for child in node.childNodes:
+            if child.nodeName == 'field':
+                # XXX Deal with deftault values.
+                name = str(child.getAttribute('name'))
+                attr = str(child.getAttribute('attr'))
+                type = str(child.getAttribute('type'))
+                analyzer = str(child.getAttribute('analyzer'))
+                index = str(child.getAttribute('index'))
+                store = str(child.getAttribute('store'))
+                vector = str(child.getAttribute('vector'))
+                self.context.addField(
+                    name, attr, type, analyzer, index, store, vector)
+                self._logger.info("Add field %s" % name)

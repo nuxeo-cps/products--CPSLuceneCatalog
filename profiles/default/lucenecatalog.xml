@@ -1,12 +1,25 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="CPS Lucene Catalog Tool">
+
+  <!-- Properties -->
  
   <property name="title"></property>
   <property name="server_url">http://localhost</property>
   <property name="server_port">9180</property>
 
 
-<!-- Brain's  Metadata --> 
+  <!-- Fields -->
+  <field 
+      name="Creator"
+      attr="Creator"
+      type="text"
+      analyzer="standard"
+      index="True"
+      store="True"
+      vector="False"
+      />
+
+  <!-- Brain's  Metadata --> 
 
   <column value="Contributors"/>
   <column value="CreationDate"/>

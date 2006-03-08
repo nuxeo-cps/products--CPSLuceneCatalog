@@ -1,0 +1,19 @@
+<tal:header tal:replace="structure here/manage_page_header">header</tal:header>
+<tal:tabs   tal:replace="structure here/manage_tabs">tabs</tal:tabs>
+
+<p class="form-help"> 
+This list defines what fields the lucene server will use to store
+object content.  When objects get cataloged, the values of any
+attributes which match an field in this list will get indexed using
+the corresponding configuration.
+</p>
+
+<p class="form-help"> 
+<b>
+If you add fields to a CPS Lucene Catalog which contains indexed
+objects, you MUST at the least re-index your newly added fields. You
+may want to update the whole CPS Lucene Catalog.
+</b>
+</p>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
