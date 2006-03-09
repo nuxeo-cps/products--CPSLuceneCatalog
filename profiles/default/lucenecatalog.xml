@@ -9,15 +9,170 @@
 
 
   <!-- Fields -->
+  
+  <!-- XXX missing CPS filter sets -->
+
   <field 
-      name="Creator"
       attr="Creator"
-      type="text"
+      type="Text"
       analyzer="standard"
-      index="True"
-      store="True"
-      vector="False"
       />
+
+    <field 
+	attr="Date"
+	type="Keyword"
+	analyzer="Standard"
+      />
+
+    <field 
+	attr="Description"
+	type="Text"
+	analyzer="Standard"
+      />
+
+    <field 
+	attr="Language"
+	type="Text"
+	analyzer="Standard"
+      />
+
+    <field 
+	attr="SearchableText"
+	type="UnStored"
+	analyzer="Standard"
+      />
+
+    <field 
+	attr="Subject"
+	type="Keyword"
+	analyzer="Standard"
+      />
+
+    <field 
+	attr="Title"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="allowedRolesAndUsers"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="container_path"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="created"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="effective"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="end"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="expires"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="getId"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="id"
+	type="KeyWord"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="in_reply_to"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="listCreators"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="localUsersWithRoles"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="meta_type"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="modified"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="path"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="position_in_container"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="relative_path"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="relative_path_depth"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="review_state"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="start"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
+    <field 
+	attr="time"
+	type="Keyword"
+	analyzer="Standard"
+	/>
 
   <!-- Brain's  Metadata --> 
 

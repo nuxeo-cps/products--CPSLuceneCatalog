@@ -125,9 +125,6 @@ class LuceneCatalogToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers,
                     'attribute' : str(child.getAttribute('attr')),
                     'type' : str(child.getAttribute('type')),
                     'analyzer' : str(child.getAttribute('analyzer')),
-                    'index' : str(child.getAttribute('index')),
-                    'store' : str(child.getAttribute('store')),
-                    'vector' : str(child.getAttribute('vector')),
                     }
                 self.context.addField(**kw)
                     

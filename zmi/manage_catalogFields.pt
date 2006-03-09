@@ -10,13 +10,41 @@ the corresponding configuration.
 
 <p class="form-help"> 
 <b>
-If you add fields to a CPS Lucene Catalog which contains indexed
-objects, you MUST at the least re-index your newly added fields. You
-may want to update the whole CPS Lucene Catalog.
+  If you add fields to a CPS Lucene Catalog which contains indexed
+  objects, you MUST at the least re-index your newly added fields. You
+  may want to update the whole CPS Lucene Catalog.
 </b>
 </p>
 
+<p>About the field properties.</p>
 
+<ul>
+
+  <li><b>Keyword : </b>The data is stored and indexed but not
+  tokenized. This is most useful for data that should be stored
+  unchanged such as a date. In fact, the Field.Keyword can take a Date
+  object as input.</li>
+
+  <li><b>Text : </b> The data is stored, indexed, and
+  tokenized. Field.Text fields should not be used for large amounts of
+  data such as the article itself because the index will get very
+  large since it will contain a full copy of the article plus the
+  tokenized version.</li>
+
+  <li><b>UnStored : </b> The data is not stored but it is indexed and
+  tokenized. Large amounts of data such as the text of the article
+  should be placed in the index unstored.</li>
+
+  <li><b>UnIndexed :</b> The data is stored but not indexed or
+  tokenized. This is used with data that you want returned with the
+  results of a search but you won't actually be searching on this
+  data. In our example, since we won't allow searching for the URL
+  there is no reason to index it but we want it returned to us when a
+  search result is found. </li>
+
+</ul>
+
+<!--
 <div align="right">
   <tal:block define="field_types here/getFieldTypes">
     <form action="." tal:attributes="action string:${here/absolute_url}/manage_addField" method="post">
@@ -29,6 +57,7 @@ may want to update the whole CPS Lucene Catalog.
     </form>
   </tal:block>
 </div>
+-->
 
 <tal:block define="field_confs here/getFieldConfs">
   <tal:block condition="not:field_confs">
@@ -37,9 +66,20 @@ may want to update the whole CPS Lucene Catalog.
     </b>
   </tal:block>
   <tal:block condition="field_confs">
-    <tal:block repeat="field_conf field_confs">
-      <span tal:replace="field_conf"/><br/>
-    </tal:block>
+    <table width="100%">
+      <tr class="location-bar">
+	<td><b>Attribute</b></td>
+	<td><b>Field Type</b></td>
+	<td><b>Analyzer</b></td>
+      </tr>
+      <tal:block repeat="field_conf field_confs">
+	<tr>
+	  <td><span tal:replace="python:field_conf['attribute']"/></td>
+	  <td><span tal:replace="python:field_conf['type']"/></td>
+	  <td><span tal:replace="python:field_conf['analyzer']"/></td>
+	</tr>
+      </tal:block>
+    </table>
   </tal:block>
 </tal:block>
 

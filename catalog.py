@@ -97,10 +97,10 @@ class CPSLuceneCatalogTool(CatalogTool):
     def getFieldTypes(self):
         # XXX : hardcoded for now and not complete
         fields =  (
-            'Field',
             'Keyword',
             'Text',
-            'Date',
+            'UnStored',
+            'UnIndexed',
             )
         return fields
 
@@ -108,7 +108,15 @@ class CPSLuceneCatalogTool(CatalogTool):
     def getFieldConfs(self):
         # It applies globally for now. nuxeo.lucene can discriminate
         # by iface though.
-        return self.getCatalog().getFieldConfigurationsFor()
+        cpsres = ()
+        fieldconfs = self.getCatalog().getFieldConfigurationsFor()
+        for each in fieldconfs:
+            cpsres += (
+                {'attribute' : each.attribute,
+                 'type' : each.type,
+                 'analyzer' : each.analyzer,
+                 },)
+        return cpsres
 
     def clean(self):
         return self.getCatalog().clean()
