@@ -173,17 +173,14 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         o Permission:  Private (Python only)
         """
+
         LOG.debug("reindexObject %s idxs=%s update_metdata=%s" % (
             str(object), str(idxs), str(update_metadata)))
 
         if uid is None:
             uid = self.__url(object)
-        if idxs != []:
-            # Filter out invalid indexes.
-            # XXX implement me nuxeo.lucene side
-            #valid_indexes = self._catalog.indexes.keys()
-            valid_indexes = idxs
-            idxs = [i for i in idxs if i in valid_indexes]
+
+        # Filter out invalid indexes will be done at nuxeo.lucene level.
         self.catalog_object(object, uid, idxs, update_metadata)
 
     def unindexObject(self, object):
@@ -229,13 +226,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         else:
             vars = {}
 
-        # Filter out invalid indexes.
-        # TODO : implement the API on nuxeo.lucene side
-##        if idxs != []:
-##            idxs = [i for i in idxs if self._catalog.indexes.has_key(i)]
-
-        # XXX : only full text right now.
-        idxs = ['SearchableText',]
+        # Filter out invalid indexes will be done at nuxeo.lucene level.
 
         ### Not a proxy.
         if not isinstance(object, ProxyBase):
