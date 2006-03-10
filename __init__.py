@@ -19,6 +19,8 @@
 """CPS Lucene Catalog
 """
 
+import BBB.PatchCPSInstallerCMFInstaller
+
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup import EXTENSION
 
