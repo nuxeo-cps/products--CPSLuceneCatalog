@@ -38,11 +38,11 @@ from nuxeo.lucene.interfaces import ILuceneCatalog
 from nuxeo.lucene.catalog import LuceneCatalog
 
 from Products.CPSCore.ProxyBase import ProxyBase
-from Products.CPSCore.PatchCMFCoreCatalogTool import IndexableObjectWrapper
 from Products.CPSCore import utils as cpsutils
 
 from zcatalogquery import ZCatalogQuery
 from brain import CPSBrain
+from wrapper import IndexableObjectWrapper
 
 from interfaces import ICPSLuceneCatalogTool
 
