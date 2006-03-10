@@ -104,6 +104,8 @@ class CPSLuceneCatalogTool(CatalogTool):
             'Text',
             'UnStored',
             'UnIndexed',
+            'Date',
+            'Path',
             )
         return fields
 

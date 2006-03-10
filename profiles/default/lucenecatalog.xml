@@ -20,7 +20,7 @@
 
     <field 
 	attr="Date"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
       />
 
@@ -62,31 +62,31 @@
 
     <field 
 	attr="container_path"
-	type="Keyword"
+	type="Path"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="created"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="effective"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="end"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="expires"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
@@ -128,13 +128,13 @@
 
     <field 
 	attr="modified"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="path"
-	type="Keyword"
+	type="Path"
 	analyzer="Standard"
 	/>
 
@@ -146,7 +146,7 @@
 
     <field 
 	attr="relative_path"
-	type="Text"
+	type="Path"
 	analyzer="Standard"
 	/>
 
@@ -164,13 +164,13 @@
 
     <field 
 	attr="start"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="time"
-	type="Keyword"
+	type="Date"
 	analyzer="Standard"
 	/>
 
