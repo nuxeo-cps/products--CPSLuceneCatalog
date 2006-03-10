@@ -66,6 +66,13 @@ class CPSLuceneCatalogTool(CatalogTool):
         utility = LuceneCatalog(self.server_url, self.server_port)
         self._setOb('_catalog', utility)
 
+        # BBB for CPS <= 3.4
+        self.Indexes = self
+
+    # BBB for CPS <= 3.4
+    def objectValues(self, spec=None):
+        return []
+
     def __url(self, ob):
         # XXX It would be better to have uid instead of rpath here.
         return '/'.join( ob.getPhysicalPath() )
