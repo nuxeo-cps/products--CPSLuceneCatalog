@@ -69,7 +69,7 @@ class CPSBrain(Item, Acquisition.Explicit):
         if len(path) > 1:
             target = parent.restrictedTraverse(path)
         t.mark('found !')
-        t.log()
+#        t.log()
         return target
 
     def __getitem__(self, key):
