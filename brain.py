@@ -71,5 +71,14 @@ class CPSBrain(Item, Acquisition.Explicit):
         t.mark('found !')
         t.log()
         return target
+
+    def __getitem__(self, key):
+        return getattr(self, key, None)
+
+    def getURL(self, relative=0):
+        return self.getPath()
+
+    def has_key(self, key):
+        return getattr(self, key, None) is not None
     
 InitializeClass(CPSBrain)
