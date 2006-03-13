@@ -55,10 +55,10 @@ class CPSBrain(Item, Acquisition.Explicit):
         return str(self.uid)
 
     def getRID(self):
-        return self.getPath()
+        return str(self.uid)
 
     def getPhysicalPath(self):
-        return self.getPath().split('/')
+        return str(self.uid).split('/')
 
     def getObject(self, REQUEST=None):
         t = Timer('CPSBrain.getObject', level=logging.DEBUG)
@@ -67,7 +67,10 @@ class CPSBrain(Item, Acquisition.Explicit):
             return None
         parent = self.aq_parent
         if len(path) > 1:
-            target = parent.restrictedTraverse(path)
+            try:
+                target = parent.restrictedTraverse(path)
+            except (KeyError, AttributeError,):
+                return None
         t.mark('found !')
 #        t.log()
         return target
