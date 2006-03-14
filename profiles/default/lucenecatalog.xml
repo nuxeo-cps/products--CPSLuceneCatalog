@@ -127,6 +127,12 @@
 	/>
 
     <field 
+	attr="portal_type"
+	type="Text"
+	analyzer="Standard"
+	/>
+
+    <field 
 	attr="modified"
 	type="Date"
 	analyzer="Standard"
