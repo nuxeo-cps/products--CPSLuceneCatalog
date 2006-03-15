@@ -52,6 +52,11 @@ class CPSLuceneCatalogTestCase(
         from zope.interface.verify import verifyObject
         self.assert_(verifyObject(ILuceneCatalog, catalog))
 
+        # Security indexes
+        from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
+        self.assertEqual(CMFCatalogAware._cmf_security_indexes,
+                         ('allowedRolesAndUsers', 'localUsersWithRoles'))
+
     def test_indexObject(self):
 
         self.login('manager')
