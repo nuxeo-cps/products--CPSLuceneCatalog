@@ -19,7 +19,10 @@
 """CPS Lucene Catalog
 """
 
+import gc
 import logging
+
+import transaction
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -27,6 +30,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Products.CMFCore.utils import SimpleItemWithProperties
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.CatalogTool import CatalogTool
 
@@ -129,6 +133,9 @@ class CPSLuceneCatalogTool(CatalogTool):
     def searchResults(self, REQUEST=None, **kw):
         """Searching...
         """
+
+        user = _getAuthenticatedUser(self)
+        kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers(user)
 
         from Products.CPSUtil.timer import Timer
         t = Timer('CPSLuceneCatalog.searchResults()', level=logging.DEBUG)
@@ -370,6 +377,10 @@ class CPSLuceneCatalogTool(CatalogTool):
             timer.mark('Indexation')
 
             timer.log()
+
+            # Flush mem
+#            transaction.commit()
+            gc.collect()
 
             if hasattr(container, 'objectIds'):
                 for id_ in container.objectIds():
