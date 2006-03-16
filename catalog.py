@@ -153,7 +153,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         return_fields += ('uid',)
 
         results = self.getCatalog().searchResults(return_fields, kw)
-        t.mark('NXLucene query')
+        t.mark('NXLucene query request')
 
         # Construct lite brains for BBB
         brains = []
@@ -172,7 +172,23 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
         LOG.debug("unrestrictedSearchResults %s" % str(kw))
-        return []
+
+        query = ZCatalogQuery(REQUEST, **kw)
+
+        # XXX this sucks
+        kw = query.get()
+
+        # Get the name of the fields that need to be returned.
+        return_fields = tuple(self.getCatalog().schema.keys())
+        return_fields += ('uid',)
+
+        results = self.getCatalog().searchResults(return_fields, kw)
+
+        # Construct lite brains for BBB
+        brains = []
+        for mapping in results:
+            brains.append(CPSBrain(mapping).__of__(self))
+        return brains
 
     def reindexObject(self, object, idxs=[], update_metadata=1, uid=None):
         """ Update 'object' in catalog.
