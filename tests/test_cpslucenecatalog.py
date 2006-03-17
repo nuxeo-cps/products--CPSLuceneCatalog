@@ -20,6 +20,9 @@
 """
 
 import unittest
+
+import transaction
+
 import CPSLuceneCatalogTestCase
 
 from Products.CMFCore.utils import getToolByName
@@ -61,6 +64,8 @@ class CPSLuceneCatalogTestCase(
 
         self.login('manager')
 
+        transaction.begin()
+
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
 
         # Create a new object within the workspaces area
@@ -68,6 +73,8 @@ class CPSLuceneCatalogTestCase(
 
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
+
+        transaction.commit()
 
         # Search it back
         kw = {
@@ -85,6 +92,8 @@ class CPSLuceneCatalogTestCase(
 
         self.login('manager')
 
+        transaction.begin()
+
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
 
         # Create a new object within the workspaces area
@@ -92,6 +101,8 @@ class CPSLuceneCatalogTestCase(
 
         object_ = getattr(self.portal.workspaces, id_)
         object_.reindexObject()
+
+        transaction.commit()
 
         # Search it back
         kw = {
@@ -106,6 +117,8 @@ class CPSLuceneCatalogTestCase(
 
         cpscatalog.unindexObject(object_)
 
+        transaction.commit()
+
         # Find object back. Should be gone.
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 0)
@@ -116,6 +129,8 @@ class CPSLuceneCatalogTestCase(
 
         self.login('manager')
 
+        transaction.begin()
+
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
 
         # Create a new object within the workspaces area
@@ -123,6 +138,8 @@ class CPSLuceneCatalogTestCase(
 
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
+
+        transaction.commit()
 
         # Search it back
         kw = {
@@ -155,6 +172,8 @@ class CPSLuceneCatalogTestCase(
 
         self.login('manager')
 
+        transaction.begin()
+
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
         utool = getToolByName(self.portal, 'portal_url')
 
@@ -163,6 +182,8 @@ class CPSLuceneCatalogTestCase(
 
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
+
+        transaction.commit()
 
         kw = {
             # This is how the CatalogTool compute it.
