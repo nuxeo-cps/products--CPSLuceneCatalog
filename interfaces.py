@@ -54,14 +54,14 @@ class IZCatalogQuery(zope.interface.Interface):
     """ZCatalog Query
     """
 
-    def get():
-        """Returns a prepared query for the Zope3 utility
-
-        (return_fields <tuple>, **kwargs)
+    def getFieldsMap():
+        """Returns a field -> value mapping
         """
 
-    def getLuceneQuery():
-        """Returns a native lucene query
+    def getOptionsMap():
+        """Return a option id -> value mapping
+
+        It includes batches information and / or sorting parameters.
         """
 
 class ICPSBrain(zope.interface.Interface):
