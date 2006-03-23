@@ -44,6 +44,8 @@ from nuxeo.lucene.catalog import LuceneCatalog
 from Products.CPSCore.ProxyBase import ProxyBase
 from Products.CPSCore import utils as cpsutils
 
+from Products.CPSUtil.timer import Timer
+
 from zcatalogquery import ZCatalogQuery
 from brain import CPSBrain
 from wrapper import IndexableObjectWrapper
@@ -130,29 +132,20 @@ class CPSLuceneCatalogTool(CatalogTool):
     def clean(self):
         return self.getCatalog().clean()
 
-    def searchResults(self, REQUEST=None, **kw):
-        """Searching...
-        """
+    def _search(self, REQUEST=None, **kw):
 
-        user = _getAuthenticatedUser(self)
-        kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers(user)
+        t = Timer('CPSLuceneCatalog._search', level=logging.DEBUG)
 
-        from Products.CPSUtil.timer import Timer
-        t = Timer('CPSLuceneCatalog.searchResults()', level=logging.DEBUG)
+        # Construct query for nuxeo.lucene.catalog
+        query = ZCatalogQuery(self, REQUEST, **kw)
 
-        LOG.debug("SeachResults %s" % str(kw))
-
-        query = ZCatalogQuery(REQUEST, **kw)
-
-        # XXX this sucks
-        kw = query.get()
         t.mark('Convert Query')
 
-        # Get the name of the fields that need to be returned.
-        return_fields = tuple(self.getCatalog().schema.keys())
-        return_fields += ('uid',)
-
-        results = self.getCatalog().searchResults(return_fields, kw)
+        results = self.getCatalog().searchResults(
+            kws=query.getFieldsMap(),
+            options=query.getQueryOptions(),
+            )
+        
         t.mark('NXLucene query request')
 
         # Construct lite brains for BBB
@@ -163,6 +156,17 @@ class CPSLuceneCatalogTool(CatalogTool):
         t.log()
         return brains
 
+    def searchResults(self, REQUEST=None, **kw):
+        """Searching with CPS security indexes.
+        """
+
+        LOG.debug("SeachResults %s" % str(kw))
+
+        user = _getAuthenticatedUser(self)
+        kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers(user)
+
+        return self._search(REQUEST, **kw)
+
     # Override CMFCore.CatalogTool alias
     __call__ = searchResults
 
@@ -171,24 +175,10 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         o Permission:  Private (Python only)
         """
+
         LOG.debug("unrestrictedSearchResults %s" % str(kw))
-
-        query = ZCatalogQuery(REQUEST, **kw)
-
-        # XXX this sucks
-        kw = query.get()
-
-        # Get the name of the fields that need to be returned.
-        return_fields = tuple(self.getCatalog().schema.keys())
-        return_fields += ('uid',)
-
-        results = self.getCatalog().searchResults(return_fields, kw)
-
-        # Construct lite brains for BBB
-        brains = []
-        for mapping in results:
-            brains.append(CPSBrain(mapping).__of__(self))
-        return brains
+        
+        return self._search(REQUEST, **kw)
 
     def reindexObject(self, object, idxs=[], update_metadata=1, uid=None):
         """ Update 'object' in catalog.
