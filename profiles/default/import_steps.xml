@@ -5,6 +5,7 @@
       handler="Products.CPSLuceneCatalog.exportimport.importCPSLuceneCatalog"
       title="CPS Lucene Catalog">
     <dependency step="toolset"/>
+    <dependency step="skins"/>
     Import CPS Lucene Catalog
   </import-step>
 </import-steps>

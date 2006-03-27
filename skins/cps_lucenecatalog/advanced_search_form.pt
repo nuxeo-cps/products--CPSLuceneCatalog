@@ -1,0 +1,59 @@
+<tal:block tal:define="res python:here.processSearchForm(REQUEST=request);
+    items python:res['items'];
+    nav_action string:advanced_search_form;
+    no_form python:1;
+    site_wide python:1;
+    format string:detail;
+    filter python:0;
+    title_search request/title_search|nothing;
+    portal_status_message res/psm;
+    swr request/search_within_results|nothing;">
+<metal:block use-macro="here/main_template/macros/master">
+
+  <metal:block fill-slot="header">
+    <h1 i18n:translate="heading_advanced_search">
+      Advanced search
+    </h1>
+  </metal:block>
+
+  <metal:block metal:fill-slot="main">
+    <tal:block condition="res/valid_form">
+      <p tal:condition="not:res/items_count"
+         i18n:translate="legend_no_search_result">
+        Your query gave no result.
+      </p>
+      <p tal:condition="python:res['items_count'] == 1"
+         i18n:translate="legend_one_search_result">
+        Your query gave 1 result.
+      </p>
+      <p tal:condition="python:res['items_count'] > 1"
+         i18n:translate="">
+        Your query gave <span class="emphasis"
+                              tal:content="res/items_count"
+                              i18n:name="nb_results">n</span> results.
+      </p>
+      <div id="searchResults">
+        <metal:block use-macro="here/content_lib_display_contents/macros/display_contents" />
+      </div>
+    </tal:block>
+    <metal:block define-macro="search_form">
+      <form method="post" action="advanced_search_form"
+            class="group" id="advancedSearchForm">
+        <p class="advancedSearchButton">
+          <input type="submit" name="search_submit"
+                 class="standalone" value="button_search"
+                 i18n:attributes="value" />
+        </p>
+        <tal:block define="res res|here/processSearchForm"
+                   content="structure res/rendered_form" />
+        <p class="advancedSearchButton">
+          <input type="submit" name="search_submit"
+                 class="standalone" value="button_search"
+                 i18n:attributes="value" />
+        </p>
+      </form>
+    </metal:block>
+  </metal:block>
+
+</metal:block>
+</tal:block>

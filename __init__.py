@@ -25,10 +25,13 @@ from Products.GenericSetup import profile_registry
 from Products.GenericSetup import EXTENSION
 
 from Products.CMFCore.utils import ToolInit
+from Products.CMFCore.DirectoryView import registerDirectory
 
 from Products.CPSCore.interfaces import ICPSSite
 
 import brain
+
+registerDirectory('skins', globals())
 
 def initialize(registrar):
 
