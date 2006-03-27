@@ -1,0 +1,105 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master">
+  <body>
+  <metal:block metal:fill-slot="main">
+  <tal:block define="SearchableText python:request.get('SearchableText','');
+                     sort_by python:request.get('sort_by', '');
+                     direction python:request.get('direction', '');
+                     folder_prefix python:request.get('folder_prefix', '');
+                     items python:here.search(query=request.form,
+                                              sort_by=sort_by,
+                                              direction=direction,
+                                              folder_prefix=folder_prefix);
+                     nav_action string:search_form;
+                     no_form python:1;
+                     site_wide python:1;
+                     items_length python:len(items);
+                     format string:detail;
+                     filter python:0;
+                     title_search request/title_search|nothing;
+                     swr request/search_within_results|nothing;
+                    ">
+    <h1 tal:condition="not:title_search"
+      i18n:translate="heading_search_results">Search Results</h1>
+    <h1 tal:condition="title_search"
+      tal:content="title_search">Title for search results</h1>
+
+    <p tal:condition="python:items_length == 0">
+      <tal:block i18n:translate="legend_no_search_result">
+        Your query gave no result.
+      </tal:block>
+      <tal:block i18n:translate="legend_search_for">
+        You searched for
+      </tal:block>
+      <span class="searchFor" tal:content="SearchableText">SearchableText</span>.
+    </p>
+    <p tal:condition="python:items_length == 1"
+       i18n:translate="legend_one_search_result">
+      Your query gave 1 result.
+    </p>
+    <p tal:condition="python:items_length > 1"
+       i18n:translate="">
+      Your query gave <span class="emphasis"
+                            tal:content="items_length"
+                            i18n:name="nb_results">n</span> results.
+    </p>
+    <div id="searchResults"
+      tal:define="items_per_page python:20;">
+      <metal:block use-macro="here/content_lib_display_contents/macros/display_contents" />
+    </div>
+
+    <div style="text-align:right;" class="group">
+      <form id="searchFormBottom" method="get" action="search_form"
+        onsubmit="return checkEmptySearch(this)">
+        <div>
+        <a href="advanced_search_form"
+           tal:attributes="href python:atool.getActionInfo('global_header/advanced_search')['url']">
+           <span i18n:translate="link_advanced_search">
+             Advanced search
+           </span>
+        </a>
+        </div>
+        <div class="label">
+          <label for="resultSearchText"
+                 i18n:translate="label_text_to_search">
+            Text to search
+          </label>
+        <input type="text" name="SearchableText" id="resultSearchText"
+               value="" class="focus" size="40"
+               tal:attributes="value SearchableText" />
+        <input class="standalone searchButton" type="submit" value="button_ok"
+               i18n:attributes="value" />
+        </div>
+        <tal:block condition="not:swr">
+          <metal:block
+            use-macro="here/generic_lib_search_folder_prefix_option/macros/search_folder_prefix_option" />
+        </tal:block>
+        <tal:block condition="swr"
+          define="criteria python:['search_within_results', 'title_search',
+                                   'folder_prefix', 'review_state'];
+                  criteria_list python:['portal_type'];">
+          <tal:block repeat="criterion criteria">
+            <input type="hidden" tal:condition="value"
+              tal:define="value request/?criterion|nothing"
+              tal:attributes="name criterion;
+                              value value" />
+          </tal:block>
+          <tal:block repeat="criterion criteria_list">
+            <tal:block tal:condition="values"
+               tal:define="values request/?criterion|nothing">
+              <tal:block repeat="value values">
+                <input type="hidden"
+                  tal:define="value value"
+                  tal:attributes="name python:criterion+':list'; value value" />
+              </tal:block>
+            </tal:block>
+          </tal:block>
+        </tal:block>
+     </form>
+    </div>
+  </tal:block>
+
+  </metal:block>
+  </body>
+</html>
