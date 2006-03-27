@@ -44,7 +44,11 @@ class ZCatalogQuery(object):
         # Filter out options
         for k, v in kw.items():
             if k not in cat._catalog.getFieldNamesFor():
-                self.options[k] = v
+                # ZCTitle case.
+                if k == 'ZCTitle':
+                    self.fields['Title'] = v
+                else:
+                    self.options[k] = v
             else:
                 self.fields[k] = v
 
