@@ -65,7 +65,7 @@ for k, v in query.items():
 
 # Size of the batch
 if not query.has_key('b_size'):
-    query['b_size'] = 5
+    query['b_size'] = 2
 
 # Start of the batch
 if not query.has_key('b_start'):

@@ -1,0 +1,119 @@
+<!-- a content_lib macro -->
+<!-- $Id: content_lib_display_contents.pt 32722 2006-02-10 15:21:49Z mturcu $ -->
+
+<!-- List contents in 'items' in the specified number of columns
+  with the given format -->
+
+<metal:block define-macro="display_resultset">
+<tal:block
+  define="tmp_format format|nothing;
+          tmp_sort_by sort_by|nothing;
+          tmp_direction direction|nothing;
+          tmp_columns columns|nothing;
+          tmp_items_per_page items_per_page|nothing;
+          tmp_nav_action nav_action|nothing;
+          tmp_filter filter|nothing;
+          tmp_detail_tab_columns detail_tab_columns|nothing;
+          params python:here.getDisplayParams(format=tmp_format,
+                          sort_by=tmp_sort_by,
+                          direction=tmp_direction,
+                          columns=tmp_columns,
+                          items_per_page=tmp_items_per_page,
+                          nav_action=tmp_nav_action,
+                          nb_items=len(items),
+                          filter=tmp_filter,
+                          detail_tab_columns=tmp_detail_tab_columns);
+          format params/format;
+          sort_by params/sort_by;
+          direction params/direction;
+          columns params/columns;
+          items_per_page params/items_per_page;
+          nav_action params/nav_action;
+          filter params/filter;
+          detail_tab_columns params/detail_tab_columns;
+          mq nocall:modules/ZTUtils/make_query;
+          form request/form;
+          zoom zoom|python:0;
+	  batches_all python:here.getLuceneSearchBatchList(items, columns, items_per_page, zoom);
+          batches python:batches_all[0];
+          batch_info python:batches_all[1];
+          zoomed python:batches_all[2];
+     ">
+ <tal:block tal:condition="python: batch_info and batch_info['nb_pages'] > 1">
+    <div class="batchLayout">
+        <span i18n:translate="">
+          Objects: 
+          <strong>
+            <tal:block replace="batch_info/start"
+            i18n:name="batch_start" /> - <tal:block replace="batch_info/limit"
+            i18n:name="batch_limit" />
+          </strong>
+          of <tal:block replace="batch_info/length"
+            i18n:name="batch_length" />
+         </span>
+    </div>
+  <br />
+ </tal:block>
+  <table width="100%" cellspacing="0" cellpadding="0"
+    summary="zoomed layout"
+    tal:condition="zoomed">
+    <tr tal:repeat="item zoomed">
+      <td align="left" valign="top">
+       <tal:block define="no_form not:nothing;
+         info python:here.getContentInfo(item, level=1, cpsmcat=cpsmcat);">
+         <metal:block use-macro="here/content_lib_info_summary/macros/info_summary" />
+         <br /><br />
+       </tal:block>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellspacing="0" cellpadding="0"
+    summary="content layout column"
+    tal:condition="batches">
+    <tr>
+      <td align="left" valign="top"
+          tal:repeat="batch_items batches">
+        <tal:block condition="batch_items">
+          <metal:block
+            use-macro="here/content_lib_display_contents_column/macros/display_contents_column" />
+        </tal:block>
+      </td>
+    </tr>
+  </table>
+  <tal:block condition="python:batch_info and batch_info['nb_pages'] > 1">
+      <div class="pageNavigationLayout">
+          <a tal:define="previous batch_info/previous"
+             tal:condition="python:previous is not None"
+             tal:attributes="href python:'%s?%s'%(request['URL'],
+                                            mq(request.form, b_start=0))">
+              (&lt;&lt;)</a>
+          <a tal:define="previous batch_info/previous"
+             tal:condition="python:previous is not None"
+             tal:attributes="href python:'%s?%s'%(request['URL'],
+                                            mq(request.form, b_start=previous))"
+             i18n:translate="batch_previous">Previous</a>
+          <tal:block repeat="page batch_info/pages">
+            <tal:block condition="python:page != batch_info['start'] - 1">
+              <a tal:attributes="href python:'%s?%s'%(request['URL'],
+                mq(request.form, b_start=page))"
+                tal:content="repeat/page/number">1</a>&nbsp;
+            </tal:block>
+            <tal:block condition="python:page == batch_info['start'] - 1">
+              <span tal:content="string:${repeat/page/number}" />&nbsp;
+            </tal:block>
+          </tal:block>
+          <a tal:define="next batch_info/next"
+             tal:condition="python:next is not None"
+             tal:attributes="href python:'%s?%s'%(request['URL'],
+                                                mq(request.form, b_start=next))"
+             i18n:translate="batch_next">Next</a>
+          <a tal:define="next batch_info/next;
+             last_page python:batch_info['pages'][-1]"
+             tal:condition="python:next is not None"
+             tal:attributes="href python:'%s?%s'%(request['URL'],
+                                            mq(request.form, b_start=last_page))">
+              (&gt;&gt;)</a>
+      </div>
+  </tal:block>
+</tal:block>
+</metal:block>

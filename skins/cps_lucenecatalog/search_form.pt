@@ -10,11 +10,12 @@
                      items python:here.search(query=request.form,
                                               sort_by=sort_by,
                                               direction=direction,
-                                              folder_prefix=folder_prefix);
+                                              folder_prefix=folder_prefix,
+					      );
                      nav_action string:search_form;
                      no_form python:1;
                      site_wide python:1;
-                     items_length python:len(items);
+                     items_length python:items and items[0].out_of or 0;
                      format string:detail;
                      filter python:0;
                      title_search request/title_search|nothing;
@@ -46,7 +47,7 @@
     </p>
     <div id="searchResults"
       tal:define="items_per_page python:20;">
-      <metal:block use-macro="here/content_lib_display_contents/macros/display_contents" />
+      <metal:block use-macro="here/content_lib_display_resultset/macros/display_resultset" />
     </div>
 
     <div style="text-align:right;" class="group">
