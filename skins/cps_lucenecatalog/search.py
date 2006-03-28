@@ -63,6 +63,15 @@ for k, v in query.items():
     if not v or same_type(v, []) and not filter(None, v):
         del query[k]
 
+# Size of the batch
+if not query.has_key('b_size'):
+    query['b_size'] = 5
+
+# Start of the batch
+if not query.has_key('b_start'):
+    query['b_start'] = 0
+
+
 if str(query.get('modified')) == '1970/01/01':
     del query['modified']
     if query.has_key('modified_usage'):
