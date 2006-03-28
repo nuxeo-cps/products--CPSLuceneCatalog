@@ -24,6 +24,8 @@ import logging
 import zope.interface
 from interfaces import IZCatalogQuery
 
+from DateTime.DateTime import DateTime
+
 logger = logging.getLogger("CPSLuceneCatalog.zcatalogquery")
 
 class ZCatalogQuery(object):
@@ -43,15 +45,18 @@ class ZCatalogQuery(object):
 
         # Filter out options
         for k, v in kw.items():
-            if k not in cat._catalog.getFieldNamesFor():
+            value = v
+            if k not in cat.getCatalog().getFieldNamesFor():
                 # ZCTitle case.
                 if k == 'ZCTitle':
-                    self.fields['Title'] = v
+                    self.fields['Title'] = value
                 else:
-                    self.options[k] = v
+                    self.options[k] = value
             else:
-                self.fields[k] = v
-
+                if isinstance(value, DateTime):
+                    value = value.ISO()
+                self.fields[k] = value 
+                    
         logger.debug("getFielsdMap() %s" % str(self.fields))
         logger.debug("getQueryOptions() %s" % str(self.options))
 
