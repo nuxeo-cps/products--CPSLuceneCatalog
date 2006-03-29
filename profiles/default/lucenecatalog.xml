@@ -44,7 +44,7 @@
 
     <field 
 	attr="Subject"
-	type="Keyword"
+	type="MultiKeyword"
 	analyzer="Standard"
       />
 
@@ -56,7 +56,7 @@
 
     <field 
 	attr="allowedRolesAndUsers"
-	type="Keyword"
+	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
@@ -92,7 +92,7 @@
 
     <field 
 	attr="getId"
-	type="Text"
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
@@ -104,31 +104,33 @@
 
     <field 
 	attr="in_reply_to"
-	type="Text"
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="listCreators"
-	type="Keyword"
+	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="localUsersWithRoles"
-	type="Keyword"
+	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="meta_type"
-	type="Text"
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
+     <!-- This is an hack for now to be able to search on several portal_type at once until the way it should be search can be specified -->
+
     <field 
 	attr="portal_type"
-	type="Text"
+	type="MultiKeyword"	
 	analyzer="Standard"
 	/>
 
@@ -146,7 +148,7 @@
 
     <field 
 	attr="position_in_container"
-	type="Text"
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
@@ -158,13 +160,13 @@
 
     <field 
 	attr="relative_path_depth"
-	type="Text"
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
 	attr="review_state"
-	type="Text"
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
