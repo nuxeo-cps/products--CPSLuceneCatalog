@@ -39,8 +39,8 @@ if not b_start and zoom:
     # deal with items left
     items = items[zoom:]
 
-items_per_page = float(items_per_page)
-size = int(ceil(items_per_page / columns))
+items_per_page = float(b_size)
+size = int(ceil(float(items_per_page) / columns))
 
 #b1 = Batch(items, 0, len(items), orphan=0)
 b1 = items
@@ -57,7 +57,9 @@ for c in range(columns - 1):
 #
 
 # Calculate the number of pages
-nb_pages = int(ceil(len_batch / items_per_page))
+#raise str(len_batch)
+#raise str(ceil(len_batch / items_per_page))
+nb_pages = int(ceil(float(len_items) / float(size)))
 
 # no more advanced arithmetics
 items_per_page = int(items_per_page)
