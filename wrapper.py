@@ -81,7 +81,6 @@ class IndexableObjectWrapper:
             v = v()
         if isinstance(v, DateTime):
             ret = v.ISO()
-            
         return ret
 
     def allowedRolesAndUsers(self):
