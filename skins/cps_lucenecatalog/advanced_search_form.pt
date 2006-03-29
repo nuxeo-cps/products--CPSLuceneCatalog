@@ -1,5 +1,6 @@
 <tal:block tal:define="res python:here.processSearchForm(REQUEST=request);
     items python:res['items'];
+    items_count python:res['items'] and res['items'][0].out_of or 0;
     nav_action string:advanced_search_form;
     no_form python:1;
     site_wide python:1;
@@ -18,22 +19,22 @@
 
   <metal:block metal:fill-slot="main">
     <tal:block condition="res/valid_form">
-      <p tal:condition="not:res/items_count"
+      <p tal:condition="not:items_count"
          i18n:translate="legend_no_search_result">
         Your query gave no result.
       </p>
-      <p tal:condition="python:res['items_count'] == 1"
+      <p tal:condition="python:items_count == 1"
          i18n:translate="legend_one_search_result">
         Your query gave 1 result.
       </p>
-      <p tal:condition="python:res['items_count'] > 1"
+      <p tal:condition="python:items_count > 1"
          i18n:translate="">
         Your query gave <span class="emphasis"
-                              tal:content="res/items_count"
+                              tal:content="items_count"
                               i18n:name="nb_results">n</span> results.
       </p>
-      <div id="searchResults">
-        <metal:block use-macro="here/content_lib_display_contents/macros/display_contents" />
+      <div id="searchResults"
+ >      <metal:block use-macro="here/content_lib_display_resultset/macros/display_resultset" />
       </div>
     </tal:block>
     <metal:block define-macro="search_form">
