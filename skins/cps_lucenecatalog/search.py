@@ -129,10 +129,14 @@ if sort_by and not query.has_key('sort-on'):
         sort_by = 'Creator'
     query['sort-on'] = sort_by
 
-if direction and not query.has_key('sort-order'):
-    if direction.startswith('desc'):
-        query['sort-order'] = 'reverse'
-
+if direction:
+    if not query.has_key('sort-order'):
+        if direction.startswith('desc'):
+            query['sort-order'] = 'reverse'
+    else:
+        if direction.startswith('asc') and query['sort-order'] == 'reverse':
+            del query['sort-order']
+        
 if sort_limit and not query.has_key('sort-limit'):
     query['sort-limit'] = sort_limit
 
