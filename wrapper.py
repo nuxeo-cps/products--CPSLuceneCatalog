@@ -120,7 +120,7 @@ class IndexableObjectWrapper:
     def relative_path(self):
         """This is used to produce a metadata
         return a path relative to the portal."""
-        utool = getToolByName(self, 'portal_url', None)
+        utool = getToolByName(self.__ob, 'portal_url', None)
         ret = ''
         if utool:
             # broken object can't aquire portal_url
