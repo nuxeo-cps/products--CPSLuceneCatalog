@@ -142,6 +142,7 @@ if bmt is not None:
     bmt.setMarker('start')
 try:
     brains = catalog(**query)
+    LOG('CPSDefault.search', DEBUG, 'found %s items' % (len(brains)))
 except ParseErrors:
     LOG('CPSDefault.search', INFO, 'got an exception during search %s' % query)
     return []

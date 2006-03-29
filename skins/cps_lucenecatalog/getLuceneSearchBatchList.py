@@ -29,6 +29,7 @@ else:
     len_batch = len_items
 
 b_start = int(context.REQUEST.get('b_start', 0))
+b_size = int(context.REQUEST.get('b_size', 0))
 
 # extract the n first items in a zoomed list
 zoomed = []
@@ -41,7 +42,8 @@ if not b_start and zoom:
 items_per_page = float(items_per_page)
 size = int(ceil(items_per_page / columns))
 
-b1 = Batch(items, size, b_start, orphan=0)
+#b1 = Batch(items, 0, len(items), orphan=0)
+b1 = items
 batches = [b1]
 
 b_next = b1
@@ -66,7 +68,7 @@ if  limit > len_batch:
     limit = len_batch
 
 batch_info = {'nb_pages': nb_pages,
-              'start': b_start + 1,
+              'start': b_start,
               'limit': limit,
               'length': len_items,
               'previous': None,
