@@ -80,7 +80,6 @@
       </td>
     </tr>
   </table>
-  <span tal:replace="python:len(batches)"/>
   <tal:block condition="python:batch_info and batch_info['nb_pages'] > 1">
       <div class="pageNavigationLayout">
           <a tal:define="previous batch_info/previous"
