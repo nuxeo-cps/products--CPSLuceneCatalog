@@ -33,4 +33,7 @@ CPSLuceneCatalogLayer = LayerClass(__name__, 'CPSLuceneCatalogLayer')
 
 class CPSLuceneCatalogTestCase(CPSTestCase):
     layer = CPSLuceneCatalogLayer
+
+    def afterSetup(self):
+        CPSTestCase.afterSetup(self)
     
