@@ -128,11 +128,13 @@ if sort_by and not query.has_key('sort-on'):
     elif sort_by == 'author':
         sort_by = 'Creator'
     query['sort-on'] = sort_by
-    if direction and not query.has_key('sort-order'):
-        if direction.startswith('desc'):
-            query['sort-order'] = 'reverse'
-    if sort_limit and not query.has_key('sort-limit'):
-        query['sort-limit'] = sort_limit
+
+if direction and not query.has_key('sort-order'):
+    if direction.startswith('desc'):
+        query['sort-order'] = 'reverse'
+
+if sort_limit and not query.has_key('sort-limit'):
+    query['sort-limit'] = sort_limit
 
 LOG('CPSDefault.search', DEBUG, 'start catalog search for %s' % query)
 bmt = getattr(context.portal_url.getPortalObject(), 'Benchmarktimer', None)
