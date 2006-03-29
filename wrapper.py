@@ -61,7 +61,7 @@ class IndexableObjectWrapper:
                 # Use the repository document for remaining attributes
                 ob_repo = ob.getContent(lang=self.__lang)
                 if ob_repo is not None:
-                     ob = ob_repo
+                     proxy = ob_repo
         try:
             ret = getattr(ob, name)
         except AttributeError:
