@@ -154,7 +154,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             one = CPSBrain(mapping).__of__(self)
             setattr(one, 'out_of', nb_results)
             brains.append(one)
-        t.mark('Construct brains')
+        t.mark('Construct %s brain(s)' % str(len(brains)))
         t.log()
         return brains
 
