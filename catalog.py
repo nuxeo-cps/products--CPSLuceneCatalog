@@ -141,7 +141,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         t.mark('Convert Query')
 
-        results = self.getCatalog().searchResults(
+        results, nb_results = self.getCatalog().searchResults(
             kws=query.getFieldsMap(),
             options=query.getQueryOptions(),
             )
@@ -151,7 +151,9 @@ class CPSLuceneCatalogTool(CatalogTool):
         # Construct lite brains for BBB
         brains = []
         for mapping in results:
-            brains.append(CPSBrain(mapping).__of__(self))
+            one = CPSBrain(mapping).__of__(self)
+            setattr(one, 'out_of', nb_results)
+            brains.append(one)
         t.mark('Construct brains')
         t.log()
         return brains
