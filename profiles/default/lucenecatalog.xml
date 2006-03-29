@@ -130,7 +130,7 @@
 
     <field 
 	attr="portal_type"
-	type="MultiKeyword"	
+	type="Keyword"	
 	analyzer="Standard"
 	/>
 
