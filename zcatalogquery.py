@@ -55,7 +55,19 @@ class ZCatalogQuery(object):
             else:
                 if isinstance(value, DateTime):
                     value = value.ISO()
-                self.fields[k] = value 
+
+                # Hack for the range quey
+                elif isinstance(value, dict):
+                    if 'query' in value.keys() and 'range' in value.keys():
+                        v1 = value['query']
+                        range_ = value['range']
+                        if isinstance(v1, DateTime):
+                            self.fields[k] = v1.ISO()
+                            self.options[k+'_usage'] = 'range' + ':' + range_
+                        else:
+                            pass
+                else:
+                    self.fields[k] = value 
                     
         logger.debug("getFielsdMap() %s" % str(self.fields))
         logger.debug("getQueryOptions() %s" % str(self.options))
