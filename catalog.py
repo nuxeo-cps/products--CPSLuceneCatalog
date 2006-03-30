@@ -322,15 +322,18 @@ class CPSLuceneCatalogTool(CatalogTool):
     # ZMI
     #
 
+    # Those properties are here only to display the values in ZMI.
+    # The actual used properties are on the nuxeo.lucene catalog
+    # utility
     _properties = CatalogTool._properties + \
                   ({'id':'server_url',
                     'type':'string',
-                    'mode':'w',
+                    'mode':'r',
                     'label':'xml-rpc server URL',
                     },
                    {'id':'server_port',
                     'type':'string',
-                    'mode': 'w',
+                    'mode': 'r',
                     'label':'xml-rpc server port',
                     },
                    )
@@ -419,5 +422,31 @@ class CPSLuceneCatalogTool(CatalogTool):
         """CLean the indexes store.
         """
         self.clean()
+
+    security.declareProtected(ManagePortal, 'manage_changeServerProperties')
+    def manage_changeServerProperties(self, server_url, server_port,
+                                      REQUEST=None):
+        """Change the XMLRPC server properties
+
+        Note we need to update the inner nuxeo.lucene catalog.
+        """
+
+        # self properties for info
+        self.server_url = server_url
+        self.server_port = server_port
+
+        # nuxeo.lucene catalog properties.
+        self.getCatalog().server_url = server_url + ':' + str(server_port)
+        self.getCatalog().server_port = int(server_port)
+
+        # Activate persistency 
+        self.getCatalog()._p_changed = 1
+
+        # Remove cached proxy
+        self.getCatalog()._v_proxy = None
+
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_advancedForm')
 
 InitializeClass(CPSLuceneCatalogTool)

@@ -1,6 +1,25 @@
 <tal:header tal:replace="structure here/manage_page_header">header</tal:header>
 <tal:tabs   tal:replace="structure here/manage_tabs">tabs</tal:tabs>
 
+<h3>XML-RPC server properties</h3>
+
+<form action="manage_changeServerProperties">
+  
+  Server URL : 
+  <input type="text" name="server_url" value=""
+	 tal:attributes="value here/server_url"/>
+  
+  <br/>
+  
+  Server port : 
+  <input type="text" name="server_port" value=""
+	 tal:attributes="value here/server_port"/>
+  
+  <br/><br/>
+  
+  <input type="submit" name="changeProps" value="Change"/>
+</form>
+
 <h3>Reindex the whole site</h3>
 
 <p>
