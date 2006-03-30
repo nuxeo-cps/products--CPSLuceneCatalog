@@ -21,15 +21,36 @@
 
 from Products.CMFCore.utils import getToolByName
 
+from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
+
 #
 # Update from CMF Catalog to CPS Lucene Catalog
 #
 
-def check_upgrade_340_350_cmf_catalog(portal):
-    cat = getToolByName(portal, 'portal_catalog', None)
-    return cat.meta_type == 'CPS Lucene Catalog Tool'
+def check_upgrade_340_350_cmf_catalog(context):
+    ctool = getToolByName(context, CPSLuceneCatalogTool.id, None)
+    upgrade = 0
+    if (ctool is None or
+        ctool.meta_type != CPSLuceneCatalogTool.meta_type):
+        upgrade = 1
+    return upgrade
+
 
 def upgrade_340_350_cmf_catalog(context):
-    portal = getToolByName(context, 'portal_url').getPortalObject()
-    # XXX
-    return "CPS Lucene Catalog migration done"
+    ctool_id = CPSLuceneCatalogTool.id
+    ctool_mt = CPSLuceneCatalogTool.meta_type
+    ctool = getToolByName(context, ctool_id, None)
+    add_it = 0
+    if ctool is None:
+        add_it = 1
+    elif ctool.meta_type != ctool_mt:
+        add_it = 1
+        utool = getToolByName(context, 'portal_url')
+        portal = utool.getPortalObject()
+        portal.manage_delObjects([ctool_id])
+    if add_it:
+        portal.manage_addProduct['CPSLuceneCatalog'].manage_addTool(ctool_mt)
+        log = "CPS Lucene Catalog Tool migration done"
+    else:
+        log = "CPS Lucene Catalog Tool already installed"
+    return log
