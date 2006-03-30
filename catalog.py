@@ -155,7 +155,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             setattr(one, 'out_of', nb_results)
             brains.append(one)
         t.mark('Construct %s brain(s)' % str(len(brains)))
-        t.log()
+#        t.log()
         return brains
 
     def searchResults(self, REQUEST=None, **kw):
@@ -272,9 +272,13 @@ class CPSLuceneCatalogTool(CatalogTool):
         # Find what languages are in the catalog for this proxy
         uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
         had_languages = []
-        for brain in self.unrestrictedSearchResults(path=uid_view):
-            path = brain.getPath()
-            had_languages.append(path[path.rindex('/')+1:])
+
+
+## XXX : JUST FOR FIRST MIGRATION
+        
+##        for brain in self.unrestrictedSearchResults(path=uid_view):
+##            path = brain.getPath()
+##            had_languages.append(path[path.rindex('/')+1:])
 
         # Do we now have only one language?
         languages = object.getProxyLanguages()
@@ -328,12 +332,12 @@ class CPSLuceneCatalogTool(CatalogTool):
     _properties = CatalogTool._properties + \
                   ({'id':'server_url',
                     'type':'string',
-                    'mode':'r',
+                    'mode':'w',
                     'label':'xml-rpc server URL',
                     },
                    {'id':'server_port',
                     'type':'string',
-                    'mode': 'r',
+                    'mode': 'w',
                     'label':'xml-rpc server port',
                     },
                    )
@@ -406,7 +410,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         for each in areas:
             each = getattr(portal, each)
             reindexContainer(each)
-
+        
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
