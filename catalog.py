@@ -274,11 +274,9 @@ class CPSLuceneCatalogTool(CatalogTool):
         had_languages = []
 
 
-## XXX : JUST FOR FIRST MIGRATION
-        
-##        for brain in self.unrestrictedSearchResults(path=uid_view):
-##            path = brain.getPath()
-##            had_languages.append(path[path.rindex('/')+1:])
+        for brain in self.unrestrictedSearchResults(path=uid_view):
+            path = brain.getPath()
+            had_languages.append(path[path.rindex('/')+1:])
 
         # Do we now have only one language?
         languages = object.getProxyLanguages()
@@ -394,7 +392,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             timer.log()
 
             # Flush mem
-#            transaction.commit()
+            transaction.commit()
             gc.collect()
 
             if hasattr(container, 'objectIds'):
