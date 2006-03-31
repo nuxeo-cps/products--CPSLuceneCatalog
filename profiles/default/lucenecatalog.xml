@@ -4,7 +4,7 @@
   <!-- Properties -->
  
   <property name="title"></property>
-  <property name="server_url">http://localhost</property>
+  <property name="server_url">localhost</property>
   <property name="server_port">9180</property>
 
 

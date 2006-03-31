@@ -5,13 +5,13 @@
 
 <form action="manage_changeServerProperties">
   
-  Server URL : 
+  Hostname or IP: 
   <input type="text" name="server_url" value=""
 	 tal:attributes="value here/server_url"/>
   
   <br/>
   
-  Server port : 
+  Port : 
   <input type="text" name="server_port" value=""
 	 tal:attributes="value here/server_port"/>
   

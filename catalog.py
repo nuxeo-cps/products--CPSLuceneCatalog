@@ -431,12 +431,16 @@ class CPSLuceneCatalogTool(CatalogTool):
         Note we need to update the inner nuxeo.lucene catalog.
         """
 
+        if server_url.startswith('http://'):
+            server_url = server_url[:len('http://')]
+
         # self properties for info
         self.server_url = server_url
         self.server_port = server_port
 
+
         # nuxeo.lucene catalog properties.
-        self.getCatalog().server_url = server_url + ':' + str(server_port)
+        self.getCatalog().server_url = 'http://' + server_url + ':' + str(server_port)
         self.getCatalog().server_port = int(server_port)
 
         # Activate persistency 
