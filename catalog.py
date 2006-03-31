@@ -19,7 +19,7 @@
 """CPS Lucene Catalog
 """
 
-import gc
+import time
 import logging
 
 import transaction
@@ -363,49 +363,38 @@ class CPSLuceneCatalogTool(CatalogTool):
     manage_catalogSchema = PageTemplateFile(
         'zmi/manage_catalogSchema.pt', globals())
 
-    security.declareProtected(ManagePortal, 'manage_reindex')
-    def manage_reindex(self, REQUEST=None):
-        """Reindex an existing instance.
+    security.declareProtected(ManagePortal, 'manage_reindexProxies')
+    def manage_reindexProxies(self, REQUEST=None):
+        """Reindex  an existing complete CPS instance with content.
+
+        It checks all the CPS proxies from the proxies tool.
         """
 
-        # XXX rough implementation for tests.
+        import time
 
-        from zLOG import LOG, INFO
-        from Products.CPSUtil.timer import Timer
+        start = time.time()
 
-        def reindexContainer(container):
-            """Reindex the container and its direct children
-            """
-            timer = Timer('indexObject', level=INFO)
+        reindexed = 0
 
-            LOG("Index object", INFO, container.absolute_url())
-            try:
-                container._reindexObject()
-            except AttributeError:
-                # Not a CPS Proxy
-                container.reindexObject()
+        pxtool = getToolByName(self, 'portal_proxies')
+        utool = getToolByName(self, 'portal_url')
 
-            timer.mark('Indexation')
+        rpaths = pxtool._rpath_to_infos
 
+        portal = utool.getPortalObject()
+        for rpath in rpaths:
+            timer = Timer("Reindex a proxy", level=20)
+            proxy = portal.unrestrictedTraverse(rpath)
+            timer.mark('Get object from rpath')
+            proxy.reindexObject()
+            transaction.commit()
+            timer.mark('Actual object reindexation (including XML-RPC call)')
+            reindexed +=1
+            LOG.info("Proxy number %s reindexed !" %str(reindexed))
             timer.log()
 
-            # Flush mem
-            transaction.commit()
-            gc.collect()
-
-            if hasattr(container, 'objectIds'):
-                for id_ in container.objectIds():
-                    reindexContainer(getattr(container, id_))
-
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        areas = (
-                'workspaces',
-                'sections',
-                'members',
-                )
-        for each in areas:
-            each = getattr(portal, each)
-            reindexContainer(each)
+        stop = time.time()
+        LOG.info("Reindexation done in %s secondes" % str(stop-start))
         
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
