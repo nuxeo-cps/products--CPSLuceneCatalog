@@ -340,9 +340,7 @@ class CPSLuceneCatalogTool(CatalogTool):
                     },
                    )
 
-    manage_options = (SimpleItemWithProperties.manage_options[0]
-                      ,) + \
-                      ({ 'label' : 'Advanced',
+    manage_options = ({ 'label' : 'Manage XML-RPC Server',
                          'action' : 'manage_advancedForm',
                          },
                        { 'label' : 'Schema',
