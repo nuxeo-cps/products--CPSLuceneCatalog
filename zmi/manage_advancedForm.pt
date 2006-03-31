@@ -1,22 +1,36 @@
 <tal:header tal:replace="structure here/manage_page_header">header</tal:header>
 <tal:tabs   tal:replace="structure here/manage_tabs">tabs</tal:tabs>
 
+<p class="help">
+
+  If you're looking for a tool to manage your Lucene store check out
+  <a href="http://www.getopt.org/luke/">luke</a>.
+
+  Luke is a handy development and diagnostic tool, which accesses
+  already existing Lucene indexes and allows you to display and modify
+  their contents in several ways:
+
+  Though, you can perform some actions on the store from CPS on this
+  page. See below.
+
+<p>
+
 <h3>XML-RPC server properties</h3>
 
 <form action="manage_changeServerProperties">
-  
-  Hostname or IP: 
+
+  Hostname or IP:
   <input type="text" name="server_url" value=""
 	 tal:attributes="value here/server_url"/>
-  
+
   <br/>
-  
-  Port : 
+
+  Port :
   <input type="text" name="server_port" value=""
 	 tal:attributes="value here/server_port"/>
-  
+
   <br/><br/>
-  
+
   <input type="submit" name="changeProps" value="Change"/>
 </form>
 
