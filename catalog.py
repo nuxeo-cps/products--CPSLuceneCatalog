@@ -386,11 +386,23 @@ class CPSLuceneCatalogTool(CatalogTool):
             timer = Timer("Reindex a proxy", level=20)
             proxy = portal.unrestrictedTraverse(rpath)
             timer.mark('Get object from rpath')
-            proxy.reindexObject()
+
+            wf = getattr(self, 'portal_workflow', None)
+            if wf is not None:
+                vars = wf.getCatalogVariablesFor(object)
+            else:
+                vars = {}
+
+            w = IndexableObjectWrapper(vars, proxy)
+            self.getCatalog().index(self.__url(proxy), w, [])
+
+            # Fire after commit hook subscriber.
+
+            timer.mark('Actual object reindexation request.')
             if reindexed % 100 == 0:
-                # Transaction every 100 reindexation.
+                # Transaction every 100 reindexation to flush.
                 transaction.commit()
-            timer.mark('Actual object reindexation (including XML-RPC call)')
+                self.getCatalog().optimize()
             reindexed +=1
             LOG.info("Proxy number %s reindexed !" %str(reindexed))
             timer.log()
