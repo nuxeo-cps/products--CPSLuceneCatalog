@@ -387,7 +387,9 @@ class CPSLuceneCatalogTool(CatalogTool):
             proxy = portal.unrestrictedTraverse(rpath)
             timer.mark('Get object from rpath')
             proxy.reindexObject()
-            transaction.commit()
+            if reindexed % 100 == 0:
+                # Transaction every 100 reindexation.
+                transaction.commit()
             timer.mark('Actual object reindexation (including XML-RPC call)')
             reindexed +=1
             LOG.info("Proxy number %s reindexed !" %str(reindexed))
