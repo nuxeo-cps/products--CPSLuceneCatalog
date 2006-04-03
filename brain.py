@@ -83,5 +83,6 @@ class CPSBrain(Item, Acquisition.Explicit):
 
     def has_key(self, key):
         return getattr(self, key, None) is not None
-    
+
+
 InitializeClass(CPSBrain)

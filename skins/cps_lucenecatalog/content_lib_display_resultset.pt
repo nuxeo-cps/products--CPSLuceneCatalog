@@ -34,7 +34,8 @@
           mq nocall:modules/ZTUtils/make_query;
           form request/form;
           zoom zoom|python:0;
-	  batches_all python:here.getLuceneSearchBatchList(items, columns, items_per_page, zoom);
+          batches_all python:here.getLuceneSearchBatchList(items, columns,
+                               items_per_page, zoom);
           batches python:batches_all[0];
           batch_info python:batches_all[1];
           zoomed python:batches_all[2];
@@ -81,39 +82,39 @@
     </tr>
   </table>
   <tal:block condition="python:batch_info and batch_info['nb_pages'] > 1">
-      <div class="pageNavigationLayout">
-          <a tal:define="previous batch_info/previous"
-             tal:condition="python:previous is not None"
-             tal:attributes="href python:'%s?%s'%(request['URL'],
-                                            mq(request.form, b_start=0))">
-              (&lt;&lt;)</a>
-          <a tal:define="previous batch_info/previous"
-             tal:condition="python:previous is not None"
-             tal:attributes="href python:'%s?%s'%(request['URL'],
-                                            mq(request.form, b_start=previous))"
-             i18n:translate="batch_previous">Previous</a>
-          <tal:block repeat="page batch_info/pages">
-            <tal:block condition="python:page != batch_info['start'] - 1">
-              <a tal:attributes="href python:'%s?%s'%(request['URL'],
-                mq(request.form, b_start=page))"
-                tal:content="repeat/page/number">1</a>&nbsp;
-            </tal:block>
-            <tal:block condition="python:page == batch_info['start'] - 1">
-              <span tal:content="string:${repeat/page/number}" />&nbsp;
-            </tal:block>
-          </tal:block>
-          <a tal:define="next batch_info/next"
-             tal:condition="python:next is not None"
-             tal:attributes="href python:'%s?%s'%(request['URL'],
-                                                mq(request.form, b_start=next))"
-             i18n:translate="batch_next">Next</a>
-          <a tal:define="next batch_info/next;
-             last_page python:batch_info['pages'][-1]"
-             tal:condition="python:next is not None"
-             tal:attributes="href python:'%s?%s'%(request['URL'],
-                                            mq(request.form, b_start=last_page))">
-              (&gt;&gt;)</a>
-      </div>
+    <div class="pageNavigationLayout">
+      <a tal:define="previous batch_info/previous"
+         tal:condition="python:previous is not None"
+         tal:attributes="href python:'%s?%s'%(request['URL'],
+                                        mq(request.form, b_start=0))">
+          (&lt;&lt;)</a>
+      <a tal:define="previous batch_info/previous"
+         tal:condition="python:previous is not None"
+         tal:attributes="href python:'%s?%s'%(request['URL'],
+                                        mq(request.form, b_start=previous))"
+         i18n:translate="batch_previous">Previous</a>
+      <tal:block repeat="page batch_info/pages">
+        <tal:block condition="python:page != batch_info['start'] - 1">
+          <a tal:attributes="href python:'%s?%s'%(request['URL'],
+            mq(request.form, b_start=page))"
+            tal:content="repeat/page/number">1</a>&nbsp;
+        </tal:block>
+        <tal:block condition="python:page == batch_info['start'] - 1">
+          <span tal:content="string:${repeat/page/number}" />&nbsp;
+        </tal:block>
+      </tal:block>
+      <a tal:define="next batch_info/next"
+         tal:condition="python:next is not None"
+         tal:attributes="href python:'%s?%s'%(request['URL'],
+                                            mq(request.form, b_start=next))"
+         i18n:translate="batch_next">Next</a>
+      <a tal:define="next batch_info/next;
+         last_page python:batch_info['pages'][-1]"
+         tal:condition="python:next is not None"
+         tal:attributes="href python:'%s?%s'%(request['URL'],
+                                        mq(request.form, b_start=last_page))">
+          (&gt;&gt;)</a>
+    </div>
   </tal:block>
 </tal:block>
 </metal:block>
