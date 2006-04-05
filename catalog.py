@@ -21,6 +21,7 @@
 
 import time
 import logging
+import gc
 
 import transaction
 
@@ -370,10 +371,9 @@ class CPSLuceneCatalogTool(CatalogTool):
         It checks all the CPS proxies from the proxies tool.
         """
 
-        import time
-
         start = time.time()
 
+        grabbed = 0
         reindexed = 0
 
         pxtool = getToolByName(self, 'portal_proxies')
@@ -382,29 +382,38 @@ class CPSLuceneCatalogTool(CatalogTool):
         rpaths = pxtool._rpath_to_infos
 
         portal = utool.getPortalObject()
+
         for rpath in rpaths:
-            timer = Timer("Reindex a proxy", level=20)
+            timer = Timer("Get proxy information", level=20)
+
             proxy = portal.unrestrictedTraverse(rpath)
-            timer.mark('Get object from rpath')
+            timer.mark("Get proxy from rpath")
 
             wf = getattr(self, 'portal_workflow', None)
             if wf is not None:
-                vars = wf.getCatalogVariablesFor(object)
+                vars = wf.getCatalogVariablesFor(proxy)
             else:
                 vars = {}
 
             w = IndexableObjectWrapper(vars, proxy)
-            self.getCatalog().index(self.__url(proxy), w, [])
+            uid = self.__url(proxy)
 
-            # Fire after commit hook subscriber.
-
+            timer.mark("Generate wrapper")
+            
+            self.getCatalog().index(uid, w, [])
             timer.mark('Actual object reindexation request.')
-            if reindexed % 100 == 0:
-                # Transaction every 100 reindexation to flush.
+            
+            grabbed +=1
+
+            proxy._p_deactivate()
+            timer.mark("ghostification")
+
+            if grabbed % 100 == 0:
                 transaction.commit()
-                self.getCatalog().optimize()
-            reindexed +=1
-            LOG.info("Proxy number %s reindexed !" %str(reindexed))
+                gc.collect()
+                timer.mark("gc.collect()")
+
+            LOG.info("Proxy number %s grabbed !" %str(grabbed))
             timer.log()
 
         stop = time.time()
@@ -443,7 +452,8 @@ class CPSLuceneCatalogTool(CatalogTool):
 
 
         # nuxeo.lucene catalog properties.
-        self.getCatalog().server_url = 'http://' + server_url + ':' + str(server_port)
+        self.getCatalog().server_url = 'http://' + server_url + \
+                                       ':' + str(server_port)
         self.getCatalog().server_port = int(server_port)
 
         # Activate persistency 
