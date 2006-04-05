@@ -29,7 +29,7 @@ else:
     len_batch = len_items
 
 b_start = int(context.REQUEST.get('b_start', 0))
-b_size = int(context.REQUEST.get('b_size', 0))
+b_size = int(context.REQUEST.get('b_size', 10))
 
 # extract the n first items in a zoomed list
 zoomed = []
