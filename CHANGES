@@ -7,7 +7,7 @@ New features:
 Bug fixes:
 ~~~~~~~~~~
 - Completed upgrade script migrating the catalog tool.
-- Improve the whome CPS reindexation.
+- Improve the whole CPS proxies reindexation.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
