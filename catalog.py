@@ -401,7 +401,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             timer.mark("Generate wrapper")
             
             self.getCatalog().index(uid, w, [])
-            timer.mark('Actual object reindexation request.')
+            timer.mark('Scheduled for reindexation (CPS side)')
             
             grabbed +=1
 
@@ -409,12 +409,23 @@ class CPSLuceneCatalogTool(CatalogTool):
             timer.mark("ghostification")
 
             if grabbed % 100 == 0:
+
+                self.getCatalog().optimize()
+                timer.mark("Lucene Store optimization request")
+
                 transaction.commit()
+                timer.mark("transaction.commit() (includes store optmization)")
+
                 gc.collect()
                 timer.mark("gc.collect()")
 
             LOG.info("Proxy number %s grabbed !" %str(grabbed))
             timer.log()
+
+        # If less than 100 proxies reindexed.
+        if grabbed < 100:
+            self.getCatalog().optimize()
+            gc.collect()
 
         stop = time.time()
         LOG.info("Reindexation done in %s secondes" % str(stop-start))
