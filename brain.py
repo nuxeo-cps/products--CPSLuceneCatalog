@@ -50,7 +50,7 @@ class CPSBrain(Item, Acquisition.Explicit):
     def __init__(self, mapping):
         for k, v in mapping.items():
 
-            # CPS doesn't like uncode...
+            # CPS doesn't like unicode...
             value = v
             try:
                 value = str(v)
