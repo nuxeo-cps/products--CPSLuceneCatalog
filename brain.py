@@ -49,7 +49,18 @@ class CPSBrain(Item, Acquisition.Explicit):
 
     def __init__(self, mapping):
         for k, v in mapping.items():
-            self.__dict__[k] = str(v)
+
+            # CPS doesn't like uncode...
+            value = v
+            try:
+                value = str(v)
+            except UnicodeEncodeError:
+                try:
+                    value = str(v.encode('UTF-8'))
+                except UnicodeEncodeError:
+                    passs
+
+            self.__dict__[k] = str(value)
 
     def getPath(self):
         return str(self.uid)
