@@ -68,12 +68,14 @@ the corresponding configuration.
   <tal:block condition="field_confs">
     <table width="100%">
       <tr class="location-bar">
+	<td><b>Name</b></td>
 	<td><b>Attribute</b></td>
 	<td><b>Field Type</b></td>
 	<td><b>Analyzer</b></td>
       </tr>
       <tal:block repeat="field_conf field_confs">
 	<tr>
+	  <td><span tal:replace="python:field_conf['name']"/></td>
 	  <td><span tal:replace="python:field_conf['attribute']"/></td>
 	  <td><span tal:replace="python:field_conf['type']"/></td>
 	  <td><span tal:replace="python:field_conf['analyzer']"/></td>

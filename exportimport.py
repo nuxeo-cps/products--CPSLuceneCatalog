@@ -120,8 +120,8 @@ class LuceneCatalogToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers,
         """
         for child in node.childNodes:
             if child.nodeName == 'field':
-                # XXX Deal with deftault values.
                 kw = {
+                    'name' : str(child.getAttribute('name')),
                     'attribute' : str(child.getAttribute('attr')),
                     'type' : str(child.getAttribute('type')),
                     'analyzer' : str(child.getAttribute('analyzer')),

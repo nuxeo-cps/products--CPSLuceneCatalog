@@ -13,170 +13,196 @@
   <!-- XXX missing CPS filter sets -->
 
   <field 
+      name="Creator"
       attr="Creator"
       type="Text"
       analyzer="standard"
       />
 
     <field 
+	name="Date"
 	attr="Date"
 	type="Date"
 	analyzer="Standard"
       />
 
     <field 
+	name="Description"
 	attr="Description"
 	type="Text"
 	analyzer="Standard"
       />
 
     <field 
+	name="Language"
 	attr="Language"
 	type="Text"
 	analyzer="Standard"
       />
 
     <field 
+	name="SearchableText"
 	attr="SearchableText"
 	type="UnStored"
 	analyzer="Standard"
       />
 
     <field 
+	name="Subject"
 	attr="Subject"
 	type="MultiKeyword"
 	analyzer="Standard"
       />
 
     <field 
+	name="Title"
 	attr="Title"
 	type="Text"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="allowedRolesAndUsers"
 	attr="allowedRolesAndUsers"
 	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="container_path"
 	attr="container_path"
 	type="Path"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="created"
 	attr="created"
 	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="effective"
 	attr="effective"
 	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="end"
 	attr="end"
 	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="expires"
 	attr="expires"
 	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="getId"
 	attr="getId"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="id"
 	attr="id"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="in_reply_to"
 	attr="in_reply_to"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="listCreators"
 	attr="listCreators"
 	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="localUsersWithRoles"
 	attr="localUsersWithRoles"
 	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="meta_type"
 	attr="meta_type"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-     <!-- This is an hack for now to be able to search on several portal_type at once until the way it should be search can be specified -->
-
     <field 
+	name="portal_type"
 	attr="portal_type"
 	type="Keyword"	
 	analyzer="Standard"
 	/>
 
     <field 
+	name="modified"
 	attr="modified"
 	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="path"
 	attr="path"
 	type="Path"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="position_in_container"
 	attr="position_in_container"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="relative_path"
 	attr="relative_path"
 	type="Path"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="relative_path_depth"
 	attr="relative_path_depth"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="review_state"
 	attr="review_state"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="start"
 	attr="start"
 	type="Date"
 	analyzer="Standard"
 	/>
 
     <field 
+	name="time"
 	attr="time"
 	type="Date"
 	analyzer="Standard"

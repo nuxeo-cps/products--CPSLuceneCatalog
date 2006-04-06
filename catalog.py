@@ -124,7 +124,8 @@ class CPSLuceneCatalogTool(CatalogTool):
         fieldconfs = self.getCatalog().getFieldConfigurationsFor()
         for each in fieldconfs:
             cpsres += (
-                {'attribute' : each.attribute,
+                {'name' : each.name,
+                 'attribute' : each.attribute,
                  'type' : each.type,
                  'analyzer' : each.analyzer,
                  },)
@@ -146,7 +147,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             kws=query.getFieldsMap(),
             options=query.getQueryOptions(),
             )
-        
+
         t.mark('NXLucene query request')
 
         # Construct lite brains for BBB
@@ -180,7 +181,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         """
 
         LOG.debug("unrestrictedSearchResults %s" % str(kw))
-        
+
         return self._search(REQUEST, **kw)
 
     def reindexObject(self, object, idxs=[], update_metadata=1, uid=None):
@@ -399,10 +400,10 @@ class CPSLuceneCatalogTool(CatalogTool):
             uid = self.__url(proxy)
 
             timer.mark("Generate wrapper")
-            
+
             self.getCatalog().index(uid, w, [])
             timer.mark('Scheduled for reindexation (CPS side)')
-            
+
             grabbed +=1
 
             proxy._p_deactivate()
@@ -429,7 +430,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         stop = time.time()
         LOG.info("Reindexation done in %s secondes" % str(stop-start))
-        
+
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
@@ -467,7 +468,7 @@ class CPSLuceneCatalogTool(CatalogTool):
                                        ':' + str(server_port)
         self.getCatalog().server_port = int(server_port)
 
-        # Activate persistency 
+        # Activate persistency
         self.getCatalog()._p_changed = 1
 
         # Remove cached proxy

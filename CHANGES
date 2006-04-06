@@ -3,7 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- Field name and field attribute are now two different things.
 Bug fixes:
 ~~~~~~~~~~
 - Brain's attributes were unicode. CPS didn't like that.
