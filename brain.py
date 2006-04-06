@@ -58,7 +58,7 @@ class CPSBrain(Item, Acquisition.Explicit):
                 try:
                     value = str(v.encode('UTF-8'))
                 except UnicodeEncodeError:
-                    passs
+                    pass
 
             self.__dict__[k] = str(value)
 
