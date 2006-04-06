@@ -40,7 +40,7 @@ def upgrade_340_350_cmf_catalog(context):
     ctool_id = CPSLuceneCatalogTool.id
     ctool_mt = CPSLuceneCatalogTool.meta_type
     ctool = getToolByName(context, ctool_id, None)
-        portal = utool.getPortalObject()
+    portal = utool.getPortalObject()
     add_it = 0
     if ctool is None:
         add_it = 1
