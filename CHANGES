@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Brain's attributes were unicode. CPS didn't like that.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
