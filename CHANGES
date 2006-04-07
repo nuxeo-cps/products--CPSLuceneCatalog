@@ -8,6 +8,7 @@ Bug fixes:
 ~~~~~~~~~~
 - Brain's attributes were unicode. CPS didn't like that.
 - UnboundLocalError on upgrade step.
+- XML snapshot crashed because of duplicated export steps.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
