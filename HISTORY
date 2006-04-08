@@ -1,4 +1,22 @@
 *******************************************
+** CPSLuceneCatalog V0.2.0 [R1 build 2006/04/08-13:52 by anahide]
+** SVN URL: https://svn.nuxeo.org/priv/CPSLuceneCatalog/trunk Revision: 32528
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- Field name and field attribute are now two different things.
+Bug fixes:
+~~~~~~~~~~
+- Brain's attributes were unicode. CPS didn't like that.
+- UnboundLocalError on upgrade step.
+- XML snapshot crashed because of duplicated export steps.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.1.2 [R1 build 2006/04/05-18:49 by anahide]
 ** SVN URL: https://svn.nuxeo.org/priv/CPSLuceneCatalog/trunk Revision: 32341
 Requires:
