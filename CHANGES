@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Don't optimize while reindexing proxies. Too costly
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
