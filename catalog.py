@@ -411,8 +411,8 @@ class CPSLuceneCatalogTool(CatalogTool):
 
             if grabbed % 100 == 0:
 
-                self.getCatalog().optimize()
-                timer.mark("Lucene Store optimization request")
+                #self.getCatalog().optimize()
+                #timer.mark("Lucene Store optimization request")
 
                 transaction.commit()
                 timer.mark("transaction.commit() (includes store optmization)")
