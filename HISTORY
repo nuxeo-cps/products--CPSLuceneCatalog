@@ -1,4 +1,22 @@
 *******************************************
+** CPSLuceneCatalog V0.2.1 [R1 build 2006/04/12-16:01 by anahide]
+** SVN URL: https://svn.nuxeo.org/priv/CPSLuceneCatalog/trunk Revision: 32704
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Don't optimize while reindexing proxies. Too costly
+- Temporarily fix CPS display problems by forcing the brain attributes to
+  iso-8859-15 encoding.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.2.0 [R1 build 2006/04/08-13:52 by anahide]
 ** SVN URL: https://svn.nuxeo.org/priv/CPSLuceneCatalog/trunk Revision: 32528
 Requires:
