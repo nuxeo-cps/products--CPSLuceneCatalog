@@ -56,7 +56,9 @@ class CPSBrain(Item, Acquisition.Explicit):
                 value = str(v)
             except UnicodeEncodeError:
                 try:
-                    value = str(v.encode('UTF-8'))
+                    # XXX AT: why UTF-8?
+                    #value = str(v.encode('UTF-8'))
+                    value = str(v.encode('ISO-8859-15'))
                 except UnicodeEncodeError:
                     pass
 
