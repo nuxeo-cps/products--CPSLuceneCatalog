@@ -81,7 +81,7 @@
       </td>
     </tr>
   </table>
-  <tal:block condition="python:batch_info and batch_info['nb_pages'] > 1">
+  <tal:block condition="python:batch_info and batch_info['nb_pages'] > 1 ">
     <div class="pageNavigationLayout">
       <a tal:define="previous batch_info/previous"
          tal:condition="python:previous is not None"
@@ -93,7 +93,8 @@
          tal:attributes="href python:'%s?%s'%(request['URL'],
                                         mq(request.form, b_start=previous))"
          i18n:translate="batch_previous">Previous</a>
-      <tal:block repeat="page batch_info/pages">
+
+      <tal:block repeat="page python:batch_info['pages'][:5]">
         <tal:block condition="python:page != batch_info['start'] - 1">
           <a tal:attributes="href python:'%s?%s'%(request['URL'],
             mq(request.form, b_start=page))"
@@ -103,6 +104,21 @@
           <span tal:content="string:${repeat/page/number}" />&nbsp;
         </tal:block>
       </tal:block>
+
+      ...
+
+      <tal:block repeat="page python:batch_info['pages'][batch_info['nb_pages'] - 5:]">
+        <tal:block condition="python:page != batch_info['start'] - 1">
+          <a tal:attributes="href python:'%s?%s'%(request['URL'],
+            mq(request.form, b_start=page))"
+            tal:content="python:batch_info['nb_pages'] - (5 - repeat['page'].number())">1</a>&nbsp;
+        </tal:block>
+	
+	<tal:block condition="python:page == batch_info['start'] - 1">
+          <span tal:content="string:${repeat/page/number}" />&nbsp;
+        </tal:block>
+      </tal:block>
+      
       <a tal:define="next batch_info/next"
          tal:condition="python:next is not None"
          tal:attributes="href python:'%s?%s'%(request['URL'],
