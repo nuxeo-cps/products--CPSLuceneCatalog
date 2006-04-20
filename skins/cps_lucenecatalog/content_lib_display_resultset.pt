@@ -95,27 +95,48 @@
          i18n:translate="batch_previous">Previous</a>
 
       <tal:block repeat="page python:batch_info['pages'][:5]">
-        <tal:block condition="python:page != batch_info['start'] - 1">
+        <tal:block condition="python:page != batch_info['start']">
           <a tal:attributes="href python:'%s?%s'%(request['URL'],
             mq(request.form, b_start=page))"
             tal:content="repeat/page/number">1</a>&nbsp;
         </tal:block>
-        <tal:block condition="python:page == batch_info['start'] - 1">
+        <tal:block condition="python:page == batch_info['start']">
           <span tal:content="string:${repeat/page/number}" />&nbsp;
         </tal:block>
       </tal:block>
 
-      ...
+      <tal:block condition="python:batch_info['nb_pages'] > 10">
+	...
+      </tal:block>
 
-      <tal:block repeat="page python:batch_info['pages'][batch_info['nb_pages'] - 5:]">
-        <tal:block condition="python:page != batch_info['start'] - 1">
+      <tal:block condition="python:batch_info['nb_pages'] > 5 and 
+                                   batch_info['start'] > batch_info['pages'][4] and 
+                                   batch_info['start'] < batch_info['pages'][batch_info['nb_pages'] - 5]">
+
+				   	
+	<strong>
+	  <span tal:content="python:(batch_info['start']  / items_per_page) + 1"/>
+	</strong>
+
+      </tal:block>
+
+      <tal:block condition="python:batch_info['nb_pages'] > 10">
+	...
+      </tal:block>
+
+      <tal:block define="set python:batch_info['nb_pages'] > 10 and 5 or (batch_info['nb_pages'] - 5);
+			 pages python:batch_info['pages'][batch_info['nb_pages']-set:]"
+		 repeat="page pages">
+        <tal:block condition="python:page != batch_info['start']">
           <a tal:attributes="href python:'%s?%s'%(request['URL'],
             mq(request.form, b_start=page))"
-            tal:content="python:batch_info['nb_pages'] - (5 - repeat['page'].number())">1</a>&nbsp;
+            tal:content="python:batch_info['nb_pages'] - (set - repeat['page'].number())">1</a>&nbsp;
         </tal:block>
 	
-	<tal:block condition="python:page == batch_info['start'] - 1">
-          <span tal:content="string:${repeat/page/number}" />&nbsp;
+	<tal:block condition="python:page == batch_info['start']">
+	  <strong>
+	    <span tal:content="python:batch_info['nb_pages'] - (set - repeat['page'].number())" />&nbsp;
+	  </strong>
         </tal:block>
       </tal:block>
       
