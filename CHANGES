@@ -8,6 +8,7 @@ Bug fixes:
 ~~~~~~~~~~
 - Proper batch display.
 - Fix brain attributes
+- Generate Zope.DateTime objects brain side for BBB
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

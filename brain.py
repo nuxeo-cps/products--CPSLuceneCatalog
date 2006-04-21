@@ -29,6 +29,7 @@ from AccessControl.Role import RoleManager
 import Acquisition
 from Globals import InitializeClass
 from OFS.SimpleItem import Item
+from DateTime import DateTime
 
 import zope.interface
 from interfaces import ICPSBrain
@@ -61,8 +62,13 @@ class CPSBrain(Item, Acquisition.Explicit):
                         value = str(v.encode('ISO-8859-15'))
                     except UnicodeEncodeError:
                         pass
-
-            self.__dict__[k] = value
+                    
+            if not isinstance(value, datetime.datetime): 
+                self.__dict__[k] = value
+            else:
+                # Convert datetime.datetime to DateTime.DateTime for BBB
+                ttime = value.timetuple()
+                self.__dict__[k] = DateTime(*ttime[:6])
 
     def getPath(self):
         return str(self.uid)

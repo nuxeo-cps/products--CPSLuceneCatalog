@@ -21,6 +21,7 @@
 
 import unittest
 import datetime
+import DateTime
 
 from Products.CPSLuceneCatalog.brain import CPSBrain
 
@@ -38,7 +39,9 @@ class CPSBrainTestCase(unittest.TestCase):
 
         bra = CPSBrain(mapping)
 
-        self.assertEqual(bra.date, cdate)
+        expected = DateTime.DateTime(*cdate.timetuple()[:6])
+
+        self.assertEqual(bra.date, expected)
 
     def test_unicode(self):
 
