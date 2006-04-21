@@ -7,6 +7,7 @@ New features:
 Bug fixes:
 ~~~~~~~~~~
 - Proper batch display.
+- Fix brain attributes
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

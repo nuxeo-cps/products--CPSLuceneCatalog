@@ -21,6 +21,7 @@
 Provides a Zope BBB brain tyxpe.
 """
 
+import datetime
 import logging
 
 from AccessControl import ClassSecurityInfo
@@ -50,19 +51,18 @@ class CPSBrain(Item, Acquisition.Explicit):
     def __init__(self, mapping):
         for k, v in mapping.items():
 
-            # CPS doesn't like unicode...
+            # CPS and Zope2 doesn't like unicode...
             value = v
-            try:
-                value = str(v)
-            except UnicodeEncodeError:
+            if isinstance(value, unicode):
                 try:
-                    # XXX AT: why UTF-8?
-                    #value = str(v.encode('UTF-8'))
-                    value = str(v.encode('ISO-8859-15'))
+                    value = str(v)
                 except UnicodeEncodeError:
-                    pass
+                    try:
+                        value = str(v.encode('ISO-8859-15'))
+                    except UnicodeEncodeError:
+                        pass
 
-            self.__dict__[k] = str(value)
+            self.__dict__[k] = value
 
     def getPath(self):
         return str(self.uid)
