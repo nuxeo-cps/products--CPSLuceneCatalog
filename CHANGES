@@ -3,7 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- Ability to reindex selected fields only.
 Bug fixes:
 ~~~~~~~~~~
 - Proper batch display.
