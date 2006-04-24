@@ -391,8 +391,11 @@ class CPSLuceneCatalogTool(CatalogTool):
             proxy = portal.unrestrictedTraverse(rpath)
             timer.mark("Get proxy from rpath")
 
-            proxy._reindexObject(idxs=list(idxs))
+            self.reindexObject(proxy, idxs=list(idxs))
             timer.mark('Scheduled for reindexation')
+
+            transaction.commit()
+            timer.mark('Reindexation')
 
             grabbed +=1
 
@@ -401,17 +404,11 @@ class CPSLuceneCatalogTool(CatalogTool):
 
             if grabbed % 100 == 0:
 
-                #self.getCatalog().optimize()
-                #timer.mark("Lucene Store optimization request")
-
-                transaction.commit()
-                timer.mark("transaction.commit() (includes store optmization)")
-
                 gc.collect()
                 timer.mark("gc.collect()")
 
-            ##if grabbed >= 100:
-            ##    break
+##            if grabbed >= 100:
+##                break
 
             LOG.info("Proxy number %s grabbed !" %str(grabbed))
             timer.log()
