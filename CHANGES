@@ -9,6 +9,7 @@ Bug fixes:
 - Proper batch display.
 - Fix brain attributes
 - Generate Zope.DateTime objects brain side for BBB
+- Fix : wrapper and DateTime objects from workflow vars. 
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - ZCatalog BBB : range queries.

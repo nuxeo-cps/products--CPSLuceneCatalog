@@ -48,7 +48,11 @@ class IndexableObjectWrapper:
         document in the repository hide some attributes to save some space."""
         vars = self.__vars
         if vars.has_key(name):
-            return vars[name]
+            ret = vars[name]
+            # Here, deal with DateTime object values.
+            if isinstance(ret, DateTime):
+                ret = ret.ISO()
+            return ret
         ob = self.__ob
         proxy = None
         if isinstance(ob, ProxyBase):
