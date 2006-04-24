@@ -38,36 +38,58 @@ class ZCatalogQuery(object):
 
         if 'cps_filter_sets' in kw.keys():
             self.cps_filter_sets = kw['cps_filter_sets']
+            # FIXME : Implement this !
+            # We don't necessarly need them all.
             del kw['cps_filter_sets']
 
-        self.fields = {}
+        self.fields = ()
         self.options = {}
 
         # Filter out options
         for k, v in kw.items():
-            value = v
-            if k not in cat.getCatalog().getFieldNamesFor():
-                # ZCTitle case.
-                if k == 'ZCTitle':
-                    self.fields['Title'] = value
-                else:
-                    self.options[k] = value
-            else:
-                if isinstance(value, DateTime):
-                    value = value.ISO()
 
-                # Hack for the range quey
-                elif isinstance(value, dict):
-                    if 'query' in value.keys() and 'range' in value.keys():
-                        v1 = value['query']
-                        range_ = value['range']
-                        if isinstance(v1, DateTime):
-                            self.fields[k] = v1.ISO()
-                            self.options[k+'_usage'] = 'range' + ':' + range_
-                        else:
-                            pass
+            field_conf = {}
+    
+            if k not in cat.getCatalog().getFieldNamesFor():
+                # CPS BBB : ZCTitle case.
+                if k == 'ZCTitle':
+                    if 'Title' in cat.getCatalog().getFieldNamesFor():
+                        field_conf = {
+                            'id'    : 'Title',
+                            'value' : v,
+                            }
+                        self.fields += (field_conf,)
                 else:
-                    self.fields[k] = value 
+                    self.options[k] = v
+            else:
+
+                field_conf = {
+                    'id'    : k,
+                    'value' : v,
+                    }
+
+                if isinstance(v, DateTime):
+                    field_conf['value'] = v.ISO()
+
+                # Date query ranges
+                elif isinstance(v, dict):
+                    if 'query' in v.keys() and 'range' in v.keys():
+                        v1 = v['query']
+                        range_ = 'range:' + v['range']
+                        if isinstance(v1, DateTime):
+                            field_conf['value'] = v1.ISO()
+                            field_conf['usage'] = range_
+                        elif isinstance(v1, list) or isinstance(v1, tuple):
+                            if len(v1) == 2:
+                                d1 = v1[0]
+                                d2 = v1[1]
+                                if (isinstance(d1, DateTime) and
+                                    isinstance(d2, DateTime)):
+                                    field_conf['value'] =  [d1.ISO(), d2.ISO()]                                    
+                                else:
+                                    field_conf['value'] =  [d1, d2]
+                        field_conf['usage'] = range_
+                self.fields += (field_conf,)            
                     
         logger.debug("getFielsdMap() %s" % str(self.fields))
         logger.debug("getQueryOptions() %s" % str(self.options))

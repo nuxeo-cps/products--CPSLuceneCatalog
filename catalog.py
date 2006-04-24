@@ -144,7 +144,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         t.mark('Convert Query')
 
         results, nb_results = self.getCatalog().searchResults(
-            kws=query.getFieldsMap(),
+            search_fields=query.getFieldsMap(),
             options=query.getQueryOptions(),
             )
 

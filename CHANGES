@@ -11,4 +11,4 @@ Bug fixes:
 - Generate Zope.DateTime objects brain side for BBB
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- ZCatalog BBB : range queries.
