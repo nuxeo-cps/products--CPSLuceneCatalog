@@ -59,30 +59,46 @@ the corresponding configuration.
 </div>
 -->
 
-<tal:block define="field_confs here/getFieldConfs">
-  <tal:block condition="not:field_confs">
-    <b>
-      Currently, you don't have any configured fields for this catalog.
-    </b>
-  </tal:block>
-  <tal:block condition="field_confs">
-    <table width="100%">
-      <tr class="location-bar">
-	<td><b>Name</b></td>
-	<td><b>Attribute</b></td>
-	<td><b>Field Type</b></td>
-	<td><b>Analyzer</b></td>
-      </tr>
-      <tal:block repeat="field_conf field_confs">
+<form name="reindexSelectedFields" method="post" action="manage_reindexSelectedFields">
+  <tal:block define="field_confs here/getFieldConfs">
+    <tal:block condition="not:field_confs">
+      <b>
+        Currently, you don't have any configured fields for this catalog.
+      </b>
+    </tal:block>
+    <tal:block condition="field_confs">
+      <table width="100%">
 	<tr>
-	  <td><span tal:replace="python:field_conf['name']"/></td>
-	  <td><span tal:replace="python:field_conf['attribute']"/></td>
-	  <td><span tal:replace="python:field_conf['type']"/></td>
-	  <td><span tal:replace="python:field_conf['analyzer']"/></td>
+	  <td colspan="4">
+	    <input type="submit" value="Reindex selected fields"/>
+	  </td>
 	</tr>
-      </tal:block>
-    </table>
+	<tr><td colspan="5">&nbsp;</td></tr>
+        <tr class="location-bar">
+  	<td>&nbsp;</td>
+  	<td><b>Name</b></td>
+  	<td><b>Attribute</b></td>
+  	<td><b>Field Type</b></td>
+  	<td><b>Analyzer</b></td>
+        </tr>
+        <tal:block repeat="field_conf field_confs">
+  	<tr>
+  	  <td><input type="checkbox" name="fields:list" tal:attributes="value python:field_conf['name']"/></td>
+  	  <td><span tal:replace="python:field_conf['name']"/></td>
+  	  <td><span tal:replace="python:field_conf['attribute']"/></td>
+  	  <td><span tal:replace="python:field_conf['type']"/></td>
+  	  <td><span tal:replace="python:field_conf['analyzer']"/></td>
+  	</tr>
+        </tal:block>
+	<tr><td colspan="5">&nbsp;</td></tr>
+        <tr>
+	  <td colspan="5">
+	    <input type="submit" value="Reindex selected fields"/>
+	  </td>
+	</tr>
+      </table>
+    </tal:block>
   </tal:block>
-</tal:block>
+</form>
 
 <tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

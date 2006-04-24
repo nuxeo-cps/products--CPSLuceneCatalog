@@ -366,7 +366,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         'zmi/manage_catalogSchema.pt', globals())
 
     security.declareProtected(ManagePortal, 'manage_reindexProxies')
-    def manage_reindexProxies(self, REQUEST=None):
+    def manage_reindexProxies(self, idxs=(), REQUEST=None):
         """Reindex  an existing complete CPS instance with content.
 
         It checks all the CPS proxies from the proxies tool.
@@ -384,13 +384,14 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         portal = utool.getPortalObject()
 
+#        rpaths = ('/gcac_preprod/sections/ouvrages/ouvrage-test-eba',)
         for rpath in rpaths:
             timer = Timer("Get proxy information", level=20)
 
             proxy = portal.unrestrictedTraverse(rpath)
             timer.mark("Get proxy from rpath")
 
-            proxy._reindexObject()
+            proxy._reindexObject(idxs=list(idxs))
             timer.mark('Scheduled for reindexation')
 
             grabbed +=1
@@ -425,6 +426,18 @@ class CPSLuceneCatalogTool(CatalogTool):
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
+
+    security.declareProtected(ManagePortal, 'manage_reindexSelectedFields')
+    def manage_reindexSelectedFields(self, fields=(), REQUEST=None):
+        """Reindex selected fields.
+        """
+
+        if fields:
+            self.manage_reindexProxies(idxs=fields, REQUEST=REQUEST)
+
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_catalogFields')
 
     security.declareProtected(ManagePortal, 'manage_optimize')
     def manage_optimize(self):
