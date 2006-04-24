@@ -390,19 +390,8 @@ class CPSLuceneCatalogTool(CatalogTool):
             proxy = portal.unrestrictedTraverse(rpath)
             timer.mark("Get proxy from rpath")
 
-            wf = getattr(self, 'portal_workflow', None)
-            if wf is not None:
-                vars = wf.getCatalogVariablesFor(proxy)
-            else:
-                vars = {}
-
-            w = IndexableObjectWrapper(vars, proxy)
-            uid = self.__url(proxy)
-
-            timer.mark("Generate wrapper")
-
-            self.getCatalog().index(uid, w, [])
-            timer.mark('Scheduled for reindexation (CPS side)')
+            proxy._reindexObject()
+            timer.mark('Scheduled for reindexation')
 
             grabbed +=1
 
@@ -420,12 +409,14 @@ class CPSLuceneCatalogTool(CatalogTool):
                 gc.collect()
                 timer.mark("gc.collect()")
 
+            ##if grabbed >= 100:
+            ##    break
+
             LOG.info("Proxy number %s grabbed !" %str(grabbed))
             timer.log()
 
         # If less than 100 proxies reindexed.
         if grabbed < 100:
-            self.getCatalog().optimize()
             gc.collect()
 
         stop = time.time()
