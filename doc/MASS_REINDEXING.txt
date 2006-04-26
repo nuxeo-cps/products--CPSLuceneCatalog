@@ -1,0 +1,38 @@
+==================
+Mass Reindexing
+==================
+
+:Author: Julien Anguenot
+:Revision: $Id: README.txt 44811 2006-04-24 00:16:42Z janguenot $
+
+.. sectnum::    :depth: 1
+.. contents::   :depth: 1
+
+If you are just migrating from a ZCatalog based solution toward
+CPSLuceneCatalog then you will need to reindex all the content of your
+instance in Lucene.
+
+To do that the CPS Catalog Tool provides an API called :
+manage_reindexProxies()
+
+You can invoke it using a wget for instance to avoid timeouts. Below
+is an example of such a command :
+
+$ wget --timeout=0 --http-user=admin --http-passwd=xxx http://localhost:8180/cps/portal_catalog/manage_reindexProxies
+
+Of course, you need to provide the credentials of a user having
+Manager rights on the CPS instance.
+
+Note, this operation can be prerty long depending on the amount of
+proxies living within your CPS instance and as well the size of the
+SearchableText.
+
+The Lucene index store will be optimized after the reindexation's done.
+
+. Emacs
+.. Local Variables:
+.. mode: rst
+.. End:
+.. Vim
+.. vim: set filetype=rst:
+
