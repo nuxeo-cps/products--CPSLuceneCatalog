@@ -409,8 +409,8 @@ class CPSLuceneCatalogTool(CatalogTool):
                 gc.collect()
                 timer.mark("gc.collect()")
 
-##            if grabbed >= 100:
-##                break
+#"            if grabbed >= 100:
+#"                break
 
             LOG.info("Proxy number %s grabbed !" %str(grabbed))
             timer.log()
@@ -421,6 +421,9 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         stop = time.time()
         LOG.info("Reindexation done in %s secondes" % str(stop-start))
+
+        # Optimize the store
+        self.getCatalog().optimize()
 
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
