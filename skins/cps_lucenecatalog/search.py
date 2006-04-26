@@ -120,7 +120,7 @@ if end_date and not query.has_key('end'):
     query['end'] = {'query': end_date,
                     'range': 'max'}
 # sorting
-if sort_by and not query.has_key('sort-on'):
+if sort_by:
     if sort_by in ('title', 'date'):
         sort_by = sort_by.capitalize()  # for compatibility
     elif sort_by == 'status':
