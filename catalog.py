@@ -108,11 +108,13 @@ class CPSLuceneCatalogTool(CatalogTool):
         # XXX : hardcoded for now and not complete
         fields =  (
             'Keyword',
+            'MultiKeyword', # XXX will disappear in the future.
             'Text',
             'UnStored',
             'UnIndexed',
             'Date',
             'Path',
+            'Sort',
             )
         return fields
 
