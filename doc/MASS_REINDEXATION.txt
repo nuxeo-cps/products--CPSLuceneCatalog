@@ -1,5 +1,5 @@
 ==================
-Mass Reindexation
+Mass Reindexing
 ==================
 
 :Author: Julien Anguenot
