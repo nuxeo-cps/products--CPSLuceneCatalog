@@ -1,4 +1,24 @@
 *******************************************
+** CPSLuceneCatalog V0.3.0 [R1 build 2006/04/26-14:53 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/CPSLuceneCatalog/trunk Revision: 45005
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- Ability to reindex selected fields only.
+Bug fixes:
+~~~~~~~~~~
+- Proper batch display.
+- Fix brain attributes
+- Generate Zope.DateTime objects brain side for BBB
+- Fix : wrapper and DateTime objects from workflow vars. 
+- Fix site reindexation for worklow variables.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- ZCatalog BBB : range queries.
+
+*******************************************
 ** CPSLuceneCatalog V0.2.1 [R1 build 2006/04/12-16:01 by anahide]
 ** SVN URL: https://svn.nuxeo.org/priv/CPSLuceneCatalog/trunk Revision: 32704
 Requires:

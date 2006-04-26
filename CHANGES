@@ -3,14 +3,10 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
-- Ability to reindex selected fields only.
+-
 Bug fixes:
 ~~~~~~~~~~
-- Proper batch display.
-- Fix brain attributes
-- Generate Zope.DateTime objects brain side for BBB
-- Fix : wrapper and DateTime objects from workflow vars. 
-- Fix site reindexation for worklow variables.
+-
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- ZCatalog BBB : range queries.
+-
