@@ -69,7 +69,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     security = ClassSecurityInfo()
 
     def __init__(self):
-        utility = LuceneCatalog(self.server_url, self.server_port)
+        utility = LuceneCatalog(self.server_url)
         self._setOb('_catalog', utility)
 
         # BBB for CPS <= 3.4
