@@ -55,6 +55,19 @@ class CPSBrainTestCase(unittest.TestCase):
 
         self.assert_(not isinstance(bra.v, unicode))
 
+    def test_list(self):
+
+        v = [u'a', u'b']
+
+        mapping = {
+            'v' : v
+            }
+
+        bra = CPSBrain(mapping)
+
+        for v in bra.v:
+            self.assert_(not isinstance(v, unicode))
+
         
 def test_suite():
     suite = unittest.TestSuite()

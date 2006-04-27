@@ -55,21 +55,30 @@ class CPSBrain(Item, Acquisition.Explicit):
             # CPS and Zope2 doesn't like unicode...
             value = v
             if isinstance(value, unicode):
-                try:
-                    value = str(v)
-                except UnicodeEncodeError:
-                    try:
-                        value = str(v.encode('ISO-8859-15'))
-                    except UnicodeEncodeError:
-                        pass
-                    
-            if isinstance(value, datetime.datetime): 
+                value = self._convertUnicodeForCPS(value)
+
+            if isinstance(value, list) or isinstance(value, tuple):
+                value = map(self._convertUnicodeForCPS, value)
+
+            if isinstance(value, datetime.datetime):
                 # Convert datetime.datetime to DateTime.DateTime for BBB
                 ttime = value.timetuple()
                 value = DateTime(*ttime[:6])
 
             logger.debug("Add attribute %s to brain with value : %s"  % (k, v))
             self.__dict__[k] = value
+
+    def _convertUnicodeForCPS(self, value):
+        """Convert Unicode to ISO-8859-15
+        """
+        try:
+            value = str(value)
+        except UnicodeEncodeError:
+            try:
+                value = str(value.encode('ISO-8859-15'))
+            except UnicodeEncodeError:
+                value = repr(value)
+        return value
 
     def getPath(self):
         return str(self.uid)
