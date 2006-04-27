@@ -3,9 +3,8 @@
 
   <!-- Properties -->
  
-  <property name="title"></property>
-  <property name="server_url">localhost</property>
-  <property name="server_port">9180</property>
+  <property name="title">CPS Lucene Catalog Tool</property>
+  <property name="server_url">http://localhost:9180</property>
 
 
   <!-- Fields -->

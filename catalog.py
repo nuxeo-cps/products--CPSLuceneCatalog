@@ -64,8 +64,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     id = "portal_catalog"
     meta_type = "CPS Lucene Catalog Tool"
 
-    server_url = 'http://localhost'
-    server_port = 9180
+    server_url = 'http://localhost:9180'
 
     security = ClassSecurityInfo()
 
@@ -76,12 +75,29 @@ class CPSLuceneCatalogTool(CatalogTool):
         # BBB for CPS <= 3.4
         self.Indexes = self
 
+    def  __setattr__(self, id, value):
+        if id == 'server_url':
+            if not value.startswith('http://'):
+                value = 'http://' + value
+            LOG.info("Update nuxeo.lucene.catalog properties")
+            setattr(self.getCatalog(), id, value)
+            self._refreshCatalogProxy()
+        CatalogTool.__setattr__(self, id, value)
+
     def __url(self, ob):
         # XXX It would be better to have uid instead of rpath here.
         return '/'.join( ob.getPhysicalPath() )
 
     def __len__(self):
         return len(self.getCatalog())
+
+    def _refreshCatalogProxy(self):
+        """Refresh the cached proxy
+        """
+        # Activate persistency
+        self.getCatalog()._p_changed = 1
+        # Remove cached proxy
+        self.getCatalog()._v_proxy = None
 
     def getCatalog(self):
 #        portal = aq_parent(aq_inner(self))
@@ -337,23 +353,19 @@ class CPSLuceneCatalogTool(CatalogTool):
                     'mode':'w',
                     'label':'xml-rpc server URL',
                     },
-                   {'id':'server_port',
-                    'type':'string',
-                    'mode': 'w',
-                    'label':'xml-rpc server port',
-                    },
                    )
 
-    manage_options = ({ 'label' : 'Manage XML-RPC Server',
-                         'action' : 'manage_advancedForm',
-                         },
-                       { 'label' : 'Schema',
-                         'action' : 'manage_catalogSchema',
-                         },
-                       { 'label' : 'Fields',
-                         'action' : 'manage_catalogFields',
-                         },
-                       )
+    manage_options = (CatalogTool.manage_options[2],
+                      { 'label' : 'Manage XML-RPC Server',
+                        'action' : 'manage_advancedForm',
+                        },
+                      { 'label' : 'Schema',
+                        'action' : 'manage_catalogSchema',
+                        },
+                      { 'label' : 'Fields',
+                        'action' : 'manage_catalogFields',
+                        },
+                      )
 
     security.declareProtected(ManagePortal, 'manage_advancedForm')
     manage_advancedForm = PageTemplateFile(
@@ -452,36 +464,5 @@ class CPSLuceneCatalogTool(CatalogTool):
         """CLean the indexes store.
         """
         self.clean()
-
-    security.declareProtected(ManagePortal, 'manage_changeServerProperties')
-    def manage_changeServerProperties(self, server_url, server_port,
-                                      REQUEST=None):
-        """Change the XMLRPC server properties
-
-        Note we need to update the inner nuxeo.lucene catalog.
-        """
-
-        if server_url.startswith('http://'):
-            server_url = server_url[:len('http://')]
-
-        # self properties for info
-        self.server_url = server_url
-        self.server_port = server_port
-
-
-        # nuxeo.lucene catalog properties.
-        self.getCatalog().server_url = 'http://' + server_url + \
-                                       ':' + str(server_port)
-        self.getCatalog().server_port = int(server_port)
-
-        # Activate persistency
-        self.getCatalog()._p_changed = 1
-
-        # Remove cached proxy
-        self.getCatalog()._v_proxy = None
-
-        if REQUEST is not None:
-            REQUEST.RESPONSE.redirect(
-                self.absolute_url() + '/manage_advancedForm')
 
 InitializeClass(CPSLuceneCatalogTool)

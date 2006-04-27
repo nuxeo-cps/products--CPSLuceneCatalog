@@ -15,25 +15,6 @@
 
 <p>
 
-<h3>XML-RPC server properties</h3>
-
-<form action="manage_changeServerProperties">
-
-  Hostname or IP:
-  <input type="text" name="server_url" value=""
-	 tal:attributes="value here/server_url"/>
-
-  <br/>
-
-  Port :
-  <input type="text" name="server_port" value=""
-	 tal:attributes="value here/server_port"/>
-
-  <br/><br/>
-
-  <input type="submit" name="changeProps" value="Change"/>
-</form>
-
 <h3>Reindex the whole site</h3>
 
 <p>

@@ -6,7 +6,8 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Fix the server_url and server_port properties so that generic setup
+will work fine with CPSLuceneCatalog properties.
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
