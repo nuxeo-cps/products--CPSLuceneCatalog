@@ -63,12 +63,13 @@ class CPSBrain(Item, Acquisition.Explicit):
                     except UnicodeEncodeError:
                         pass
                     
-            if not isinstance(value, datetime.datetime): 
-                self.__dict__[k] = value
-            else:
+            if isinstance(value, datetime.datetime): 
                 # Convert datetime.datetime to DateTime.DateTime for BBB
                 ttime = value.timetuple()
-                self.__dict__[k] = DateTime(*ttime[:6])
+                value = DateTime(*ttime[:6])
+
+            logger.debug("Add attribute %s to brain with value : %s"  % (k, v))
+            self.__dict__[k] = value
 
     def getPath(self):
         return str(self.uid)
