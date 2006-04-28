@@ -11,4 +11,4 @@ will work fine with CPSLuceneCatalog properties.
 - Fix brain attrs that are sequences -> convert from unicode to please CPS...
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
--
+- Optims : exclude repo object from unindexation
