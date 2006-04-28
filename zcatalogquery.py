@@ -91,8 +91,8 @@ class ZCatalogQuery(object):
                         field_conf['usage'] = range_
                 self.fields += (field_conf,)            
                     
-        logger.debug("getFielsdMap() %s" % str(self.fields))
-        logger.debug("getQueryOptions() %s" % str(self.options))
+##        logger.debug("getFielsdMap() %s" % str(self.fields))
+##        logger.debug("getQueryOptions() %s" % str(self.options))
 
     def getFieldsMap(self):
         return self.fields
