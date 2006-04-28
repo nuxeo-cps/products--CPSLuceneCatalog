@@ -228,6 +228,12 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         o Permission:  Private (Python only)
         """
+
+        # Don't index repository objects or anything under them.
+        repotool = getToolByName(self, 'portal_repository', None)
+        if repotool is not None and repotool.isObjectUnderRepository(object):
+            return
+
         LOG.debug("unindexObject %s" % str(object))
 
         default_uid = self._CatalogTool__url(object)
