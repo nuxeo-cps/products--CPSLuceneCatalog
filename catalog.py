@@ -182,7 +182,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         """Searching with CPS security indexes.
         """
 
-        LOG.debug("SeachResults %s" % str(kw))
+#        LOG.debug("SeachResults %s" % str(kw))
 
         user = _getAuthenticatedUser(self)
         kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers(user)
@@ -198,7 +198,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
 
-        LOG.debug("unrestrictedSearchResults %s" % str(kw))
+#        LOG.debug("unrestrictedSearchResults %s" % str(kw))
 
         return self._search(REQUEST, **kw)
 
@@ -214,8 +214,8 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
 
-        LOG.debug("reindexObject %s idxs=%s update_metdata=%s" % (
-            str(object), str(idxs), str(update_metadata)))
+##        LOG.debug("reindexObject %s idxs=%s update_metdata=%s" % (
+##            str(object), str(idxs), str(update_metadata)))
 
         if uid is None:
             uid = self.__url(object)
@@ -234,7 +234,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         if repotool is not None and repotool.isObjectUnderRepository(object):
             return
 
-        LOG.debug("unindexObject %s" % str(object))
+#        LOG.debug("unindexObject %s" % str(object))
 
         default_uid = self._CatalogTool__url(object)
         proxy = None
@@ -253,7 +253,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     def catalog_object(self, object, uid, idxs=[], update_metadata=1,
                        pghandler=None):
 
-        LOG.debug("cat_catalog_object %s" % str(object))
+##        LOG.debug("cat_catalog_object %s" % str(object))
 
         # Don't index repository objects or anything under them.
         repotool = getToolByName(self, 'portal_repository', None)
