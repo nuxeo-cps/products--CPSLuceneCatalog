@@ -1,4 +1,22 @@
 *******************************************
+** CPSLuceneCatalog V0.3.1 [R1 build 2006/05/02-16:45 by gracinet]
+** SVN URL: https://svn.nuxeo.org/pub/CPSLuceneCatalog/trunk Revision: 45176
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Fix the server_url and server_port properties so that generic setup
+will work fine with CPSLuceneCatalog properties.
+- Fix brain attrs that are sequences -> convert from unicode to please CPS...
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Optims : exclude repo object from unindexation
+
+*******************************************
 ** CPSLuceneCatalog V0.3.0 [R1 build 2006/04/26-14:53 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/CPSLuceneCatalog/trunk Revision: 45005
 Requires:
