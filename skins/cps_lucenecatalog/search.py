@@ -54,7 +54,6 @@ try:
 except ImportError:
     pass
 
-
 catalog = context.portal_catalog
 
 if REQUEST is not None:
