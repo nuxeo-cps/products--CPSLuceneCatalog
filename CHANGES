@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- Avoid having 2 search requests
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Use keyword analyzer for path fields
