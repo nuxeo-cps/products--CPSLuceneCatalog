@@ -71,7 +71,7 @@
 	name="container_path"
 	attr="container_path"
 	type="Path"
-	analyzer="Standard"
+	analyzer="Keyword"
 	/>
 
     <field 
@@ -162,7 +162,7 @@
 	name="path"
 	attr="path"
 	type="Path"
-	analyzer="Standard"
+	analyzer="Keyword"
 	/>
 
     <field 
@@ -176,7 +176,7 @@
 	name="relative_path"
 	attr="relative_path"
 	type="Path"
-	analyzer="Standard"
+	analyzer="Keyword"
 	/>
 
     <field 
