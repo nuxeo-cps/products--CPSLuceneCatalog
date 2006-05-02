@@ -1,16 +1,4 @@
-<tal:block tal:define="res python:here.processSearchForm(REQUEST=request);
-    items python:res['items'];
-    items_count python:res['items'] and res['items'][0].out_of or 0;
-    nav_action string:advanced_search_form;
-    no_form python:1;
-    site_wide python:1;
-    format string:detail;
-    filter python:0;
-    title_search request/title_search|nothing;
-    portal_status_message res/psm;
-    swr request/search_within_results|nothing;">
 <metal:block use-macro="here/main_template/macros/master">
-
   <metal:block fill-slot="header">
     <h1 i18n:translate="heading_advanced_search">
       Advanced search
@@ -18,6 +6,17 @@
   </metal:block>
 
   <metal:block metal:fill-slot="main">
+    <tal:block define="res python:here.processSearchForm(REQUEST=request);
+        items python:res['items'];
+        items_count python:res['items'] and res['items'][0].out_of or 0;
+        nav_action string:advanced_search_form;
+        no_form python:1;
+        site_wide python:1;
+        format string:detail;
+        filter python:0;
+        title_search request/title_search|nothing;
+        portal_status_message res/psm;
+        swr request/search_within_results|nothing;">
     <tal:block condition="res/valid_form">
       <p tal:condition="not:items_count"
          i18n:translate="legend_no_search_result">
@@ -54,7 +53,7 @@
         </p>
       </form>
     </metal:block>
+    </tal:block>
   </metal:block>
-
 </metal:block>
-</tal:block>
+
