@@ -67,7 +67,8 @@ class CPSBrain(Item, Acquisition.Explicit):
                 ttime = value.timetuple()
                 value = DateTime(*ttime[:6])
 
-            logger.log(TRACE, "Add attribute %s to brain with value : %s"  % (k, v))
+            logger.log(TRACE, "Add attribute %s to brain with value : %s"
+                       % (k, v))
             self.__dict__[k] = value
 
     def _convertUnicodeForCPS(self, value):
