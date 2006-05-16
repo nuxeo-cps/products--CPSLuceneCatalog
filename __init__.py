@@ -19,7 +19,11 @@
 """CPS Lucene Catalog
 """
 
-import BBB.PatchCPSInstallerCMFInstaller
+try:
+    import BBB.PatchCPSInstallerCMFInstaller
+except ImportError:
+    # we don't need to apply the patch if CPSInstaller doesn't exists
+    pass
 
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup import EXTENSION

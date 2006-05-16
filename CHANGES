@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- remove CPSInstaller patching when the product is not in use
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -
