@@ -343,7 +343,6 @@ class CPSLuceneCatalogTool(CatalogTool):
     # part of ZCatalog api
     def indexes(self):
         idxs = self.getCatalog().getFieldNamesFor()
-        LOG.debug("indexes  = %s" % str(idxs))
         return idxs
 
     def addIndex(self, name, type,extra=None):
