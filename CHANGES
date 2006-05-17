@@ -3,7 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
--
+- Implemented the catalog indexes() method.
 Bug fixes:
 ~~~~~~~~~~
 - remove CPSInstaller patching when the product is not in use
