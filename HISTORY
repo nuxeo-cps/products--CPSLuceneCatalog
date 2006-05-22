@@ -1,4 +1,20 @@
 *******************************************
+** CPSLuceneCatalog V0.3.3 [R1 build 2006/05/22-20:59 by tdelprat]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 45889
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- Implemented the catalog indexes() method.
+Bug fixes:
+~~~~~~~~~~
+- remove CPSInstaller patching when the product is not in use
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.3.2 [R1 build 2006/05/03-01:19 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/CPSLuceneCatalog/trunk Revision: 45212
 Requires:
