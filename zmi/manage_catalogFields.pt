@@ -44,6 +44,15 @@ the corresponding configuration.
 
 </ul>
 
+<p> Complete list of the available field types: </p>
+
+<ul>
+  <li tal:repeat="field_type here/getFieldTypes"
+      tal:content="field_type">
+    field type
+  </li>
+</ul>
+
 <!--
 <div align="right">
   <tal:block define="field_types here/getFieldTypes">
