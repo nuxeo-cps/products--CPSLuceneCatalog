@@ -16,9 +16,9 @@
 
   <cps:upgradeStep
       title="Migrate CMF Catalog"
-      source="3.4.0" destination="3.5.0"
-      handler=".upgrade.upgrade_340_350_cmf_catalog"
-      checker=".upgrade.check_upgrade_340_350_cmf_catalog"
+      source="3.4.0"
+      handler=".upgrade.upgrade_340_cmf_catalog"
+      checker=".upgrade.check_upgrade_340_cmf_catalog"
       />
 
 </configure>

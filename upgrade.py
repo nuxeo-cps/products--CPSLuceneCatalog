@@ -27,7 +27,7 @@ from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
 # Update from CMF Catalog to CPS Lucene Catalog
 #
 
-def check_upgrade_340_350_cmf_catalog(context):
+def check_upgrade_340_cmf_catalog(context):
     ctool = getToolByName(context, CPSLuceneCatalogTool.id, None)
     upgrade = 0
     if (ctool is None or
@@ -36,7 +36,7 @@ def check_upgrade_340_350_cmf_catalog(context):
     return upgrade
 
 
-def upgrade_340_350_cmf_catalog(context):
+def upgrade_340_cmf_catalog(context):
     ctool_id = CPSLuceneCatalogTool.id
     ctool_mt = CPSLuceneCatalogTool.meta_type
     ctool = getToolByName(context, ctool_id, None)
