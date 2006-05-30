@@ -1,4 +1,20 @@
 *******************************************
+** CPSLuceneCatalog V0.3.4 [R1 build 2006/05/30-22:08 by ogrisel]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46053
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- Removed the destination version for the CMF catalog upgrade.
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.3.3 [R1 build 2006/05/22-20:59 by tdelprat]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 45889
 Requires:
