@@ -68,7 +68,50 @@ class CPSBrainTestCase(unittest.TestCase):
         for v in bra.v:
             self.assert_(not isinstance(v, unicode))
 
-        
+    def test_getObject(self):
+        class FakeParent:
+            def restrictedTraverse(self, path):
+                if path == ['correct', 'path']:
+                    return 'Some object'
+                elif path == ['key', 'error']:
+                    raise KeyError(path)
+                else:
+                    raise AttributeError(path)
+
+        def new_brain(uid):
+            bra = CPSBrain({'uid' : uid})
+            bra.aq_base = bra
+            bra.aq_parent = FakeParent()
+            return bra
+
+        # invalid paths
+        bra = new_brain('too_short_path')
+        self.assertEquals(bra.getObject(), None)
+        self.assert_(getattr(bra, '_getObject_failed', None))
+
+        bra = new_brain('')
+        self.assertEquals(bra.getObject(), None)
+        self.assert_(getattr(bra, '_getObject_failed', None))
+
+        # if the brain remembers getObject failed, it won't get called again
+        bra = new_brain('correct/path')
+        bra._getObject_failed = True
+        self.assertEquals(bra.getObject(), None)
+
+        # succeeding call
+        delattr(bra, '_getObject_failed')
+        self.assertEquals(bra.getObject(), 'Some object')
+
+        # wrong call resulting in KeyError
+        bra = new_brain('key/error')
+        self.assertEquals(bra.getObject(), None)
+        self.assert_(getattr(bra, '_getObject_failed', None))
+
+        # wrong call resulting in AttributeError
+        bra = new_brain('other/error')
+        self.assertEquals(bra.getObject(), None)
+        self.assert_(getattr(bra, '_getObject_failed', None))
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(CPSBrainTestCase))

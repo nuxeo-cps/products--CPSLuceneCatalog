@@ -93,16 +93,24 @@ class CPSBrain(Item, Acquisition.Explicit):
         return str(self.uid).split('/')
 
     def getObject(self, REQUEST=None):
+        if getattr(self.aq_base, '_getObject_failed', False):
+            return None
         t = Timer('CPSBrain.getObject', level=logging.DEBUG)
         path = self.getPath().split('/')
-        if not path:
+        if len(path) < 2:
+            logger.error("getObject: path too short. __dict__:\n   %s",
+                         self.__dict__)
+            self._getObject_failed = True
             return None
         parent = self.aq_parent
-        if len(path) > 1:
-            try:
-                target = parent.restrictedTraverse(path)
-            except (KeyError, AttributeError,):
-                return None
+
+        try:
+            target = parent.restrictedTraverse(path)
+        except (KeyError, AttributeError,):
+            self._getObject_failed = True
+            logger.error("getObject: traversal failed. __dict__:\n   %s",
+                         self.__dict__)
+            return None
         t.mark('found !')
 #        t.log()
         return target
