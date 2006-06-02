@@ -1,4 +1,20 @@
 *******************************************
+** CPSLuceneCatalog V0.3.5 [R1 build 2006/06/02-13:04 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46173
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- brain.getObject logs failures details
+
+*******************************************
 ** CPSLuceneCatalog V0.3.4 [R1 build 2006/05/30-22:08 by ogrisel]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46053
 Requires:
