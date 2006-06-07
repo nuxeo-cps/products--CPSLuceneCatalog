@@ -408,7 +408,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
 #        rpaths = ('/gcac_preprod/sections/ouvrages/ouvrage-test-eba',)
         for rpath in rpaths:
-            timer = Timer("Get proxy information", level=20)
+            timer = Timer("Get proxy information", level=logging.DEBUG)
 
             proxy = portal.unrestrictedTraverse(rpath)
             timer.mark("Get proxy from rpath")
