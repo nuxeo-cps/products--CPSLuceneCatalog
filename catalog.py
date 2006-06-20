@@ -88,9 +88,6 @@ class CPSLuceneCatalogTool(CatalogTool):
         # XXX It would be better to have uid instead of rpath here.
         return '/'.join( ob.getPhysicalPath() )
 
-    def __len__(self):
-        return len(self.getCatalog())
-
     def _refreshCatalogProxy(self):
         """Refresh the cached proxy
         """
@@ -103,6 +100,14 @@ class CPSLuceneCatalogTool(CatalogTool):
 #        portal = aq_parent(aq_inner(self))
 #        return zapi.getUtility(ILuceneCatalog, context=portal)
        return self._catalog
+
+    def __len__(self):
+        # in ZCatalog API, this should be the total number of indexed objects
+        # but this turns out to be a performance nightmare in code like
+        #     container = aq_parent(aq_inner(v)) or inst
+        # no real use-case is known
+
+        return 1
 
     #
     # API : Column
