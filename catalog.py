@@ -154,19 +154,19 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     def _search(self, REQUEST=None, **kw):
 
-        t = Timer('CPSLuceneCatalog._search', level=logging.DEBUG)
+#        t = Timer('CPSLuceneCatalog._search', level=logging.DEBUG)
 
         # Construct query for nuxeo.lucene.catalog
         query = ZCatalogQuery(self, REQUEST, **kw)
 
-        t.mark('Convert Query')
+#        t.mark('Convert Query')
 
         results, nb_results = self.getCatalog().searchResults(
             search_fields=query.getFieldsMap(),
             options=query.getQueryOptions(),
             )
 
-        t.mark('NXLucene query request')
+#        t.mark('NXLucene query request')
 
         # Construct lite brains for BBB
         brains = []
@@ -174,7 +174,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             one = CPSBrain(mapping).__of__(self)
             setattr(one, 'out_of', nb_results)
             brains.append(one)
-        t.mark('Construct %s brain(s)' % str(len(brains)))
+#        t.mark('Construct %s brain(s)' % str(len(brains)))
 #        t.log()
         return brains
 
@@ -429,8 +429,10 @@ class CPSLuceneCatalogTool(CatalogTool):
                 gc.collect()
                 timer.mark("gc.collect()")
 
-#"            if grabbed >= 100:
-#"                break
+##            # DEBUG
+##            if grabbed >= 200:
+##                break
+
 
             LOG.info("Proxy number %s grabbed !" %str(grabbed))
             timer.log()
