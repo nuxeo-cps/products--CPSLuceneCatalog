@@ -1,4 +1,22 @@
 *******************************************
+** CPSLuceneCatalog V0.3.7 [R1 build 2006/06/20-20:18 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46667
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- API change: len on catalog tool returns 1 to avoid multiple useless xmlrpc
+  requests
+- Comment out timer
+
+*******************************************
 ** CPSLuceneCatalog V0.3.6 [R1 build 2006/06/07-18:24 by ogrisel]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46301
 Requires:

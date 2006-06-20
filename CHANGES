@@ -9,6 +9,4 @@ Bug fixes:
 -
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
-- API change: len on catalog tool returns 1 to avoid multiple useless xmlrpc
-  requests
-- Comment out timer
+-
