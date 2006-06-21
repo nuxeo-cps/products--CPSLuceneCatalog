@@ -102,12 +102,10 @@ class CPSLuceneCatalogTool(CatalogTool):
        return self._catalog
 
     def __len__(self):
-        # in ZCatalog API, this should be the total number of indexed objects
-        # but this turns out to be a performance nightmare in code like
-        #     container = aq_parent(aq_inner(v)) or inst
-        # no real use-case is known
+        return len(self.getCatalog())
 
-        return 1
+    def __nonzero__(self):
+        return True
 
     #
     # API : Column
