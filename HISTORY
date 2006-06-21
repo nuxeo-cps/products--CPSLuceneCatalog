@@ -1,4 +1,21 @@
 *******************************************
+** CPSLuceneCatalog V0.3.8 [R1 build 2006/06/21-17:15 by gracinet]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46695
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- len on catalog tool returns again total number of indexed objects
+
+
+*******************************************
 ** CPSLuceneCatalog V0.3.7 [R1 build 2006/06/20-20:18 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46667
 Requires:
