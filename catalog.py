@@ -23,6 +23,7 @@ import time
 import logging
 import gc
 
+from ZODB.loglevels import TRACE
 import transaction
 
 from AccessControl import ClassSecurityInfo
@@ -411,26 +412,26 @@ class CPSLuceneCatalogTool(CatalogTool):
 
 #        rpaths = ('/gcac_preprod/sections/ouvrages/ouvrage-test-eba',)
         for rpath in rpaths:
-            timer = Timer("Get proxy information", level=logging.DEBUG)
+#            timer = Timer("Get proxy information", level=TRACE)
 
             proxy = portal.unrestrictedTraverse(rpath)
-            timer.mark("Get proxy from rpath")
+#            timer.mark("Get proxy from rpath")
 
             self.reindexObject(proxy, idxs=list(idxs))
-            timer.mark('Scheduled for reindexation')
+#            timer.mark('Scheduled for reindexation')
 
             transaction.commit()
-            timer.mark('Reindexation')
+#            timer.mark('Reindexation')
 
             grabbed +=1
 
             proxy._p_deactivate()
-            timer.mark("ghostification")
+#            timer.mark("ghostification")
 
             if grabbed % 100 == 0:
 
                 gc.collect()
-                timer.mark("gc.collect()")
+#                timer.mark("gc.collect()")
 
 ##            # DEBUG
 ##            if grabbed >= 200:
@@ -438,7 +439,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
 
             LOG.info("Proxy number %s grabbed !" %str(grabbed))
-            timer.log()
+#            timer.log()
 
         # If less than 100 proxies reindexed.
         if grabbed < 100:
