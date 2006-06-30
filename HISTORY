@@ -1,4 +1,20 @@
 *******************************************
+** CPSLuceneCatalog V0.3.9 [R1 build 2006/06/30-15:45 by anguenot]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46869
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Remove timer on reindexation
+
+*******************************************
 ** CPSLuceneCatalog V0.3.8 [R1 build 2006/06/21-17:15 by gracinet]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46695
 Requires:
