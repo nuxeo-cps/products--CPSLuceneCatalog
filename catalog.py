@@ -68,6 +68,10 @@ class CPSLuceneCatalogTool(CatalogTool):
     server_url = 'http://localhost:9180'
 
     security = ClassSecurityInfo()
+    
+    multilanguage_support = 1
+    
+
 
     def __init__(self):
         utility = LuceneCatalog(self.server_url)
@@ -299,14 +303,13 @@ class CPSLuceneCatalogTool(CatalogTool):
             return
 
         # We reindex a normal proxy.
-        # Find what languages are in the catalog for this proxy
-        uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
         had_languages = []
-
-
-        for brain in self.unrestrictedSearchResults(path=uid_view):
-            path = brain.getPath()
-            had_languages.append(path[path.rindex('/')+1:])
+        if self.multilanguage_support:
+            # Find what languages are in the catalog for this proxy
+            uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
+            for brain in self.unrestrictedSearchResults(path=uid_view):
+                path = brain.getPath()
+                had_languages.append(path[path.rindex('/')+1:])
 
         # Do we now have only one language?
         languages = object.getProxyLanguages()
@@ -356,7 +359,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     # ZMI
     #
 
-    # Those properties are here only to display the values in ZMI.
+    # The server_url properties are here only to display the values in ZMI.
     # The actual used properties are on the nuxeo.lucene catalog
     # utility
     _properties = CatalogTool._properties + \
@@ -365,7 +368,11 @@ class CPSLuceneCatalogTool(CatalogTool):
                     'mode':'w',
                     'label':'xml-rpc server URL',
                     },
-                   )
+                    {'id':'multilanguage_support',
+                    'type':'boolean',
+                    'mode':'w',
+                    'label':'Multi-language support',
+                    },                   )
 
     manage_options = (CatalogTool.manage_options[2],
                       { 'label' : 'Manage XML-RPC Server',
@@ -409,6 +416,17 @@ class CPSLuceneCatalogTool(CatalogTool):
         rpaths = pxtool._rpath_to_infos
 
         portal = utool.getPortalObject()
+        
+        # When reindexing the WHOLE catalog, as we do here, the language
+        # support is pointless, as it's there to reindex all languages of a 
+        # proxy, even when you reindex only one of them. Here they all get
+        # reindexed sooner or later anyway:
+        
+        if self.multilanguage_support:
+            self.multilanguage_support = False
+            enable_multilanguage_support = True
+        else:
+            enable_multilanguage_support = False
 
 #        rpaths = ('/gcac_preprod/sections/ouvrages/ouvrage-test-eba',)
         for rpath in rpaths:
@@ -447,6 +465,10 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         stop = time.time()
         LOG.info("Reindexation done in %s secondes" % str(stop-start))
+        
+        # Reset the multi_language_support:
+        if enable_multilanguage_support:
+            self.multilanguage_support = True
 
         # Optimize the store
         self.getCatalog().optimize()
