@@ -1,4 +1,24 @@
 *******************************************
+** CPSLuceneCatalog V0.4.0 [R1 build 2006/07/05-15:13 by lregebro]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46940
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- A multilanguage_support property is introduced on the catalog, defaulting
+  to "True". If set to "False" this skips trying to find all language versions
+  of a proxy an unindex them. This significantly speeds up reindexing.
+  Also, when manage_reindexProxies this property is always turned off, as
+  all language versions will be reindexed anyway.
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.3.9 [R1 build 2006/06/30-15:45 by anguenot]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46869
 Requires:

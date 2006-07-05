@@ -3,11 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
-- A multilanguage_support property is introduced on the catalog, defaulting
-  to "True". If set to "False" this skips trying to find all language versions
-  of a proxy an unindex them. This significantly speeds up reindexing.
-  Also, when manage_reindexProxies this property is always turned off, as
-  all language versions will be reindexed anyway.
+-
 Bug fixes:
 ~~~~~~~~~~
 -
