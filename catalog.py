@@ -68,9 +68,9 @@ class CPSLuceneCatalogTool(CatalogTool):
     server_url = 'http://localhost:9180'
 
     security = ClassSecurityInfo()
-    
+
     multilanguage_support = 1
-    
+
 
 
     def __init__(self):
@@ -416,12 +416,12 @@ class CPSLuceneCatalogTool(CatalogTool):
         rpaths = pxtool._rpath_to_infos
 
         portal = utool.getPortalObject()
-        
+
         # When reindexing the WHOLE catalog, as we do here, the language
-        # support is pointless, as it's there to reindex all languages of a 
+        # support is pointless, as it's there to reindex all languages of a
         # proxy, even when you reindex only one of them. Here they all get
         # reindexed sooner or later anyway:
-        
+
         if self.multilanguage_support:
             self.multilanguage_support = False
             enable_multilanguage_support = True
@@ -464,8 +464,8 @@ class CPSLuceneCatalogTool(CatalogTool):
             gc.collect()
 
         stop = time.time()
-        LOG.info("Reindexation done in %s secondes" % str(stop-start))
-        
+        LOG.info("Reindexation done in %s seconds" % str(stop-start))
+
         # Reset the multi_language_support:
         if enable_multilanguage_support:
             self.multilanguage_support = True
