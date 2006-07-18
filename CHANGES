@@ -6,7 +6,7 @@ New features:
 -
 Bug fixes:
 ~~~~~~~~~~
--
+- #1701: Crash when reindexing the whole CPSLuceneCatalog
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 -

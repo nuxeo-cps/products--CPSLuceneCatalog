@@ -304,9 +304,9 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         # We reindex a normal proxy.
         had_languages = []
+        uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
         if self.multilanguage_support:
             # Find what languages are in the catalog for this proxy
-            uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
             for brain in self.unrestrictedSearchResults(path=uid_view):
                 path = brain.getPath()
                 had_languages.append(path[path.rindex('/')+1:])
