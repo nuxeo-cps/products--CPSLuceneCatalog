@@ -1,4 +1,20 @@
 *******************************************
+** CPSLuceneCatalog V0.4.1 [R1 build 2006/07/19-15:22 by lregebro]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 47244
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- #1701: Crash when reindexing the whole CPSLuceneCatalog
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.4.0 [R1 build 2006/07/05-15:13 by lregebro]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 46940
 Requires:
