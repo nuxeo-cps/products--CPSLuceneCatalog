@@ -3,7 +3,7 @@ Requires:
 -
 New features:
 ~~~~~~~~~~~~~
-- A method for removing entries that no longer exist in the ZODB.
+-
 Bug fixes:
 ~~~~~~~~~~
 -

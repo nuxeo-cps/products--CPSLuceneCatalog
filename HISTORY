@@ -1,4 +1,20 @@
 *******************************************
+** CPSLuceneCatalog V0.5.0 [R1 build 2006/07/27-17:13 by lregebro]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 47501
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+- A method for removing entries that no longer exist in the ZODB.
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
+*******************************************
 ** CPSLuceneCatalog V0.4.1 [R1 build 2006/07/19-15:22 by lregebro]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 47244
 Requires:
