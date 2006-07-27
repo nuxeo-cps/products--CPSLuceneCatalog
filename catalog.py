@@ -355,6 +355,45 @@ class CPSLuceneCatalogTool(CatalogTool):
     def addIndex(self, name, type,extra=None):
         pass
 
+    def removeDefunctEntries(self):
+        # Goes through the whole catalog and removed entries that no
+        # longer exists.
+        total = 0
+        expected = 1
+        removed = 0
+        last_commit = 0
+        
+        while total < expected:
+            results, nb_results = self.getCatalog().searchResults(
+                return_fields=('uid',),
+                search_fields={'path': '/'}, 
+                options={'b_start': total-removed})
+            if total == 0: # First batch
+                expected = nb_results
+            if not results:
+                if expected:
+                    LOG.warning("Expected %i results, got only %i, deleted %i" % (
+                        expected, total, removed))
+                break
+            total += len(results)
+            
+            for entry in results:
+                uid = str(entry['uid'])
+                try:
+                    ob = self.unrestrictedTraverse(uid)
+                except (AttributeError, KeyError):
+                    LOG.debug("Object %s doesn't exist and is removed from "
+                              "the catalog" % uid)
+                    self.uncatalog_object(uid)
+                    removed += 1
+            
+            if removed >= last_commit + 100:
+                transaction.commit()
+                last_commit = removed
+        # OK, do the last commit as well and return
+        transaction.commit()
+        return
+        
     #
     # ZMI
     #
@@ -494,11 +533,26 @@ class CPSLuceneCatalogTool(CatalogTool):
         """Optimier the indexes store
         """
         self.getCatalog().optimize()
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_advancedForm')
 
     security.declareProtected(ManagePortal, 'manage_clean')
     def manage_clean(self):
         """CLean the indexes store.
         """
         self.clean()
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_advancedForm')
+
+    security.declareProtected(ManagePortal, 'manage_clean')
+    def manage_removeDefunctEntries(self, REQUEST):
+        """Remove objects that no longer exist
+        """
+        self.removeDefunctEntries()
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_advancedForm')
 
 InitializeClass(CPSLuceneCatalogTool)

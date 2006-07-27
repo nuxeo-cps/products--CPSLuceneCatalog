@@ -199,6 +199,49 @@ class CPSLuceneCatalogTestCase(
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].uid, kw['path'])
 
+    def notest_removeDefunctEntries(self):
+
+        self.login('manager')
+
+        transaction.begin()
+
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+
+        # Create a new object within the workspaces area
+        id_ = self._makeOne(self.portal.workspaces, 'File')
+
+        object_ = getattr(self.portal.workspaces, id_)
+        object_.reindexObject()
+
+        transaction.commit()
+
+        # Search it back
+        kw = {
+            # This is how the CatalogTool compute it.
+            'path' : '/'.join(object_.getPhysicalPath())
+            }
+
+        # Search after indexation. Should match.
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, kw['path'])
+
+        # Delete without unindexing:
+        self.portal.workspaces._delOb(id_)
+        transaction.commit()
+
+        # Find object back. Should still be there
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, kw['path'])
+
+        cpscatalog.removeDefunctEntries()
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 0)
+
+        self.logout()
+
     #
     # PRIVATE
     #
