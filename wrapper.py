@@ -79,16 +79,17 @@ class IndexableObjectWrapper:
             ret = ret() + ' ' + proxy.getId()
 
         # use callable result if needed
-        v = ret
-        if callable(v):
-            v = v()
+        # XXX AT: problem when it is portal_url for instance. Maybe it's
+        # useless, is it called by ZCatalog when indexing the wrapper (?)
+        #if callable(ret):
+        #    ret = ret()
 
         # Check here if it's a date and return a string representation
         # of the date since DateTime is not a Python standard object
-        if isinstance(v, DateTime):
-            v = v.ISO()
+        if isinstance(ret, DateTime):
+            ret = ret.ISO()
 
-        return v
+        return ret
 
     def allowedRolesAndUsers(self):
         """
