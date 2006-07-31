@@ -65,12 +65,11 @@ class CPSLuceneCatalogTool(CatalogTool):
     id = "portal_catalog"
     meta_type = "CPS Lucene Catalog Tool"
 
-    server_url = 'http://localhost:9180'
-
     security = ClassSecurityInfo()
 
-    multilanguage_support = 1
-
+    # default properties
+    server_url = 'http://localhost:9180'
+    multilanguage_support = True
 
 
     def __init__(self):
@@ -261,8 +260,6 @@ class CPSLuceneCatalogTool(CatalogTool):
     def catalog_object(self, object, uid, idxs=[], update_metadata=1,
                        pghandler=None):
 
-##        logger.debug("cat_catalog_object %s" % str(object))
-
         # Don't index repository objects or anything under them.
         repotool = getToolByName(self, 'portal_repository', None)
         if repotool is not None and repotool.isObjectUnderRepository(object):
@@ -273,6 +270,8 @@ class CPSLuceneCatalogTool(CatalogTool):
             pgharg = ()
         else:
             pgharg = (pghandler,)
+
+##        logger.debug("catalog_object %s" % str(object))
 
         wf = getattr(self, 'portal_workflow', None)
         if wf is not None:
@@ -403,11 +402,11 @@ class CPSLuceneCatalogTool(CatalogTool):
     # The actual used properties are on the nuxeo.lucene catalog
     # utility
     _properties = CatalogTool._properties + (
-        {'id':'server_url', 'type':'string', 'mode':'w',
-         'label':'xml-rpc server URL',
+        {'id': 'server_url', 'type': 'string', 'mode': 'w',
+         'label': 'xml-rpc server URL',
          },
-        {'id':'multilanguage_support', 'type':'boolean', 'mode':'w',
-         'label':'Multi-language support',
+        {'id': 'multilanguage_support', 'type': 'boolean', 'mode': 'w',
+         'label': 'Multi-language support',
          },
         )
 
