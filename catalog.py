@@ -398,10 +398,9 @@ class CPSLuceneCatalogTool(CatalogTool):
     # ZMI
     #
 
-    # The server_url properties are here only to display the values in ZMI.
-    # The actual used properties are on the nuxeo.lucene catalog
-    # utility
     _properties = CatalogTool._properties + (
+        # The server_url property is here only to display its value in ZMI, its
+        # actual value is on the nuxeo.lucene catalog utility
         {'id': 'server_url', 'type': 'string', 'mode': 'w',
          'label': 'xml-rpc server URL',
          },
