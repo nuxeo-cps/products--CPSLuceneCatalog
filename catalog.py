@@ -390,8 +390,9 @@ class CPSLuceneCatalogTool(CatalogTool):
             if removed >= last_commit + 100:
                 transaction.commit()
                 last_commit = removed
-        # OK, do the last commit as well and return
+        # OK, do the last commit as well and optimize for good measure.
         transaction.commit()
+        self.getCatalog().optimize()
         return
         
     #
