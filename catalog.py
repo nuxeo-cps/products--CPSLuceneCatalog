@@ -54,7 +54,7 @@ from wrapper import IndexableObjectWrapper
 
 from interfaces import ICPSLuceneCatalogTool
 
-LOG = logging.getLogger("CPSLuceneCatalog")
+logger = logging.getLogger("CPSLuceneCatalog")
 
 class CPSLuceneCatalogTool(CatalogTool):
     """CPS Lucene Catalog
@@ -84,7 +84,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         if id == 'server_url':
             if not value.startswith('http://'):
                 value = 'http://' + value
-            LOG.info("Update nuxeo.lucene.catalog properties")
+            logger.info("Update nuxeo.lucene.catalog properties")
             setattr(self.getCatalog(), id, value)
             self._refreshCatalogProxy()
         CatalogTool.__setattr__(self, id, value)
@@ -190,7 +190,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         """Searching with CPS security indexes.
         """
 
-#        LOG.debug("SeachResults %s" % str(kw))
+#        logger.debug("SeachResults %s" % str(kw))
 
         user = _getAuthenticatedUser(self)
         kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers(user)
@@ -206,7 +206,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
 
-#        LOG.debug("unrestrictedSearchResults %s" % str(kw))
+#        logger.debug("unrestrictedSearchResults %s" % str(kw))
 
         return self._search(REQUEST, **kw)
 
@@ -222,7 +222,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
 
-##        LOG.debug("reindexObject %s idxs=%s update_metdata=%s" % (
+##        logger.debug("reindexObject %s idxs=%s update_metdata=%s" % (
 ##            str(object), str(idxs), str(update_metadata)))
 
         if uid is None:
@@ -242,7 +242,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         if repotool is not None and repotool.isObjectUnderRepository(object):
             return
 
-#        LOG.debug("unindexObject %s" % str(object))
+#        logger.debug("unindexObject %s" % str(object))
 
         default_uid = self._CatalogTool__url(object)
         proxy = None
@@ -261,7 +261,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     def catalog_object(self, object, uid, idxs=[], update_metadata=1,
                        pghandler=None):
 
-##        LOG.debug("cat_catalog_object %s" % str(object))
+##        logger.debug("cat_catalog_object %s" % str(object))
 
         # Don't index repository objects or anything under them.
         repotool = getToolByName(self, 'portal_repository', None)
@@ -362,31 +362,31 @@ class CPSLuceneCatalogTool(CatalogTool):
         expected = 1
         removed = 0
         last_commit = 0
-        
+
         while total < expected:
             results, nb_results = self.getCatalog().searchResults(
                 return_fields=('uid',),
-                search_fields={'path': '/'}, 
+                search_fields={'path': '/'},
                 options={'b_start': total-removed})
             if total == 0: # First batch
                 expected = nb_results
             if not results:
                 if expected:
-                    LOG.warning("Expected %i results, got only %i, deleted %i" % (
+                    logger.warning("Expected %i results, got only %i, deleted %i" % (
                         expected, total, removed))
                 break
             total += len(results)
-            
+
             for entry in results:
                 uid = str(entry['uid'])
                 try:
                     ob = self.unrestrictedTraverse(uid)
                 except (AttributeError, KeyError):
-                    LOG.debug("Object %s doesn't exist and is removed from "
+                    logger.debug("Object %s doesn't exist and is removed from "
                               "the catalog" % uid)
                     self.uncatalog_object(uid)
                     removed += 1
-            
+
             if removed >= last_commit + 100:
                 transaction.commit()
                 last_commit = removed
@@ -394,7 +394,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         transaction.commit()
         self.getCatalog().optimize()
         return
-        
+
     #
     # ZMI
     #
@@ -402,17 +402,14 @@ class CPSLuceneCatalogTool(CatalogTool):
     # The server_url properties are here only to display the values in ZMI.
     # The actual used properties are on the nuxeo.lucene catalog
     # utility
-    _properties = CatalogTool._properties + \
-                  ({'id':'server_url',
-                    'type':'string',
-                    'mode':'w',
-                    'label':'xml-rpc server URL',
-                    },
-                    {'id':'multilanguage_support',
-                    'type':'boolean',
-                    'mode':'w',
-                    'label':'Multi-language support',
-                    },                   )
+    _properties = CatalogTool._properties + (
+        {'id':'server_url', 'type':'string', 'mode':'w',
+         'label':'xml-rpc server URL',
+         },
+        {'id':'multilanguage_support', 'type':'boolean', 'mode':'w',
+         'label':'Multi-language support',
+         },
+        )
 
     manage_options = (CatalogTool.manage_options[2],
                       { 'label' : 'Manage XML-RPC Server',
@@ -496,7 +493,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 ##                break
 
 
-            LOG.info("Proxy number %s grabbed !" %str(grabbed))
+            logger.info("Proxy number %s grabbed !" %str(grabbed))
 #            timer.log()
 
         # If less than 100 proxies reindexed.
@@ -504,7 +501,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             gc.collect()
 
         stop = time.time()
-        LOG.info("Reindexation done in %s seconds" % str(stop-start))
+        logger.info("Reindexation done in %s seconds" % str(stop-start))
 
         # Reset the multi_language_support:
         if enable_multilanguage_support:
