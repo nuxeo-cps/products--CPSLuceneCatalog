@@ -221,8 +221,8 @@ class CPSLuceneCatalogTool(CatalogTool):
         o Permission:  Private (Python only)
         """
 
-##        logger.debug("reindexObject %s idxs=%s update_metdata=%s" % (
-##            str(object), str(idxs), str(update_metadata)))
+#        logger.debug("reindexObject %s idxs=%s update_metdata=%s" % (
+#            str(object), str(idxs), str(update_metadata)))
 
         if uid is None:
             uid = self.__url(object)
@@ -271,7 +271,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         else:
             pgharg = (pghandler,)
 
-##        logger.debug("catalog_object %s" % str(object))
+#        logger.debug("catalog_object %s" % str(object))
 
         wf = getattr(self, 'portal_workflow', None)
         if wf is not None:
@@ -281,7 +281,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         # Filter out invalid indexes will be done at nuxeo.lucene level.
 
-        ### Not a proxy.
+        # Not a proxy.
         if not isinstance(object, ProxyBase):
             w = IndexableObjectWrapper(vars, object)
             self.getCatalog().index(uid, w, idxs)
@@ -486,9 +486,9 @@ class CPSLuceneCatalogTool(CatalogTool):
                 gc.collect()
 #                timer.mark("gc.collect()")
 
-##            # DEBUG
-##            if grabbed >= 200:
-##                break
+#            # DEBUG
+#            if grabbed >= 200:
+#                break
 
 
             logger.info("Proxy number %s grabbed !" %str(grabbed))
