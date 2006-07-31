@@ -464,7 +464,6 @@ class CPSLuceneCatalogTool(CatalogTool):
         else:
             enable_multilanguage_support = False
 
-#        rpaths = ('/gcac_preprod/sections/ouvrages/ouvrage-test-eba',)
         for rpath in rpaths:
 #            timer = Timer("Get proxy information", level=TRACE)
 
