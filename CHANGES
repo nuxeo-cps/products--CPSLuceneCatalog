@@ -10,3 +10,4 @@ Bug fixes:
 New internal features:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Removing defunct entries will now optimize the catalog after the removal.
+- Fixed typo in wrapper.match_languages

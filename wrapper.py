@@ -165,7 +165,7 @@ class IndexableObjectWrapper:
         ob = self.__ob
         proxy_language = self.__lang
         if proxy_language is None:
-            return cps_utils.ALL_LOCALES
+            return cpsutils.ALL_LOCALES
         languages = [proxy_language]
         if ob.getDefaultLanguage() == proxy_language:
             languages.extend([lang for lang in cpsutils.ALL_LOCALES
