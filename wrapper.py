@@ -78,14 +78,17 @@ class IndexableObjectWrapper:
             # we add proxy id to searchableText
             ret = ret() + ' ' + proxy.getId()
 
-        # Check here if it's a date and return a string representation
-        # of the date since DateTime is not a Python standard object
+        # use callable result if needed
         v = ret
         if callable(v):
             v = v()
+
+        # Check here if it's a date and return a string representation
+        # of the date since DateTime is not a Python standard object
         if isinstance(v, DateTime):
-            ret = v.ISO()
-        return ret
+            v = v.ISO()
+
+        return v
 
     def allowedRolesAndUsers(self):
         """
