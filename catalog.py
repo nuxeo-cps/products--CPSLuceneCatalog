@@ -515,16 +515,14 @@ class CPSLuceneCatalogTool(CatalogTool):
     def manage_reindexSelectedFields(self, fields=(), REQUEST=None):
         """Reindex selected fields.
         """
-
         if fields:
             self.manage_reindexProxies(idxs=fields, REQUEST=REQUEST)
-
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_catalogFields')
 
     security.declareProtected(ManagePortal, 'manage_optimize')
-    def manage_optimize(self):
+    def manage_optimize(self, REQUEST=None):
         """Optimier the indexes store
         """
         self.getCatalog().optimize()
@@ -533,7 +531,7 @@ class CPSLuceneCatalogTool(CatalogTool):
                 self.absolute_url() + '/manage_advancedForm')
 
     security.declareProtected(ManagePortal, 'manage_clean')
-    def manage_clean(self):
+    def manage_clean(self, REQUEST=None):
         """CLean the indexes store.
         """
         self.clean()
@@ -541,8 +539,8 @@ class CPSLuceneCatalogTool(CatalogTool):
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
 
-    security.declareProtected(ManagePortal, 'manage_clean')
-    def manage_removeDefunctEntries(self, REQUEST):
+    security.declareProtected(ManagePortal, 'manage_removeDefunctEntries')
+    def manage_removeDefunctEntries(self, REQUEST=None):
         """Remove objects that no longer exist
         """
         self.removeDefunctEntries()
