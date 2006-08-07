@@ -1,4 +1,21 @@
 *******************************************
+** CPSLuceneCatalog V0.5.1 [R1 build 2006/08/07-14:53 by lregebro]
+** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 48063
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+-
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+- Removing defunct entries will now optimize the catalog after the removal.
+- Fixed typo in wrapper.match_languages
+
+*******************************************
 ** CPSLuceneCatalog V0.5.0 [R1 build 2006/07/27-17:13 by lregebro]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 47501
 Requires:
