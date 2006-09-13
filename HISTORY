@@ -1,3 +1,23 @@
+===========================================================
+Package: CPSLuceneCatalog 0.5.2
+===========================================================
+First release built by: gracinet at: 2006-09-13T13:51:29
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.5.2
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk/@48930
+
+Requires:
+~~~~~~~~~
+-
+New features:
+~~~~~~~~~~~~~
+-
+Bug fixes:
+~~~~~~~~~~
+- pydev project file
+New internal features:
+~~~~~~~~~~~~~~~~~~~~~~
+-
+
 *******************************************
 ** CPSLuceneCatalog V0.5.1 [R1 build 2006/08/07-14:53 by lregebro]
 ** SVN URL: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk Revision: 48063
