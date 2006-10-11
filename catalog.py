@@ -163,6 +163,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
 #        t = Timer('CPSLuceneCatalog._search', level=logging.DEBUG)
 
+        return_fields = kw.pop('columns', ())
         # Construct query for nuxeo.lucene.catalog
         query = ZCatalogQuery(self, REQUEST, **kw)
 
@@ -171,6 +172,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         results, nb_results = self.getCatalog().searchResults(
             search_fields=query.getFieldsMap(),
             options=query.getQueryOptions(),
+            return_fields=return_fields,
             )
 
 #        t.mark('NXLucene query request')
@@ -306,7 +308,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         uid_view = uid + '/' + cpsutils.KEYWORD_VIEW_LANGUAGE
         if self.multilanguage_support:
             # Find what languages are in the catalog for this proxy
-            for brain in self.unrestrictedSearchResults(path=uid_view):
+            for brain in self.unrestrictedSearchResults(path=uid_view, columns=('uid',)):
                 path = brain.getPath()
                 had_languages.append(path[path.rindex('/')+1:])
 

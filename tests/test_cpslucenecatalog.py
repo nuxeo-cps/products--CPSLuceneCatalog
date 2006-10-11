@@ -17,9 +17,15 @@
 #
 # $Id$
 """CPS Lucene Catalog tests
+
+To run this test, you'll need to
+  - have a real, **DEDICATED** NXLucene server responding at the url
+    specified in default profile (running the test will wipe the store !)
+  - uncomment a line in test_suite()
 """
 
 import unittest
+import time
 
 import transaction
 
@@ -37,6 +43,11 @@ class CPSLuceneCatalogTestCase(
         from Products.CPSCore.tests.setup import fullFiveSetup
         fullFiveSetup()
         CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase.afterSetup(self)
+
+    def beforeTearDown(self):
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+        cpscatalog.manage_clean()
+        self.logout()
 
     def test_implementation(self):
         from zope.interface.verify import verifyClass
@@ -75,6 +86,7 @@ class CPSLuceneCatalogTestCase(
         cpscatalog.indexObject(object_)
 
         transaction.commit()
+        time.sleep(0.1)
 
         # Search it back
         kw = {
@@ -103,6 +115,7 @@ class CPSLuceneCatalogTestCase(
         object_.reindexObject()
 
         transaction.commit()
+        time.sleep(0.1)
 
         # Search it back
         kw = {
@@ -118,6 +131,7 @@ class CPSLuceneCatalogTestCase(
         cpscatalog.unindexObject(object_)
 
         transaction.commit()
+        time.sleep(0.1)
 
         # Find object back. Should be gone.
         results = cpscatalog.searchResults(**kw)
@@ -140,6 +154,7 @@ class CPSLuceneCatalogTestCase(
         cpscatalog.indexObject(object_)
 
         transaction.commit()
+        time.sleep(0.1)
 
         # Search it back
         kw = {
@@ -154,6 +169,7 @@ class CPSLuceneCatalogTestCase(
         cpscatalog.reindexObject(object_)
 
         transaction.commit()
+        time.sleep(0.1)
 
         results = cpscatalog.searchResults(**kw)
 
@@ -164,11 +180,9 @@ class CPSLuceneCatalogTestCase(
             }
 
         results = cpscatalog.searchResults(**kw)
-        # XXX AT: I've got 100 instead, seems like search is done using my own
-        # Lucene store and not the testing one (?)
-        #self.assertEqual(len(results), 1)
+        self.assertEqual(len(results), 1)
         # XXX AT: KeyError, kw['path'] is not set anymore here
-        #self.assertEqual(results[0].uid, kw['path'])
+        self.assertEqual(results[0].uid, kw['uid'])
 
         self.logout()
 
@@ -183,12 +197,14 @@ class CPSLuceneCatalogTestCase(
         utool = getToolByName(self.portal, 'portal_url')
 
         # Create a new object within the workspaces area
-        id_ = self._makeOne(self.portal.workspaces, 'File')
+        id_ = self._makeOne(self.portal.workspaces, 'File',
+                            Description="test_basic_searchResults")
 
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
 
         transaction.commit()
+        time.sleep(0.1)
 
         kw = {
             # This is how the CatalogTool compute it.
@@ -198,6 +214,14 @@ class CPSLuceneCatalogTestCase(
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].uid, kw['path'])
+
+        # test return_fields, aka columns
+        _marker = object()
+        # check that the test is meaningful (depends on current profile)
+        self.failIf(getattr(results[0], 'expires', _marker) is _marker)
+        results = cpscatalog.searchResults(columns=('Description',), **kw)
+        self.assertEqual(results[0].Description, "test_basic_searchResults")
+        self.assertEqual(getattr(results[0], 'expires', None), None)
 
     def notest_removeDefunctEntries(self):
 
@@ -214,6 +238,7 @@ class CPSLuceneCatalogTestCase(
         object_.reindexObject()
 
         transaction.commit()
+        time.sleep(0.1)
 
         # Search it back
         kw = {
@@ -229,6 +254,7 @@ class CPSLuceneCatalogTestCase(
         # Delete without unindexing:
         self.portal.workspaces._delOb(id_)
         transaction.commit()
+        time.sleep(0.1)
 
         # Find object back. Should still be there
         results = cpscatalog.searchResults(**kw)
@@ -254,6 +280,6 @@ class CPSLuceneCatalogTestCase(
 
 def test_suite():
     suite = unittest.TestSuite()
-#    suite.addTest(unittest.makeSuite(CPSLuceneCatalogTestCase))
+    #suite.addTest(unittest.makeSuite(CPSLuceneCatalogTestCase))
     return suite
 
