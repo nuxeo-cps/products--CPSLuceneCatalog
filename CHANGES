@@ -3,13 +3,10 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
-- New API extension: optional kwarg 'columns' allows to override the brains 
-  schema for given call. Use it to get less metadata (huge performance gain in
-  some situations) or to get a specific one that's not worthy of being on all
-  catalog results.
+-
 Bug fixes
 ~~~~~~~~~
 -
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- Fixed and commented test_cpslucenecatalog 
+- 
