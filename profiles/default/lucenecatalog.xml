@@ -193,6 +193,15 @@
 	analyzer="Standard"
 	/>
 
+    <!-- an exact match on the container.
+	 Used by catalog folder_contents -->
+    <field 
+	name="container_path"
+	attr="container_path"
+	type="Keyword"
+	analyzer="Standard"
+	/>
+
     <field 
 	name="start"
 	attr="start"
@@ -206,6 +215,25 @@
 	type="Date"
 	analyzer="Standard"
 	/>
+
+
+  <!-- Special fields for sorting -->
+
+    <field 
+	name="Title_sort"
+	attr="Title"
+	type="Sort"
+	analyzer="Sort"
+	/>
+
+
+    <field 
+	name="Date_sort"
+	attr="Date"
+	type="Sort"
+	analyzer="Sort"
+	/>
+
 
   <!-- Brain's  Metadata --> 
 
