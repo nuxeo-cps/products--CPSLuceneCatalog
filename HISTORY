@@ -1,4 +1,24 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.7.0
+===========================================================
+First release built by: ogrisel at: 2006-10-15T22:40:29
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.7.0
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk/@49572
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- New fields for catalog-based folder_contents
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: CPSLuceneCatalog 0.6.0
 ===========================================================
 First release built by: ogrisel at: 2006-10-11T20:19:29
