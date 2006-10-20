@@ -36,7 +36,7 @@ from Products.CMFCore.utils import getToolByName
 from nuxeo.lucene.interfaces import ILuceneCatalog
 from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
 
-class CPSLuceneCatalogTestCase(
+class CPSLuceneCatalogTest(
     CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase):
 
     def afterSetup(self):
@@ -280,6 +280,6 @@ class CPSLuceneCatalogTestCase(
 
 def test_suite():
     suite = unittest.TestSuite()
-    #suite.addTest(unittest.makeSuite(CPSLuceneCatalogTestCase))
+    suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
     return suite
 
