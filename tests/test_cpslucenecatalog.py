@@ -148,41 +148,64 @@ class CPSLuceneCatalogTest(
         cpscatalog = getToolByName(self.portal, 'portal_catalog')
 
         # Create a new object within the workspaces area
-        id_ = self._makeOne(self.portal.workspaces, 'File')
-
+        id_ = self._makeOne(self.portal.workspaces, 'File', title="The title",
+                            Description="This is the description of the file")
         object_ = getattr(self.portal.workspaces, id_)
         cpscatalog.indexObject(object_)
 
         transaction.commit()
         time.sleep(0.1)
 
-        # Search it back
+        # Search it back on path
+        uid = '/'.join(object_.getPhysicalPath())
         kw = {
             # This is how the CatalogTool compute it.
-            'path' : '/'.join(object_.getPhysicalPath())
+            'path' : uid
             }
 
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].uid, kw['path'])
 
+        # Search on fulltext
+        results = cpscatalog.searchResults(SearchableText="description")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, uid)
+
         cpscatalog.reindexObject(object_)
 
         transaction.commit()
         time.sleep(0.1)
-
-        results = cpscatalog.searchResults(**kw)
-
-        # Search it back
+        
+        # Search on uid
         kw = {
             # This is how the CatalogTool compute it.
-            'uid' : '/'.join(object_.getPhysicalPath())
+            'uid' : uid
             }
-
         results = cpscatalog.searchResults(**kw)
         self.assertEqual(len(results), 1)
-        # XXX AT: KeyError, kw['path'] is not set anymore here
-        self.assertEqual(results[0].uid, kw['uid'])
+        self.assertEqual(results[0].uid, uid)
+
+        # Search on fulltext
+        results = cpscatalog.searchResults(SearchableText="description")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, uid)
+
+        # Index just one field.
+        cpscatalog.reindexObject(object_, idxs=('Title'))
+
+        transaction.commit()
+        time.sleep(0.1)
+
+        # Search on uid
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, uid)
+
+        # Search on fulltext
+        results = cpscatalog.searchResults(SearchableText="description")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, uid)
 
         self.logout()
 
@@ -280,6 +303,7 @@ class CPSLuceneCatalogTest(
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
+    # This test is disabled by default, see note at top of this file.
+    # suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
     return suite
 
