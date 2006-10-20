@@ -281,7 +281,19 @@ class CPSLuceneCatalogTool(CatalogTool):
         else:
             vars = {}
 
-        # Filter out invalid indexes will be done at nuxeo.lucene level.
+        # Workaround for a Lucene problem:
+        # In lucene, you can not get the data out from an unindexed or
+        # unstored field. And since reindexing means unindexing and then
+        # re-indexing a record, this means that if you don't pass the data
+        # for unindexed or unstored fields, these will be cleared.
+        # Therefore, when specifying which indexes to reindex, we here make 
+        # sure that all unindexed and unstored fields are included:
+        if idxs:
+            idxs = list(idxs)
+            for idx in self.getCatalog().getFieldConfigurationsFor():
+                if (idx.type.lower() in ('unindexed', 'unstored') and
+                    idx.name not in idxs):
+                    idxs.append(idx.name)
 
         # Not a proxy.
         if not isinstance(object, ProxyBase):
@@ -453,7 +465,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         rpaths = pxtool._rpath_to_infos
 
         portal = utool.getPortalObject()
-
+                        
         # When reindexing the WHOLE catalog, as we do here, the language
         # support is pointless, as it's there to reindex all languages of a
         # proxy, even when you reindex only one of them. Here they all get
@@ -465,6 +477,11 @@ class CPSLuceneCatalogTool(CatalogTool):
         else:
             enable_multilanguage_support = False
 
+        # Also, the asynchronous reindexing is pretty pointless here too:
+        if self.getCatalog()._txn_async:
+            enable_txn_async = True
+            self.getCatalog()._txn_async = False
+        
         for rpath in rpaths:
 #            timer = Timer("Get proxy information", level=TRACE)
 
@@ -502,9 +519,12 @@ class CPSLuceneCatalogTool(CatalogTool):
         stop = time.time()
         logger.info("Reindexation done in %s seconds" % str(stop-start))
 
-        # Reset the multi_language_support:
+        # Reset the multi_language_support and _txn_async
         if enable_multilanguage_support:
             self.multilanguage_support = True
+        if enable_txn_async:
+            self.getCatalog()._txn_async = True
+
 
         # Optimize the store
         self.getCatalog().optimize()

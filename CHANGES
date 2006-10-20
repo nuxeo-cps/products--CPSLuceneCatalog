@@ -6,7 +6,10 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- Added a workaround for Lucenes single-field reindexing problem.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- 
+- Now turns of asynchronous indexing when reindexing all proxies.
+  Speeds up the zope side significantly, especially for single-field 
+  indexing. (The Lucene side is still the same, so it doesn't speed up
+  total indexing time in normal circumstances though).
