@@ -1,4 +1,32 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.8.0
+===========================================================
+First release built by: lregebro at: 2006-10-23T15:48:31
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.8.0
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk@49801
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- Added a "Synchronize" button that will reindex any non-indexed proxies.
+Bug fixes
+~~~~~~~~~
+- Added a workaround for Lucenes single-field reindexing problem.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- Now turns of asynchronous indexing when reindexing all proxies.
+  Speeds up the zope side significantly, especially for single-field 
+  indexing. (The Lucene side is still the same, so it doesn't speed up
+  total indexing time in normal circumstances though).
+- There is two implementations of the synchronize method, one that uses hasUID
+  and one that does an empty search to get all documents and fetches the uid
+  from these. On a small site, the last one is much faster, but both are
+  included so that we can test them on a actual big site. The faster one will 
+  then be permanent.
+  
+===========================================================
 Package: CPSLuceneCatalog 0.7.0
 ===========================================================
 First release built by: ogrisel at: 2006-10-15T22:40:29
