@@ -512,7 +512,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         if only_missing:
             b_start = 0
             while True:
-                all = self.searchResults(b_start=b_start, columns=('uid'))
+                all = self.searchResults(b_start=b_start, columns=('uid',))
                 new = [x.uid for x in all]
                 b_start += len(new)
                 indexed_paths.extend(new)
