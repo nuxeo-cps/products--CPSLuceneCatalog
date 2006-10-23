@@ -441,9 +441,87 @@ class CPSLuceneCatalogTool(CatalogTool):
         enable_txn_async = catalog._txn_async
         if enable_txn_async:
             catalog._txn_async = False
-        
+
         for rpath in rpaths:
+            ppath = portal_path + '/' + rpath
             if only_missing and catalog.hasUID(portal_path + '/' + rpath):
+                continue
+
+            proxy = portal.unrestrictedTraverse(rpath)
+            self.reindexObject(proxy, idxs=list(idxs))
+            transaction.commit()
+            grabbed +=1
+            proxy._p_deactivate()
+
+            if grabbed % 100 == 0:
+                gc.collect()
+
+            logger.info("Proxy number %s grabbed !" %str(grabbed))
+
+        # If less than 100 proxies reindexed.
+        if grabbed < 100:
+            gc.collect()
+
+        stop = time.time()
+        logger.info("Reindexation done in %s seconds" % str(stop-start))
+
+        # Reset the multi_language_support and _txn_async
+        if enable_multilanguage_support:
+            self.multilanguage_support = True
+        if enable_txn_async:
+            catalog._txn_async = True
+
+        # Optimize the store
+        catalog.optimize()
+
+    security.declareProtected(ManagePortal, 'indexMissingProxies')
+    def indexMissingProxies(self, only_missing=1):
+        """Indexes all the missing proxies. Experimental and possibly
+        faster implementation.
+        """
+
+        start = time.time()
+
+        grabbed = 0
+        reindexed = 0
+
+        pxtool = getToolByName(self, 'portal_proxies')
+        utool = getToolByName(self, 'portal_url')
+        portal = utool.getPortalObject()
+        rpaths = pxtool._rpath_to_infos
+        portal_path = utool.getPortalPath()
+                        
+        # When reindexing the WHOLE catalog, as we do here, the language
+        # support is pointless, as it's there to reindex all languages of a
+        # proxy, even when you reindex only one of them. Here they all get
+        # reindexed sooner or later anyway:
+
+        if self.multilanguage_support:
+            self.multilanguage_support = False
+            enable_multilanguage_support = True
+        else:
+            enable_multilanguage_support = False
+
+        # Also, the asynchronous reindexing is pretty pointless here too:
+        catalog = self.getCatalog()
+        enable_txn_async = catalog._txn_async
+        if enable_txn_async:
+            catalog._txn_async = False
+
+        indexed_paths = []
+        if only_missing:
+            b_start = 0
+            while True:
+                all = self.searchResults(b_start=b_start, columns=('uid'))
+                new = [x.uid for x in all]
+                b_start += len(new)
+                indexed_paths.extend(new)
+                if not len(new):
+                    break
+
+        for rpath in rpaths:
+            ppath = portal_path + '/' + rpath
+            if only_missing and ppath in indexed_paths:
                 continue
 
             proxy = portal.unrestrictedTraverse(rpath)
@@ -554,7 +632,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
 
-    security.declareProtected(ManagePortal, 'manage_synchronizeEntries')
+    security.declareProtected(ManagePortal, 'manage_removeDefunctEntries')
     def manage_removeDefunctEntries(self, REQUEST=None):
         """Remove objects that no longer exist
         """

@@ -13,3 +13,9 @@ New internal features
   Speeds up the zope side significantly, especially for single-field 
   indexing. (The Lucene side is still the same, so it doesn't speed up
   total indexing time in normal circumstances though).
+- There is two implementations of the synchronize method, one that uses hasUID
+  and one that does an empty search to get all documents and fetches the uid
+  from these. On a small site, the last one is much faster, but both are
+  included so that we can test them on a actual big site. The faster one will 
+  then be permanent.
+  
