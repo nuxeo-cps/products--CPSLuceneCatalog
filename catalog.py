@@ -555,13 +555,21 @@ class CPSLuceneCatalogTool(CatalogTool):
                 self.absolute_url() + '/manage_advancedForm')
 
     security.declareProtected(ManagePortal, 'manage_synchronizeEntries')
-    def manage_synchronizeEntries(self, REQUEST=None):
+    def manage_removeDefunctEntries(self, REQUEST=None):
         """Remove objects that no longer exist
+        """
+        self.removeDefunctEntries()
+        if REQUEST is not None:
+            REQUEST.RESPONSE.redirect(
+                self.absolute_url() + '/manage_advancedForm')
+
+    security.declareProtected(ManagePortal, 'manage_synchronizeEntries')
+    def manage_synchronizeEntries(self, REQUEST=None):
+        """Index objects that are not indexed.
         """
         self.removeDefunctEntries()
         self.indexProxies(only_missing=1)
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
-
 InitializeClass(CPSLuceneCatalogTool)

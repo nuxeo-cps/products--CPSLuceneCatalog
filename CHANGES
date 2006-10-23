@@ -3,8 +3,7 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
-- The "Remove defunct entries" is now "Synchronize" button that will
-  remove defunct entries and reindex any missing entries.
+- Added a "Synchronize" button that will reindex any non-indexed proxies.
 Bug fixes
 ~~~~~~~~~
 - Added a workaround for Lucenes single-field reindexing problem.

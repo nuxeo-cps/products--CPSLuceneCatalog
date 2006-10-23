@@ -52,14 +52,23 @@ You can clear all the indexes from the server store from here.
   <input type="submit" name="clean" value="Clean the store"/>
 </form>
 
-<h3>Synchronize</h3>
+<h3>Remove defunct entries</h3>
 <p>
 Goes through the whole index, and removes any entries where the objects
-no longer exist in the ZODB, and adds any document in the ZODB which is not
-in the index.
+no longer exist in the ZODB.
+</p>
+<form action="manage_removeDefunctEntries" method="POST">
+  <input type="submit" name="remove_defunct" value="Remove defunct entries"/>
+</form>
+
+<h3>Synchronize</h3>
+<p>
+Indexes any document in the ZODB which is not in the index.
 </p>
 <form action="manage_synchronizeEntries" method="POST">
   <input type="submit" name="synchronize" value="Synchronize entries"/>
 </form>
+
+<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
 
 <tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
