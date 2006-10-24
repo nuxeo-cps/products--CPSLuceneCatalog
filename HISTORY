@@ -1,4 +1,24 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.9.0
+===========================================================
+First release built by: lregebro at: 2006-10-24T15:58:15
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.9.0
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk@49820
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- More logs in the different indexing/reindexing/pruning methods. 
+
+===========================================================
 Package: CPSLuceneCatalog 0.8.0
 ===========================================================
 First release built by: lregebro at: 2006-10-23T15:48:31
