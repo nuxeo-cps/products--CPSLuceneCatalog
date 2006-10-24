@@ -403,6 +403,10 @@ class CPSLuceneCatalogTool(CatalogTool):
             if removed >= last_commit + 100:
                 transaction.commit()
                 last_commit = removed
+
+            logger.debug("Checked %s records " % str(total))
+
+
         # OK, do the last commit as well and optimize for good measure.
         transaction.commit()
         self.getCatalog().optimize()
@@ -416,7 +420,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         """
         start = time.time()
 
-        grabbed = 0
+        checked = 0
         reindexed = 0
 
         pxtool = getToolByName(self, 'portal_proxies')
@@ -444,22 +448,25 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         for rpath in rpaths:
             ppath = portal_path + '/' + rpath
+            checked += 1
             if only_missing and catalog.hasUID(portal_path + '/' + rpath):
+                if checked % 100 == 0:
+                    logger.info("Proxy number %s checked." % str(checked))
                 continue
 
             proxy = portal.unrestrictedTraverse(rpath)
             self.reindexObject(proxy, idxs=list(idxs))
             transaction.commit()
-            grabbed +=1
+            reindexed +=1
             proxy._p_deactivate()
 
-            if grabbed % 100 == 0:
+            if reindexed % 100 == 0:
                 gc.collect()
 
-            logger.info("Proxy number %s grabbed !" %str(grabbed))
+            logger.info("Proxy number %s reindexed:\n%s" % (str(reindexed), rpath))
 
         # If less than 100 proxies reindexed.
-        if grabbed < 100:
+        if reindexed < 100:
             gc.collect()
 
         stop = time.time()
@@ -475,14 +482,14 @@ class CPSLuceneCatalogTool(CatalogTool):
         catalog.optimize()
 
     security.declareProtected(ManagePortal, 'indexMissingProxies')
-    def indexMissingProxies(self, only_missing=1):
+    def indexMissingProxies(self, idxs=(), only_missing=1):
         """Indexes all the missing proxies. Experimental and possibly
         faster implementation.
         """
 
         start = time.time()
 
-        grabbed = 0
+        checked = 0
         reindexed = 0
 
         pxtool = getToolByName(self, 'portal_proxies')
@@ -518,25 +525,29 @@ class CPSLuceneCatalogTool(CatalogTool):
                 indexed_paths.extend(new)
                 if not len(new):
                     break
+                logger.info("Getting list of UIDs. %s done." % str(b_start))
 
         for rpath in rpaths:
+            checked += 1
             ppath = portal_path + '/' + rpath
             if only_missing and ppath in indexed_paths:
+                if checked % 100 == 0:
+                    logger.info("Proxy number %s checked." % str(checked))
                 continue
 
             proxy = portal.unrestrictedTraverse(rpath)
             self.reindexObject(proxy, idxs=list(idxs))
             transaction.commit()
-            grabbed +=1
+            reindexed +=1
             proxy._p_deactivate()
 
-            if grabbed % 100 == 0:
+            if reindexed % 100 == 0:
                 gc.collect()
 
-            logger.info("Proxy number %s grabbed !" %str(grabbed))
+            logger.info("Proxy number %s reindexed:\n%s" % (str(reindexed), rpath))
 
         # If less than 100 proxies reindexed.
-        if grabbed < 100:
+        if reindexed < 100:
             gc.collect()
 
         stop = time.time()
@@ -645,7 +656,6 @@ class CPSLuceneCatalogTool(CatalogTool):
     def manage_synchronizeEntries(self, REQUEST=None):
         """Index objects that are not indexed.
         """
-        self.removeDefunctEntries()
         self.indexProxies(only_missing=1)
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
