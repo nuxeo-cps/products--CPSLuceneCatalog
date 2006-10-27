@@ -22,6 +22,7 @@
 import time
 import logging
 import gc
+from sets import Set
 
 from ZODB.loglevels import TRACE
 import transaction
@@ -445,84 +446,15 @@ class CPSLuceneCatalogTool(CatalogTool):
         enable_txn_async = catalog._txn_async
         if enable_txn_async:
             catalog._txn_async = False
-
-        for rpath in rpaths:
-            ppath = portal_path + '/' + rpath
-            checked += 1
-            if only_missing and catalog.hasUID(portal_path + '/' + rpath):
-                if checked % 100 == 0:
-                    logger.info("Proxy number %s checked." % str(checked))
-                continue
-
-            proxy = portal.unrestrictedTraverse(rpath)
-            self.reindexObject(proxy, idxs=list(idxs))
-            transaction.commit()
-            reindexed +=1
-            proxy._p_deactivate()
-
-            if reindexed % 100 == 0:
-                gc.collect()
-
-            logger.info("Proxy number %s reindexed:\n%s" % (str(reindexed), rpath))
-
-        # If less than 100 proxies reindexed.
-        if reindexed < 100:
-            gc.collect()
-
-        stop = time.time()
-        logger.info("Reindexation done in %s seconds" % str(stop-start))
-
-        # Reset the multi_language_support and _txn_async
-        if enable_multilanguage_support:
-            self.multilanguage_support = True
-        if enable_txn_async:
-            catalog._txn_async = True
-
-        # Optimize the store
-        catalog.optimize()
-
-    security.declareProtected(ManagePortal, 'indexMissingProxies')
-    def indexMissingProxies(self, idxs=(), only_missing=1):
-        """Indexes all the missing proxies. Experimental and possibly
-        faster implementation.
-        """
-
-        start = time.time()
-
-        checked = 0
-        reindexed = 0
-
-        pxtool = getToolByName(self, 'portal_proxies')
-        utool = getToolByName(self, 'portal_url')
-        portal = utool.getPortalObject()
-        rpaths = pxtool._rpath_to_infos
-        portal_path = utool.getPortalPath()
-                        
-        # When reindexing the WHOLE catalog, as we do here, the language
-        # support is pointless, as it's there to reindex all languages of a
-        # proxy, even when you reindex only one of them. Here they all get
-        # reindexed sooner or later anyway:
-
-        if self.multilanguage_support:
-            self.multilanguage_support = False
-            enable_multilanguage_support = True
-        else:
-            enable_multilanguage_support = False
-
-        # Also, the asynchronous reindexing is pretty pointless here too:
-        catalog = self.getCatalog()
-        enable_txn_async = catalog._txn_async
-        if enable_txn_async:
-            catalog._txn_async = False
-
-        indexed_paths = []
+        
+        indexed_paths = Set()
         if only_missing:
             b_start = 0
             while True:
                 all = self.searchResults(b_start=b_start, columns=('uid',))
                 new = [x.uid for x in all]
                 b_start += len(new)
-                indexed_paths.extend(new)
+                indexed_paths.update(new)
                 if not len(new):
                     break
                 logger.info("Getting list of UIDs. %s done." % str(b_start))
@@ -546,22 +478,81 @@ class CPSLuceneCatalogTool(CatalogTool):
 
             logger.info("Proxy number %s reindexed:\n%s" % (str(reindexed), rpath))
 
-        # If less than 100 proxies reindexed.
-        if reindexed < 100:
-            gc.collect()
+        ## If less than 100 proxies reindexed.
+        #if reindexed < 100:
+        gc.collect()
 
         stop = time.time()
+        logger.info("%s proxies checked." % str(checked))
         logger.info("Reindexation done in %s seconds" % str(stop-start))
 
         # Reset the multi_language_support and _txn_async
         if enable_multilanguage_support:
             self.multilanguage_support = True
-        if enable_txn_async:
-            catalog._txn_async = True
+        #if enable_txn_async:
+        catalog._txn_async = True
 
         # Optimize the store
         catalog.optimize()
 
+    security.declareProtected(ManagePortal, 'hasuid')
+    def hasUID(self, uid):
+        "Checks if a certain UID is indexed"
+        return self._catalog.hasUID(uid)
+
+    def uniqueValuesFor(self, name):
+        """Return the unique values for a given FieldIndex 
+        
+        For Lucene this will return all the terms for a given field, no
+        matter what type. I don't promise it's unique (but it should be) or
+        sensible, because I haven't verified that it is is all cases.
+        /regebro"""
+        return self._catalog.getFieldTerms(name)
+
+    security.declareProtected(ManagePortal, 'getStats')
+    def getStats(self):
+        """Method for getting info on how many documents is indexed, unindexed
+        and the like. This is a temporary method for checking the performance
+        on this type of actions on some really big sites"""
+        res = []
+        start_time = time.time()
+        
+        # Get all indexed rpaths:
+        all_indexed = self.uniqueValuesFor('uid')
+        get_time = time.time()
+        res.append("Getting all UIDs: %s seconds" % (get_time - start_time))
+        
+        # Get all rpaths:
+        pxtool = getToolByName(self, 'portal_proxies')
+        rpaths = pxtool._rpath_to_infos
+        rpath_time = time.time()
+        res.append("Getting all rpaths: %s seconds" % (rpath_time - get_time))
+        
+        # Diff:
+        all_indexed = Set(all_indexed)
+        rpathset = Set()
+        portal_path = '/'.join(self.portal_url.getPortalObject().getPhysicalPath())
+        for rpath in rpaths:
+            path = portal_path + '/' + rpath
+            rpathset.add(path)
+            
+        #rpaths = rpaths.keys()
+        prepare_time = time.time()
+        res.append("Preparing for diff: %s seconds" % (prepare_time - rpath_time))
+        nonindexed = rpathset - all_indexed
+        ni_time = time.time()
+        res.append("Getting all non-indexed: %s seconds" % (ni_time - prepare_time))
+
+        defunct = all_indexed - rpathset
+        res.append("Getting all defuncts: %s seconds" % (time.time() - ni_time))
+        res.append("Total time: %s seconds" % (time.time() - start_time))
+        res.append("Defunct:")
+        for each in defunct:
+            res.append(each)
+        res.append("Missing:")
+        for each in nonindexed:
+            res.append(each)
+        return '\n'.join(res)
 
     #
     # ZMI
