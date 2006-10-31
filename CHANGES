@@ -1,6 +1,7 @@
 Requires
 ~~~~~~~~
--
+- NXLucene 0.13.0
+- nuxLucene/nuxeo.lucene 0.11.0
 New features
 ~~~~~~~~~~~~
 -
@@ -9,4 +10,5 @@ Bug fixes
 -
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- 
+- Refactored the reindexing and the removing of defunct entries to use
+  the new features of NXLucene to get unique field values for a field.
