@@ -102,8 +102,6 @@ class CPSLuceneCatalogTool(CatalogTool):
         self.getCatalog()._v_proxy = None
 
     def getCatalog(self):
-#        portal = aq_parent(aq_inner(self))
-#        return zapi.getUtility(ILuceneCatalog, context=portal)
        return self._catalog
 
     def __len__(self):
@@ -162,13 +160,13 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     def _search(self, REQUEST=None, **kw):
 
-#        t = Timer('CPSLuceneCatalog._search', level=logging.DEBUG)
+        #t = Timer('CPSLuceneCatalog._search', level=logging.DEBUG)
 
         return_fields = kw.pop('columns', ())
         # Construct query for nuxeo.lucene.catalog
         query = ZCatalogQuery(self, REQUEST, **kw)
 
-#        t.mark('Convert Query')
+        #t.mark('Convert Query')
 
         results, nb_results = self.getCatalog().searchResults(
             search_fields=query.getFieldsMap(),
@@ -176,7 +174,7 @@ class CPSLuceneCatalogTool(CatalogTool):
             return_fields=return_fields,
             )
 
-#        t.mark('NXLucene query request')
+        #t.mark('NXLucene query request')
 
         # Construct lite brains for BBB
         brains = []
@@ -184,16 +182,14 @@ class CPSLuceneCatalogTool(CatalogTool):
             one = CPSBrain(mapping).__of__(self)
             setattr(one, 'out_of', nb_results)
             brains.append(one)
-#        t.mark('Construct %s brain(s)' % str(len(brains)))
-#        t.log()
+        #t.mark('Construct %s brain(s)' % str(len(brains)))
+        #t.log()
         return brains
 
     def searchResults(self, REQUEST=None, **kw):
         """Searching with CPS security indexes.
         """
-
-#        logger.debug("SeachResults %s" % str(kw))
-
+        #logger.debug("SeachResults %s" % str(kw))
         user = _getAuthenticatedUser(self)
         kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers(user)
 
@@ -207,9 +203,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         o Permission:  Private (Python only)
         """
-
-#        logger.debug("unrestrictedSearchResults %s" % str(kw))
-
+        #logger.debug("unrestrictedSearchResults %s" % str(kw))
         return self._search(REQUEST, **kw)
 
     def reindexObject(self, object, idxs=[], update_metadata=1, uid=None):
@@ -223,10 +217,8 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         o Permission:  Private (Python only)
         """
-
-#        logger.debug("reindexObject %s idxs=%s update_metdata=%s" % (
-#            str(object), str(idxs), str(update_metadata)))
-
+        #logger.debug("reindexObject %s idxs=%s update_metdata=%s" % (
+            #str(object), str(idxs), str(update_metadata)))
         if uid is None:
             uid = self.__url(object)
 
@@ -244,7 +236,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         if repotool is not None and repotool.isObjectUnderRepository(object):
             return
 
-#        logger.debug("unindexObject %s" % str(object))
+        #logger.debug("unindexObject %s" % str(object))
 
         default_uid = self._CatalogTool__url(object)
         proxy = None
@@ -274,7 +266,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         else:
             pgharg = (pghandler,)
 
-#        logger.debug("catalog_object %s" % str(object))
+        #logger.debug("catalog_object %s" % str(object))
 
         wf = getattr(self, 'portal_workflow', None)
         if wf is not None:
@@ -368,7 +360,6 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     def addIndex(self, name, type,extra=None):
         pass
-
 
     security.declareProtected(ManagePortal, 'hasuid')
     def hasUID(self, uid):
@@ -611,7 +602,6 @@ class CPSLuceneCatalogTool(CatalogTool):
     def manage_synchronize(self, index_missing=0,remove_defunct=0, REQUEST=None):
         """Remove objects that no longer exist
         """
-        import pdb;pdb.set_trace()
         self._synchronize(index_missing=index_missing,
                           remove_defunct=index_missing)
         if REQUEST is not None:
