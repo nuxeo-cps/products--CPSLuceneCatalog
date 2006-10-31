@@ -15,31 +15,56 @@
 
 <p>
 
-<h3>Reindex the whole site</h3>
+<h3>Synchronization of documents and index</h3>
 
-<p>
-Reindexing the whole site might be useful while upgrading to a CPS
-Lucene Catalog from a former zcatalog based instance. Be aware that
-this operation might be a bit long depending of the size of your
-existing instance.
-</p>
+<p>Functions for synchronizing the content and the index, to make sure that
+all documents are indexed, and no documents that have been deleted are still
+in the index.</p> 
+
+<p>(Advanced usage tip: This method will write INFO-level messages in the log
+about how many documents that aren't indexed and how many documents that are
+defunct. You can get this information from the logs without actuallydoing
+anything by not selecting any action.)</p> 
+
+<form action="manage_synchronize" method="POST">
+<table border=0 cellspacing="5"><tr>
+<td><input type="checkbox" id="remove_defunct" name="remove_defunct"/></td>
+<td><label for="remove_defunct">Remove defunct entries: </label></td>
+<td>
+Goes through the whole index, and removes any entries where the objects
+no longer exist in the ZODB.</td>
+</tr>
+<tr>
+<td><input type="checkbox" id="index_missing" name="index_missing"/></td>
+<td><label for="index_missing">Index missing entries: </label></td>
+<td>Indexes any document in the ZODB which is not in the index.</td>
+</tr>
+</table>
+<input type="submit" name="SUBMIT" value="Synchronize"/>
+</form>
+
+
+<h3>Reindex document proxies</h3>
+
+<p> Here you can specify a path to reindex. The path must be relative to the
+portal (i.e. sections/projects, not /cps/sections/projects or
+http://site.com/sections/projects).</p>
+
+<p>If you specify a document that document will be reindexed. If you specify 
+a folder, the folder and all documents and folders under that path will be
+reindexed. If you leave the path empty, all document proxies will be
+reindexed.</p>
+
+<p>Reindexing the whole site might be useful while upgrading to a CPS Lucene
+Catalog from a former zcatalog based instance. Be aware that this operation
+might be a bit long depending of the size of your existing instance. </p>
 
 <form action="manage_reindexProxies" method="POST">
+  <input type="text" name="from_path" value="" />
   <input type="submit" name="reindex" value="Reindex all"/>
 </form>
 
-<h3>Optimize the indexes store</h3>
-
-<p>
-You can optimize the indexes store here. This is the standard Lucene
-optimize feature.
-</p>
-
-<form action="manage_optimize" method="POST">
-  <input type="submit" name="optimize" value="Optimize indexes"/>
-</form>
-
-<h3>Clean the whole indexes store</h3>
+<h3>Empty the whole indexes store</h3>
 <p>
 You can clear all the indexes from the server store from here.
 </p>
@@ -52,23 +77,14 @@ You can clear all the indexes from the server store from here.
   <input type="submit" name="clean" value="Clean the store"/>
 </form>
 
-<h3>Remove defunct entries</h3>
-<p>
-Goes through the whole index, and removes any entries where the objects
-no longer exist in the ZODB.
-</p>
-<form action="manage_removeDefunctEntries" method="POST">
-  <input type="submit" name="remove_defunct" value="Remove defunct entries"/>
-</form>
+<h3>Optimize the indexes store</h3>
 
-<h3>Synchronize</h3>
-<p>
-Indexes any document in the ZODB which is not in the index.
-</p>
-<form action="manage_synchronizeEntries" method="POST">
-  <input type="submit" name="synchronize" value="Synchronize entries"/>
-</form>
+<p> You can optimize the indexes store here. This is the standard Lucene
+optimize feature. Note that optimization is done after most of the above
+actions, so you probably don't need to do it. </p>
 
-<tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>
+<form action="manage_optimize" method="POST">
+  <input type="submit" name="optimize" value="Optimize indexes"/>
+</form>
 
 <tal:footer tal:replace="structure here/manage_page_footer">footer</tal:footer>

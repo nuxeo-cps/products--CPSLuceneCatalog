@@ -389,9 +389,11 @@ class CPSLuceneCatalogTool(CatalogTool):
         # longer exists.
         self._synchronize(index_missing=0,remove_defunct=1)
 
-    def indexProxies(self, idxs=()):
+    def indexProxies(self, idxs=(), from_path=''):
+        # Indexes all proxies under from_path
+        # If from_path is none, indexes all proxies.
         pxtool = getToolByName(self, 'portal_proxies')
-        rpaths = pxtool._rpath_to_infos
+        rpaths = pxtool._rpath_to_infos.keys(from_path, from_path+'\xFF')
         self._indexPaths(rpaths, idxs=idxs)
 
     def _indexPaths(self, rpaths, idxs=()):
@@ -575,13 +577,13 @@ class CPSLuceneCatalogTool(CatalogTool):
         'zmi/manage_catalogSchema.pt', globals())
 
     security.declareProtected(ManagePortal, 'manage_reindexProxies')
-    def manage_reindexProxies(self, idxs=(), REQUEST=None):
+    def manage_reindexProxies(self, idxs=(), from_path='', REQUEST=None):
         """Reindex  an existing complete CPS instance with content.
 
         It checks all the CPS proxies from the proxies tool.
         """
         
-        self.indexProxies(idxs)
+        self.indexProxies(idxs=idxs, from_path=from_path)
 
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
@@ -615,20 +617,13 @@ class CPSLuceneCatalogTool(CatalogTool):
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')
 
-    security.declareProtected(ManagePortal, 'manage_removeDefunctEntries')
-    def manage_removeDefunctEntries(self, REQUEST=None):
+    security.declareProtected(ManagePortal, 'manage_synchronize')
+    def manage_synchronize(self, index_missing=0,remove_defunct=0, REQUEST=None):
         """Remove objects that no longer exist
         """
-        self.removeDefunctEntries()
-        if REQUEST is not None:
-            REQUEST.RESPONSE.redirect(
-                self.absolute_url() + '/manage_advancedForm')
-
-    security.declareProtected(ManagePortal, 'manage_synchronizeEntries')
-    def manage_synchronizeEntries(self, REQUEST=None):
-        """Index objects that are not indexed.
-        """
-        self._synchronize(index_missing=1,remove_defunct=0)
+        import pdb;pdb.set_trace()
+        self._synchronize(index_missing=index_missing,
+                          remove_defunct=index_missing)
         if REQUEST is not None:
             REQUEST.RESPONSE.redirect(
                 self.absolute_url() + '/manage_advancedForm')

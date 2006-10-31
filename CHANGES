@@ -4,7 +4,10 @@ Requires
 - nuxLucene/nuxeo.lucene 0.11.0
 New features
 ~~~~~~~~~~~~
--
+- You can now specify a path for reindexing, and only the things
+  under that path will be reindexed.
+- Improved the advanced ZMI page slightly, so there is less risk of
+  pressing the wrong button.
 Bug fixes
 ~~~~~~~~~
 -
