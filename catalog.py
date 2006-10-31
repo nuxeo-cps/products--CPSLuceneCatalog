@@ -527,16 +527,6 @@ class CPSLuceneCatalogTool(CatalogTool):
                     (time.time() - start_time))
 
 
-
-    security.declareProtected(ManagePortal, 'getStats')
-    def getStats(self):
-        """Method for getting info on how many documents is indexed, unindexed
-        and the like. The stats are logged, together with the time it took to
-        get the information."""
-        # This is sneakily done by calling the synchronize method and asking
-        # it to actually do nothing. ;)
-        self._synchronize(remove_defunct=0, index_missing=0)
-        return "Stats logged (see logfile)."
     # 
     # ZMI
     #
