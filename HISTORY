@@ -1,4 +1,30 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.10.0
+===========================================================
+First release built by: lregebro at: 2006-11-02T16:08:34
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.10.0
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk@49907
+
+Requires
+~~~~~~~~
+- NXLucene 0.13.0
+- nuxLucene/nuxeo.lucene 0.11.0
+New features
+~~~~~~~~~~~~
+- You can now specify a path for reindexing, and only the things
+  under that path will be reindexed.
+- Improved the advanced ZMI page slightly, so there is less risk of
+  pressing the wrong button.
+- Added a mutex lock so that you can't start two reindexations at one time.
+Bug fixes
+~~~~~~~~~
+-
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- Refactored the reindexing and the removing of defunct entries to use
+  the new features of NXLucene to get unique field values for a field.
+
+===========================================================
 Package: CPSLuceneCatalog 0.9.0
 ===========================================================
 First release built by: lregebro at: 2006-10-24T15:58:15
