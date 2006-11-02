@@ -55,6 +55,8 @@ from wrapper import IndexableObjectWrapper
 
 from interfaces import ICPSLuceneCatalogTool
 
+import filelock
+
 logger = logging.getLogger("CPSLuceneCatalog")
 
 class CPSLuceneCatalogTool(CatalogTool):
@@ -380,12 +382,22 @@ class CPSLuceneCatalogTool(CatalogTool):
         # longer exists.
         self._synchronize(index_missing=0,remove_defunct=1)
 
+    def _obtainLock(self):
+        if not filelock.PythonFileLock('cpslucenecatalog').obtain():
+            raise ValueError("Another process is already reindexing or "
+                             "synchronizing this catalog")
+
+    def _releaseLock(self):
+        filelock.PythonFileLock('cpslucenecatalog').release()
+        
     def indexProxies(self, idxs=(), from_path=''):
         # Indexes all proxies under from_path
         # If from_path is none, indexes all proxies.
+        self._obtainLock()
         pxtool = getToolByName(self, 'portal_proxies')
         rpaths = pxtool._rpath_to_infos.keys(from_path, from_path+'\xFF')
         self._indexPaths(rpaths, idxs=idxs)
+        self._releaseLock()
 
     def _indexPaths(self, rpaths, idxs=()):
         """Indexes a list of paths (rpaths or physical paths both work).
@@ -444,6 +456,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         This method will index proxies that are not indexed and remove 
         index-entries that no longer have corresponding proxies.
         """
+        self._obtainLock()
         res = []
         start_time = time.time()
         logger.info("Start index synchronization")
@@ -516,6 +529,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         logger.info("Total time: %s seconds" %
                     (time.time() - start_time))
+        self._releaseLock()
 
 
     # 

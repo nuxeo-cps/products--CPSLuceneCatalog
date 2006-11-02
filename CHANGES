@@ -8,6 +8,7 @@ New features
   under that path will be reindexed.
 - Improved the advanced ZMI page slightly, so there is less risk of
   pressing the wrong button.
+- Added a mutex lock so that you can't start two reindexations at one time.
 Bug fixes
 ~~~~~~~~~
 -
