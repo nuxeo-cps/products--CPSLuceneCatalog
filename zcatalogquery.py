@@ -50,6 +50,14 @@ class ZCatalogQuery(object):
 
             field_conf = {}
 
+            # catch condition before all manipulations
+            if isinstance(v, dict):
+                condition = v.pop('insert_condition', None)
+                if v.keys() == ['query']: # only one remains
+                    v = v['query']
+            else:
+                condition = None
+
             if k not in cat.getCatalog().getFieldNamesFor():
                 # CPS BBB : ZCTitle case.
                 if k == 'ZCTitle':
@@ -58,6 +66,8 @@ class ZCatalogQuery(object):
                             'id'    : 'Title',
                             'value' : v,
                             }
+                        if condition is not None:
+                            field_conf['condition'] = condition
                         self.fields += (field_conf,)
                 else:
                     self.options[k] = v
@@ -68,6 +78,8 @@ class ZCatalogQuery(object):
                     'value' : v,
                     }
 
+                if condition is not None:
+                    field_conf['condition'] = condition
                 if isinstance(v, DateTime):
                     field_conf['value'] = v.ISO()
 

@@ -58,6 +58,23 @@ class ZQueryTestCase(unittest.TestCase):
                          )
         self.assertEqual(zq.getQueryOptions(), {})
 
+    def test_internal_condition(self):
+        cat = FakeCatalog(field_ids=('subject', 'Title'))
+        zq = ZCatalogQuery(cat, REQUEST=None, subject={
+            'query': ['Arts', 'Computers'], 'insert_condition': 'NOT'})
+        self.assertEqual(zq.getFieldsMap(),
+                         ({'id': 'subject',
+                           'value': ['Arts', 'Computers'],
+                           'condition': 'NOT'},))
+
+        # Works with ZCTitle BBB too
+        zq = ZCatalogQuery(cat, REQUEST=None, ZCTitle={
+            'query': 'foo', 'insert_condition': 'OR'})
+        self.assertEqual(zq.getFieldsMap(),
+                         ({'id': 'Title',
+                           'value': 'foo',
+                           'condition': 'OR'},))
+
     def test_simple_date(self):
         cat = FakeCatalog(field_ids=('Date',))
         cdate = DateTime()

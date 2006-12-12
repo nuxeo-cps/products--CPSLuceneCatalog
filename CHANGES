@@ -3,7 +3,7 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
--
+- #1796: implemented "insert_condition" (see trac issue for details).
 Bug fixes
 ~~~~~~~~~
 -
