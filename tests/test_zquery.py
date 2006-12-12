@@ -50,7 +50,7 @@ class ZQueryTestCase(unittest.TestCase):
     def test_bbb_zctitle(self):
 
         # CPS BBB tests
-        
+
         cat = FakeCatalog(field_ids=('Title',))
         zq = ZCatalogQuery(cat, REQUEST=None, ZCTitle='foo')
         self.assertEqual(zq.getFieldsMap(),
