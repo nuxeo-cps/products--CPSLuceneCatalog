@@ -49,7 +49,7 @@ class ZCatalogQuery(object):
         for k, v in kw.items():
 
             field_conf = {}
-    
+
             if k not in cat.getCatalog().getFieldNamesFor():
                 # CPS BBB : ZCTitle case.
                 if k == 'ZCTitle':
@@ -85,12 +85,12 @@ class ZCatalogQuery(object):
                                 d2 = v1[1]
                                 if (isinstance(d1, DateTime) and
                                     isinstance(d2, DateTime)):
-                                    field_conf['value'] =  [d1.ISO(), d2.ISO()]                                    
+                                    field_conf['value'] =  [d1.ISO(), d2.ISO()]
                                 else:
                                     field_conf['value'] =  [d1, d2]
                         field_conf['usage'] = range_
-                self.fields += (field_conf,)            
-                    
+                self.fields += (field_conf,)
+
 ##        logger.debug("getFielsdMap() %s" % str(self.fields))
 ##        logger.debug("getQueryOptions() %s" % str(self.options))
 
