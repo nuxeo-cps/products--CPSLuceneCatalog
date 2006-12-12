@@ -68,6 +68,11 @@ class CPSBrainTestCase(unittest.TestCase):
         for v in bra.v:
             self.assert_(not isinstance(v, unicode))
 
+    def test_empty_string(self):
+        mapping = {'v': ''}
+        bra = CPSBrain(mapping)
+        self.assertEquals(bra.v, '')
+
     def test_getObject(self):
         class FakeParent:
             def restrictedTraverse(self, path):
