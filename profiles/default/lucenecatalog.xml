@@ -82,8 +82,15 @@
 	/>
 
     <field 
+	name="EffectiveDate"
+	attr="EffectiveDate"
+	type="Date"
+	analyzer="Standard"
+	/>
+
+    <field 
 	name="effective"
-	attr="effective"
+	attr="EffectiveDate"
 	type="Date"
 	analyzer="Standard"
 	/>
