@@ -90,7 +90,7 @@
 
     <field
 	name="effective"
-	attr="EffectiveDate"
+	attr="effective"
 	type="Date"
 	analyzer="Standard"
 	/>
@@ -105,6 +105,13 @@
     <field
 	name="expires"
 	attr="expires"
+	type="Date"
+	analyzer="Standard"
+	/>
+
+    <field
+	name="ExpirationDate"
+	attr="ExpirationDate"
 	type="Date"
 	analyzer="Standard"
 	/>
@@ -241,28 +248,27 @@
 	analyzer="Sort"
 	/>
 
-
   <!-- Brain's  Metadata -->
 
-  <column value="Contributors"/>
-  <column value="CreationDate"/>
+  <column value="Contributors"/>          <!-- XXX no field for this column -->
+  <column value="CreationDate"/>          <!-- XXX no field for this column -->
   <column value="Creator"/>
   <column value="Date"/>
   <column value="Description"/>
   <column value="EffectiveDate"/>
   <column value="ExpirationDate"/>
   <column value="Language"/>
-  <column value="ModificationDate"/>
+  <column value="ModificationDate"/>      <!-- XXX no field for this column -->
   <column value="Subject"/>
   <column value="Title"/>
-  <column value="Type"/>
+  <column value="Type"/>                  <!-- XXX no field for this column -->
   <column value="created"/>
   <column value="effective"/>
   <column value="end"/>
   <column value="expires"/>
-  <column value="getIcon"/>
+  <column value="getIcon"/>               <!-- XXX no field for this column -->
   <column value="getId"/>
-  <column value="getRevision"/>
+  <column value="getRevision"/>           <!-- XXX no field for this column -->
   <column value="id"/>
   <column value="listCreators"/>
   <column value="modified"/>
