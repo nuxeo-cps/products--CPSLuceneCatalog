@@ -35,6 +35,7 @@ from Products.CMFCore.utils import getToolByName
 
 from nuxeo.lucene.interfaces import ILuceneCatalog
 from Products.CPSLuceneCatalog.catalog import CPSLuceneCatalogTool
+from Products.CPSSchemas.Schema import CPSSchema
 
 class CPSLuceneCatalogTest(
     CPSLuceneCatalogTestCase.CPSLuceneCatalogTestCase):
@@ -291,6 +292,94 @@ class CPSLuceneCatalogTest(
 
         self.logout()
 
+    def test_using_DataModel(self):
+        self.login('manager')
+
+        transaction.begin()
+
+        cpscatalog = getToolByName(self.portal, 'portal_catalog')
+        ttool = self.portal.portal_types
+        stool = self.portal.portal_schemas
+        ws = self.portal.workspaces
+
+        # adding a new index to the catalog
+        kw = {
+            'name' : 'f1',
+            'attribute' : 'f1',
+            'type' : 'Keyword',
+            'analyzer' : 'Standard',
+        }
+        cpscatalog.addField(**kw)
+        
+        # creating fake Schema with read_expr field
+        schema = CPSSchema('fake_schema', 'Schema1').__of__(self.portal)
+        schema.addField('f1', 'CPS String Field',
+                        read_ignore_storage=False,
+                        read_process_expr='python: value or "fake"',
+                        )
+        stool.addSchema('fake_schema', schema)
+        
+        # creating fake document type using the fake schema
+        ti = ttool.addFlexibleTypeInformation(id='fakeDocument')
+        properties = {
+            'content_meta_type': 'CPS Document',
+            'product': 'CPSDocument',
+            'factory': 'addCPSDocument',
+            'immediate_view': 'cpsdocument_view',
+            'allowed_content_types': (),
+            'cps_proxy_type': 'document',
+            'schemas': ['fake_schema'],
+            'layouts': [],
+            'cps_workspace_wf': 'workspace_content_wf',
+            }
+        ti.manage_changeProperties(**properties)
+        
+        wfc = getattr(ws, '.cps_workflow_configuration')
+        wfc.setChain('fakeDocument', ('workspace_content_wf',))
+
+        # add the document type to the workspace allowed content types
+        workspaceACT = list(ttool.Workspace.allowed_content_types)
+        workspaceACT.append('fakeDocument')
+        ttool.Workspace.allowed_content_types = workspaceACT
+
+        # Create a new object within the workspaces area
+        id_ = self._makeOne(ws, 'fakeDocument')
+        object_ = getattr(self.portal.workspaces, id_)
+        cpscatalog.indexObject(object_)
+
+        transaction.commit()
+        time.sleep(0.1)
+
+        # Search for the value computed by the read_expr
+        kw = {
+            'f1' : 'fake',
+            }
+
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, '/'.join(object_.getPhysicalPath()))
+        
+        # update object's f1 field (f1 will store a value now instead of a generated value)
+        obj = object_.getContent()
+        obj.edit(f1='test')
+        self.assertEqual(getattr(obj,'f1'), 'test')
+        cpscatalog.reindexObject(object_)
+        
+        transaction.commit()
+        time.sleep(0.1)
+
+        # stored for the read_expr value; shouldn't find anything
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 0)
+        
+        # search for the stored value
+        kw['f1'] = 'test'
+        results = cpscatalog.searchResults(**kw)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].uid, '/'.join(object_.getPhysicalPath()))
+
+        self.logout()
+
     #
     # PRIVATE
     #
@@ -304,6 +393,6 @@ class CPSLuceneCatalogTest(
 def test_suite():
     suite = unittest.TestSuite()
     # This test is disabled by default, see note at top of this file.
-    # suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
+    suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
     return suite
 

@@ -31,6 +31,7 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CPSCore.ProxyBase import ProxyBase
 from Products.CPSCore import utils as cpsutils
+from Products.CPSDocument.CPSDocument import CPSDocument
 
 class IndexableObjectWrapper:
     """This is a CPS adaptation of
@@ -66,14 +67,19 @@ class IndexableObjectWrapper:
                 ob_repo = ob.getContent(lang=self.__lang)
                 if ob_repo is not None:
                     ob = ob_repo
-        try:
-            ret = getattr(ob, name)
-        except AttributeError:
-            if name == 'meta_type':
-                # this is a fix for TextIndexNG2
-                return None
-            raise
-
+        if isinstance(ob, CPSDocument):
+            # get the computed field value
+            dm = ob.getDataModel(proxy=proxy)
+            ret = dm.get(name)
+        if not isinstance(ob, CPSDocument) or ret is None:
+            try:
+                ret = getattr(ob, name)
+            except AttributeError:
+                if name == 'meta_type':
+                    # this is a fix for TextIndexNG2
+                    return None
+                raise
+    
         if proxy is not None and name == 'SearchableText':
             # we add proxy id to searchableText
             ret = ret() + ' ' + proxy.getId()
