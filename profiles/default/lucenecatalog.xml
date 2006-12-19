@@ -2,198 +2,198 @@
 <object name="portal_catalog" meta_type="CPS Lucene Catalog Tool">
 
   <!-- Properties -->
- 
+
   <property name="title">CPS Lucene Catalog Tool</property>
   <property name="server_url">http://localhost:9180</property>
 
 
   <!-- Fields -->
-  
+
   <!-- XXX missing CPS filter sets -->
 
-  <field 
+  <field
       name="Creator"
       attr="Creator"
       type="Text"
       analyzer="Standard"
       />
 
-    <field 
+    <field
 	name="Date"
 	attr="Date"
 	type="Date"
 	analyzer="Standard"
       />
 
-    <field 
+    <field
 	name="Description"
 	attr="Description"
 	type="Text"
 	analyzer="Standard"
       />
 
-    <field 
+    <field
 	name="Language"
 	attr="Language"
 	type="Keyword"
 	analyzer="Standard"
       />
 
-    <field 
+    <field
 	name="SearchableText"
 	attr="SearchableText"
 	type="UnStored"
 	analyzer="Standard"
       />
 
-    <field 
+    <field
 	name="Subject"
 	attr="Subject"
 	type="MultiKeyword"
 	analyzer="Standard"
       />
 
-    <field 
+    <field
 	name="Title"
 	attr="Title"
 	type="Text"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="allowedRolesAndUsers"
 	attr="allowedRolesAndUsers"
 	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="container_path"
 	attr="container_path"
 	type="Path"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="created"
 	attr="created"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="EffectiveDate"
 	attr="EffectiveDate"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="effective"
 	attr="EffectiveDate"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="end"
 	attr="end"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="expires"
 	attr="expires"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="getId"
 	attr="getId"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="id"
 	attr="id"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="in_reply_to"
 	attr="in_reply_to"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="listCreators"
 	attr="listCreators"
 	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="localUsersWithRoles"
 	attr="localUsersWithRoles"
 	type="MultiKeyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="meta_type"
 	attr="meta_type"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="portal_type"
 	attr="portal_type"
-	type="Keyword"	
+	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="modified"
 	attr="modified"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="path"
 	attr="path"
 	type="Path"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="position_in_container"
 	attr="position_in_container"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="relative_path"
 	attr="relative_path"
 	type="Path"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="relative_path_depth"
 	attr="relative_path_depth"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="review_state"
 	attr="review_state"
 	type="Keyword"
@@ -202,21 +202,21 @@
 
     <!-- an exact match on the container.
 	 Used by catalog folder_contents -->
-    <field 
+    <field
 	name="container_path"
 	attr="container_path"
 	type="Keyword"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="start"
 	attr="start"
 	type="Date"
 	analyzer="Standard"
 	/>
 
-    <field 
+    <field
 	name="time"
 	attr="time"
 	type="Date"
@@ -226,7 +226,7 @@
 
   <!-- Special fields for sorting -->
 
-    <field 
+    <field
 	name="Title_sort"
 	attr="Title"
 	type="Sort"
@@ -234,7 +234,7 @@
 	/>
 
 
-    <field 
+    <field
 	name="Date_sort"
 	attr="Date"
 	type="Sort"
@@ -242,7 +242,7 @@
 	/>
 
 
-  <!-- Brain's  Metadata --> 
+  <!-- Brain's  Metadata -->
 
   <column value="Contributors"/>
   <column value="CreationDate"/>
