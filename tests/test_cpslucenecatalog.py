@@ -393,6 +393,6 @@ class CPSLuceneCatalogTest(
 def test_suite():
     suite = unittest.TestSuite()
     # This test is disabled by default, see note at top of this file.
-    suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
+    # suite.addTest(unittest.makeSuite(CPSLuceneCatalogTest))
     return suite
 
