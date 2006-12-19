@@ -6,7 +6,7 @@ New features
 - #1796: implemented "insert_condition" (see trac issue for details).
 Bug fixes
 ~~~~~~~~~
--
+- fixing effective index declaration
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - Optimize match_languages index size by using only the ui locales set instead
