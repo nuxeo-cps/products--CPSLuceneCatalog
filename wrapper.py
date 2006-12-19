@@ -169,6 +169,12 @@ class IndexableObjectWrapper:
         ob = self.__ob
         proxy_language = self.__lang
         if proxy_language is None:
+            utool = getToolByName(self, 'portal_url', None)
+            if utool:
+                # match_languages is used only with UI locales
+                portal = utool.getPortalObject()
+                return portal.getProperty('available_languages',
+                                          cpsutils.ALL_LOCALES)
             return cpsutils.ALL_LOCALES
         languages = [proxy_language]
         if ob.getDefaultLanguage() == proxy_language:
