@@ -3,13 +3,10 @@ Requires
 -
 New features
 ~~~~~~~~~~~~
-- #1796: implemented "insert_condition" (see trac issue for details).
+-
 Bug fixes
 ~~~~~~~~~
-- fixing effective index declaration
-- The indexing is done for the attributes in DataModel instead of the object's 
-  attributes (for using the read_expr, for instance)
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
-- Optimize match_languages index size by using only the ui locales set instead
-  of the all_locales set.
+- 

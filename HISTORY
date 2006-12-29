@@ -1,4 +1,27 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.11.0
+===========================================================
+First release built by: madarche at: 2006-12-29T15:41:23
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.11.0
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk/@50745
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+- #1796: implemented "insert_condition" (see trac issue for details).
+Bug fixes
+~~~~~~~~~
+- fixing effective index declaration
+- The indexing is done for the attributes in DataModel instead of the object's 
+  attributes (for using the read_expr, for instance)
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- Optimize match_languages index size by using only the ui locales set instead
+  of the all_locales set.
+
+===========================================================
 Package: CPSLuceneCatalog 0.10.0
 ===========================================================
 First release built by: lregebro at: 2006-11-02T16:08:34
