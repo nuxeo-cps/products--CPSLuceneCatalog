@@ -26,8 +26,8 @@ import time
 import logging
 import gc
 from sets import Set
+from urlparse import urlsplit
 
-from ZODB.loglevels import TRACE
 import transaction
 
 from AccessControl import ClassSecurityInfo
@@ -61,6 +61,9 @@ from interfaces import ICPSLuceneCatalogTool
 import filelock
 
 logger = logging.getLogger("CPSLuceneCatalog")
+
+LOCK_FILE_BASE_NAME = 'cpslucenecatalog'
+
 
 class CPSLuceneCatalogTool(CatalogTool):
     """CPS Lucene Catalog
@@ -114,6 +117,23 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     def __nonzero__(self):
         return True
+
+    def getServerHostAndPort(self):
+        """Return a tuple with server host and server port.
+        """
+        network_location_str = urlsplit(self.server_url)
+        network_location = network_location_str[1].split(':')
+        server_host = network_location[0]
+        server_port = (len(network_location) > 1 and network_location[1]
+                       or '80')
+        res = (server_host, server_port)
+        return res
+
+    def getLockfileName(self):
+        (server_host, server_port) = self.getServerHostAndPort()
+        lock_file_name = '-'.join((LOCK_FILE_BASE_NAME,
+                                   server_host, server_port))
+        return lock_file_name
 
     #
     # API : Column
@@ -386,12 +406,18 @@ class CPSLuceneCatalogTool(CatalogTool):
         self._synchronize(index_missing=0,remove_defunct=1)
 
     def _obtainLock(self):
-        if not filelock.PythonFileLock('cpslucenecatalog').obtain():
+        lock_file_name = self.getLockfileName()
+        if not filelock.PythonFileLock(lock_file_name).obtain():
             raise ValueError("Another process is already reindexing or "
-                             "synchronizing this catalog")
+                             "synchronizing this catalog. "
+                             "If this is not the case you can remove the "
+                             "%s lock file in the temporary directory of "
+                             "the server running Zope." % lock_file_name
+                             )
 
     def _releaseLock(self):
-        filelock.PythonFileLock('cpslucenecatalog').release()
+        lock_file_name = self.getLockfileName()
+        filelock.PythonFileLock(lock_file_name).release()
 
     def indexProxies(self, idxs=(), from_path=''):
         # Indexes all proxies under from_path
