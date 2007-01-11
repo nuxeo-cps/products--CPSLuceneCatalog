@@ -1,5 +1,8 @@
-# (C) Copyright 2006 Nuxeo SAS <http://nuxeo.com>
-# Author: Julien Anguenot <ja@nuxeo.com>
+# (C) Copyright 2006-2007 Nuxeo SAS <http://nuxeo.com>
+# Authors:
+# Julien Anguenot <ja@nuxeo.com>
+# Lennart Regebro
+# M.-A. Darche <madarche@nuxeo.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as published
@@ -281,7 +284,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         # unstored field. And since reindexing means unindexing and then
         # re-indexing a record, this means that if you don't pass the data
         # for unindexed or unstored fields, these will be cleared.
-        # Therefore, when specifying which indexes to reindex, we here make 
+        # Therefore, when specifying which indexes to reindex, we here make
         # sure that all unindexed and unstored fields are included:
         if idxs:
             idxs = list(idxs)
@@ -369,8 +372,8 @@ class CPSLuceneCatalogTool(CatalogTool):
         return self._catalog.hasUID(uid)
 
     def uniqueValuesFor(self, name):
-        """Return the unique values for a given FieldIndex 
-        
+        """Return the unique values for a given FieldIndex
+
         For Lucene this will return all the terms for a given field, no
         matter what type. I don't promise it's unique (but it should be) or
         sensible, because I haven't verified that it is is all cases.
@@ -389,7 +392,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
     def _releaseLock(self):
         filelock.PythonFileLock('cpslucenecatalog').release()
-        
+
     def indexProxies(self, idxs=(), from_path=''):
         # Indexes all proxies under from_path
         # If from_path is none, indexes all proxies.
@@ -409,7 +412,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         utool = getToolByName(self, 'portal_url')
         portal = utool.getPortalObject()
         portal_path = utool.getPortalPath()
-                        
+
         # When reindexing the WHOLE catalog, as we do here, the language
         # support is pointless, as it's there to reindex all languages of a
         # proxy, even when you reindex only one of them. Here they all get
@@ -424,7 +427,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         # Also, the asynchronous reindexing is pretty pointless here too:
         catalog = self.getCatalog()
         catalog._txn_async = False
-        
+
         for rpath in rpaths:
             proxy = portal.unrestrictedTraverse(rpath)
             self.reindexObject(proxy, idxs=list(idxs))
@@ -448,30 +451,30 @@ class CPSLuceneCatalogTool(CatalogTool):
         catalog._txn_async = True
         # Optimize
         catalog.optimize()
-        
+
 
     def _synchronize(self, idxs=(), remove_defunct=1, index_missing=1):
         """Synchronize the index with the documents.
-        
-        This method will index proxies that are not indexed and remove 
+
+        This method will index proxies that are not indexed and remove
         index-entries that no longer have corresponding proxies.
         """
         self._obtainLock()
         res = []
         start_time = time.time()
         logger.info("Start index synchronization")
-        
+
         # Get all indexed rpaths:
         all_indexed = self.uniqueValuesFor('uid')
         get_time = time.time()
         logger.info("Getting all UIDs: %s seconds" % (get_time - start_time))
-        
+
         # Get all rpaths:
         pxtool = getToolByName(self, 'portal_proxies')
         rpaths = pxtool._rpath_to_infos
         rpath_time = time.time()
         logger.info("Getting all rpaths: %s seconds" % (rpath_time - get_time))
-        
+
         # Diff:
         all_indexed = Set(all_indexed)
         rpathset = Set()
@@ -480,7 +483,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         for rpath in rpaths:
             path = portal_path + '/' + rpath
             rpathset.add(path)
-            
+
         prepare_time = time.time()
         logger.info("Preparing for diff: %s seconds" % (prepare_time -
                                                         rpath_time))
@@ -500,11 +503,11 @@ class CPSLuceneCatalogTool(CatalogTool):
             else:
                 logger.debug("Object %s doesn't exist and can be removed "
                               "the catalog" % each)
-                
+
         if remove_defunct:
             # Optimize the store after the unindexing
             self.getCatalog().optimize()
-                    
+
 
         logger.info("Total number of defunct entries: %s" % count)
         unindexed_time = time.time()
@@ -520,7 +523,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         if index_missing:
             self._indexPaths(nonindexed, idxs=idxs)
-        
+
         # Make another optimization. For some reason, after unindexing, you
         # need to optimize twice for the uids to be removed from the list of
         # terms. So we do that here, for good measure:
@@ -532,7 +535,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         self._releaseLock()
 
 
-    # 
+    #
     # ZMI
     #
 
@@ -577,7 +580,7 @@ class CPSLuceneCatalogTool(CatalogTool):
 
         It checks all the CPS proxies from the proxies tool.
         """
-        
+
         self.indexProxies(idxs=idxs, from_path=from_path)
 
         if REQUEST is not None:
