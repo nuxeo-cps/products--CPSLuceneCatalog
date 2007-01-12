@@ -6,9 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
-- Made the lock file be dependent on the Lucene host name and port so that a
-  machine can have many CPSLuceneCatalog running on it safely.
-- Added a better error message in case of a erroneous lock file.
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 

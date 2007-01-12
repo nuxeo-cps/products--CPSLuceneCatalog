@@ -1,4 +1,26 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.11.1
+===========================================================
+First release built by: madarche at: 2007-01-12T17:16:39
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.11.1
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk/@50813
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- Made the lock file be dependent on the Lucene host name and port so that a
+  machine can have many CPSLuceneCatalog running on it safely.
+- Added a better error message in case of a erroneous lock file.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: CPSLuceneCatalog 0.11.0
 ===========================================================
 First release built by: madarche at: 2006-12-29T15:41:23
