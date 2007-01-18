@@ -43,6 +43,26 @@ class IndexableObjectWrapper:
         self.__lang = lang
         self.__uid = uid
 
+        # lazy attributes (getattr makes infinite loops)
+        self.__ob_repo = None
+        self.__datamodel = None
+
+    def getRepoDoc(self):
+        doc = self.__ob_repo
+        if doc is not None:
+            return doc
+
+        self.__ob_repo = self.__ob.getContent(lang=self.__lang)
+        return self.__ob_repo
+        
+    def getDataModel(self):
+        dm = self.__datamodel
+        if dm is not None:
+            return dm
+
+        self.__datamodel = self.getRepoDoc().getDataModel(proxy=self.__ob)
+        return self.__datamodel
+
     def __getattr__(self, name):
         """This is the indexable wrapper getter for CPS,
         proxy try to get the repository document attributes,
@@ -58,19 +78,15 @@ class IndexableObjectWrapper:
         proxy = None
         if isinstance(ob, ProxyBase):
             proxy = ob
-            if name in ('getId', 'id', 'getPhysicalPath', 'uid', 'modified',
-                        'getDocid', 'isCPSFolderish'):
+            if name not in ('getId', 'id', 'getPhysicalPath', 'uid',
+                            'modified',
+                            'getDocid', 'isCPSFolderish'):
                 # These attributes are computed from the proxy
-                pass
-            else:
-                # Use the repository document for remaining attributes
-                ob_repo = ob.getContent(lang=self.__lang)
-                if ob_repo is not None:
-                    ob = ob_repo
+                ob = self.getRepoDoc()
+
         if isinstance(ob, CPSDocument):
             # get the computed field value
-            dm = ob.getDataModel(proxy=proxy)
-            ret = dm.get(name)
+            return self.getDataModel().get(name)
         if not isinstance(ob, CPSDocument) or ret is None:
             try:
                 ret = getattr(ob, name)

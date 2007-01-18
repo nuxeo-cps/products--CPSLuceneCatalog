@@ -6,7 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- indexation wrapper now calls getDataModel and getContent just once
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 
