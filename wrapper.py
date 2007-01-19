@@ -86,7 +86,7 @@ class IndexableObjectWrapper:
 
         if isinstance(ob, CPSDocument):
             # get the computed field value
-            return self.getDataModel().get(name)
+            ret = self.getDataModel().get(name)
         if not isinstance(ob, CPSDocument) or ret is None:
             try:
                 ret = getattr(ob, name)
