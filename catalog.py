@@ -309,7 +309,7 @@ class CPSLuceneCatalogTool(CatalogTool):
         if idxs:
             idxs = list(idxs)
             for idx in self.getCatalog().getFieldConfigurationsFor():
-                if (idx.type.lower() in ('unindexed', 'unstored') and
+                if (idx.type.lower() in ('unindexed', 'unstored', 'sort') and
                     idx.name not in idxs):
                     idxs.append(idx.name)
 
