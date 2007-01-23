@@ -33,6 +33,8 @@ from Products.CPSCore.ProxyBase import ProxyBase
 from Products.CPSCore import utils as cpsutils
 from Products.CPSDocument.CPSDocument import CPSDocument
 
+DUBLIN_CORE_DATES = ('created', 'effective', 'expires', 'modified')
+
 class IndexableObjectWrapper:
     """This is a CPS adaptation of
     CMFCore.CatalogTool.IndexableObjectWrapper"""
@@ -101,10 +103,11 @@ class IndexableObjectWrapper:
             ret = ret() + ' ' + proxy.getId()
 
         # use callable result if needed
-        # XXX AT: problem when it is portal_url for instance. Maybe it's
-        # useless, is it called by ZCatalog when indexing the wrapper (?)
-        #if callable(ret):
-        #    ret = ret()
+        # XXX GR: problem when it is portal_url for instance (think ack).
+        # It's useless except in the case of DateTime instances, because
+        # it is done by the next layer, nuxeo.lucene, which doesn't know about DateTime.
+        if callable(ret) and name in DUBLIN_CORE_DATES:
+            ret = ret()
 
         # Check here if it's a date and return a string representation
         # of the date since DateTime is not a Python standard object
