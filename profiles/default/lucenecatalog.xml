@@ -243,7 +243,7 @@
 
     <field
 	name="Date_sort"
-	attr="Date"
+	attr="modified"
 	type="Sort"
 	analyzer="Sort"
 	/>
