@@ -1,4 +1,30 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.11.2
+===========================================================
+First release built by: gracinet at: 2007-02-06T16:15:53
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.11.2
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk/@51013
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- indexation wrapper now calls getDataModel and getContent just once
+- Dublin core dates weren't properly indexed.
+- fix: Fields of type 'Sort' are resseted after a reindex security
+- fix: Date_sort is defined using Date() which is the CMF DublinCore 
+  effective date but folder contents display modified time. 
+  Now Date_sort point to modified date.
+- fix #859: les listes doivent êtres triables dans le back-office
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: CPSLuceneCatalog 0.11.1
 ===========================================================
 First release built by: madarche at: 2007-01-12T17:16:39

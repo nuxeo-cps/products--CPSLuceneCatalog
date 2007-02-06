@@ -6,13 +6,7 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
-- indexation wrapper now calls getDataModel and getContent just once
-- Dublin core dates weren't properly indexed.
-- fix: Fields of type 'Sort' are resseted after a reindex security
-- fix: Date_sort is defined using Date() which is the CMF DublinCore 
-  effective date but folder contents display modified time. 
-  Now Date_sort point to modified date.
-- fix #859: les listes doivent êtres triables dans le back-office
+-
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 
