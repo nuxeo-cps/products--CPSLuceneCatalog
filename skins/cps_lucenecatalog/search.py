@@ -44,7 +44,8 @@ brains = portal.search(query={'path': '/cps/workspaces/folder1'},
 
 """
 
-from zLOG import LOG, DEBUG, INFO
+import logging
+logger = logging.getLogger('CPSLuceneCatalog.search')
 
 from Products.ZCTextIndex.ParseTree import ParseError
 ParseErrors = (ParseError,)
@@ -140,11 +141,11 @@ if direction:
 if sort_limit and not query.has_key('sort-limit'):
     query['sort-limit'] = sort_limit
 
-LOG('CPSDefault.search', DEBUG, 'start catalog search for %s' % query)
+logger.debug('start catalog search for %s' % query)
 try:
     brains = catalog(**query)
-    LOG('CPSDefault.search', DEBUG, 'found %s items' % (len(brains)))
+    logger.debug('found %s items' % (len(brains)))
 except ParseErrors:
-    LOG('CPSDefault.search', INFO, 'got an exception during search %s' % query)
+    logger.info('got an exception during search %s' % query)
     return []
 return brains
