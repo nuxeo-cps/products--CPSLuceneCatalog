@@ -386,7 +386,7 @@ class CPSLuceneCatalogTool(CatalogTool):
     def addIndex(self, name, type,extra=None):
         pass
 
-    security.declareProtected(ManagePortal, 'hasuid')
+    security.declareProtected(ManagePortal, 'hasUID')
     def hasUID(self, uid):
         "Checks if a certain UID is indexed"
         return self._catalog.hasUID(uid)
