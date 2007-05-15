@@ -1,4 +1,25 @@
 ===========================================================
+Package: CPSLuceneCatalog 0.11.3
+===========================================================
+First release built by: madarche at: 2007-05-15T16:43:21
+SVN Tag: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/tags/0.11.3
+Build from: https://svn.nuxeo.org/pub/CPS3/products/CPSLuceneCatalog/trunk/@51738
+
+Requires
+~~~~~~~~
+-
+New features
+~~~~~~~~~~~~
+-
+Bug fixes
+~~~~~~~~~
+- Removed log warnings by switching to using the logging module.
+- Fixed a security declaration on method hasUID.
+New internal features
+~~~~~~~~~~~~~~~~~~~~~
+- 
+
+===========================================================
 Package: CPSLuceneCatalog 0.11.2
 ===========================================================
 First release built by: gracinet at: 2007-02-06T16:15:53
