@@ -6,7 +6,8 @@ New features
 -
 Bug fixes
 ~~~~~~~~~
--
+- Removed log warnings by switching to using the logging module.
+- Fixed a security declaration on method hasUID.
 New internal features
 ~~~~~~~~~~~~~~~~~~~~~
 - 
